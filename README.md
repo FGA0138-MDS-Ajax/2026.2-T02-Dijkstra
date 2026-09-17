@@ -1,28 +1,94 @@
-# template-repository - Branch Main
+## GitPages: [Git Pages - Time Dijkstra](https://fga0138-mds-ajax.github.io/2026.2-T02-Dijkstra/)
 
-Template de Repositório para a matéria de Métodos de Desenvolvimento de Software lecionado pelo professor Ricardo Ajax.
+# Como Atualizar a Documentação
 
-Essa Branch deve ser usada exclusivamente para a versão de produção dos softwares da equipe.
+## 1. Atualize o arquivo
 
-O repositório conta com mais 3 branchs:
-* docs: Usada para armazenar a documentação do projeto.
-* developer: usada como um intermediário antes do código chegar realmente para produção. É o ambiente ideal para realizar os últimos testes antes das apresentações.
-* gh-pages: Local dos arquivos estáticos de deploy da documentação. (Para deploy da documentação, consultar seu monitor)
+Os arquivos da documentação ficam dentro da pasta `docs/`.
 
-## Especificações Técnicas do Repositório
+Por exemplo:
 
-Este repositório é planejado e estruturado para que seja realizado documentações de software. Caso haja outra necessidades, deve-se consultar a professora.
+```text
+docs/
+├── index.md
+├── doc-visao
+│   └── topico1.md
+│   └── topico2.md
+    └── topico3.md
+```
 
-Atualmente se usa a ferramenta MkDocs para gerar sua documentação baseado nos seus arquivos markdowns, vocês podem achar mais instruções sobre o MkDocs através do link da documentação da ferramenta: [https://www.mkdocs.org/](https://www.mkdocs.org/).
+Abra o arquivo que deseja modificar e faça as alterações normalmente utilizando Markdown.
 
-Também é usado uma "sub-ferramenta" do MkDocs para sua estilização, o Material Theme, que pode ser consultado através do link: [https://squidfunk.github.io/mkdocs-material/](https://squidfunk.github.io/mkdocs-material/).
+> Lembre de adicionar o tópico no mkdocs.yml, que fica na raiz da branch `docs` para que ele seja referenciado na navegação
 
-Este repositório também conta com uma pipeline de automatização de deploy do seu conteúdo MkDocs, para que a cada commit feito na main, a pipeline gere uma versão atualizada da sua documentação em minutos. Vale ressaltar que é importante realizar uma configuração para que tudo funcione da forma correta, as instruções são as seguintes:
+## 2. Salve as alterações
 
-* Acesse as configurações do repositório;
-* Procure a aba de "Pages"
-* Em "Source" escolha a opção "Deploy from a branch";
-* Em "Branch" escolha "gh-pages";
-* Clique em salvar e pronto;
+Depois de editar o arquivo, salve as alterações no VS Code ou no editor utilizado.
 
-Após essas etapas de configuração, o seu GitPages deve funcionar normalmente.
+```bash
+git add .
+```
+
+Ou, para adicionar somente um arquivo:
+
+```bash
+git add docs/doc_visao.md
+```
+
+---
+
+### Crie um commit
+
+
+```bash
+git commit -m "docs: atualiza documentação de backlog"
+```
+
+---
+
+### Dê o push
+
+```bash
+git push
+```
+
+## 3. Atualização do GitHub Pages
+
+```bash
+mkdocs gh-deploy
+```
+
+
+Depois do `mkdocs gh-deploy`, o GitHub irá executar o processo configurado para publicação do MkDocs na branch gh-deploy e fará o deploy automaticamente.
+
+Por favor verificar se o deploy ocorreu corretamente na seção à direita no **Deployments**.
+
+---
+
+
+## extra: Teste a documentação localmente
+
+Antes de enviar as alterações para o GitHub, é recomendado executar o servidor local do MkDocs:
+
+```bash
+mkdocs serve
+```
+
+O terminal deverá apresentar um endereço semelhante a:
+
+```text
+http://127.0.0.1:8000/
+```
+
+Abra esse endereço no navegador para visualizar a documentação.
+
+Enquanto o `mkdocs serve` estiver executando, as alterações nos arquivos geralmente são atualizadas automaticamente no navegador.
+
+Para parar o servidor:
+
+```text
+Ctrl + C
+```
+
+---
+
