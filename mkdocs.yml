@@ -1,0 +1,14 @@
+site_name: Plataforma de análise de índices sociais e IDH
+site_description: Documentação do projeto Time Dijkstra
+
+theme:
+  name: material
+  language: pt-BR
+  palette:
+    scheme: slate
+    primary: indigo
+    accent: indigo
+
+nav:
+  - Home: index.md
+  - SObre: sobre.md
