@@ -23,6 +23,10 @@ Abra o arquivo que deseja modificar e faça as alterações normalmente utilizan
 
 ## 2. Salve as alterações
 
+Primeiro, baixe o mkdocs no terminal
+```bash
+pip install mkdocs-material
+```
 Depois de editar o arquivo, salve as alterações no VS Code ou no editor utilizado.
 
 ```bash
