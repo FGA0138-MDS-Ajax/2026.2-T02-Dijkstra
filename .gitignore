@@ -1,17 +1,1 @@
-.env
-
-.venv/
-
-.vscode/
-.idea/
-
-__pycache__/
-.pytest_cache/
-*.pyc
-*.pyo
-*.pyd
-
-*.sqlite3
-*.db
-
 site/
