@@ -23,4 +23,4 @@ jobs:
         run: python -m pip install mkdocs mkdocs-material
 
       - name: Deploy
-        run: python -m mkdocs gh-deploy --force --remote-branch gh-deploy
+        run: python -m mkdocs gh-deploy --force --remote-branch gh-pages
