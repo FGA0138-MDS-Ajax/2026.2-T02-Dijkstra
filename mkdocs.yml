@@ -48,7 +48,8 @@ nav:
     - Especificações: gestao/especificacoes.md
   - Acompanhamento:
     - Cronograma: acompanhamento/cronograma.md
-    - Reuniões: acompanhamento/reunioes/ata01.md
+    - Reuniões:
+      - Ata Reunião 01: acompanhamento/reunioes/ata01.md
   - Padrões:
     - Commits: padroes/commits.md
     - Issues: padroes/issues.md
