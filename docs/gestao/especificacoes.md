@@ -1,0 +1,1 @@
+Regras de negócio, restrições e escopo detalhado do produto.

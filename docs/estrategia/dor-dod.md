@@ -1,0 +1,1 @@
+Definição clara dos critérios de prontidão (Definition of Ready) para as issues e de conclusão (Definition of Done) para os pull request

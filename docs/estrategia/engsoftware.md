@@ -1,0 +1,1 @@
+bordagem de engenharia de software utilizada, princípios de desenvolvimento e arquitetura geral planejada.

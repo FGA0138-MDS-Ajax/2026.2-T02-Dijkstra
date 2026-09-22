@@ -1,0 +1,1 @@
+Esboços de telas, fluxos de UX/UI (como mapas interativos, telas de comparação) e wireframes do app.
