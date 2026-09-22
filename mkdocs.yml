@@ -49,6 +49,7 @@ nav:
   - Acompanhamento:
     - Cronograma: acompanhamento/cronograma.md
     - Reuniões:
+      - Visão Geral: acompanhamento/reunioes/index.md
       - Ata Reunião 01: acompanhamento/reunioes/ata01.md
   - Padrões:
     - Commits: padroes/commits.md
