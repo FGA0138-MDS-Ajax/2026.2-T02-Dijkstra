@@ -32,7 +32,12 @@
     --color-focus: #b45f00;
     --color-button: rgb(1,50,254);
     --color-button-hover: rgb(11, 137, 254);
+
     --box-shadow: 0 0.25rem 1.5rem rgba(0, 0, 0, 0.04);
+    --header-shadow: 0 0.25rem 1.5rem rgba(21, 53, 8, 0.871);
+
+    /*esqueci de botar*/
+    --radius: 0.5rem;
 }
 
 html[data-theme="dark"] {
@@ -121,7 +126,7 @@ body{
     background-color: var(--color-header-bg);
     border-radius: 1.5rem;
     border: var(--border-width) solid var(--color-header-border);
-    box-shadow: var(--box-shadow);
+    box-shadow: var(--header-shadow);
     margin-bottom: var(--space-4);
     transition: background-color 0.3s ease;
 }
@@ -236,4 +241,58 @@ body{
     border-radius: var(--radius);
     color: var(--color-text-muted);
     text-align: center;
+}
+
+#status-api {
+    --status-bg: var(--color-info-bg, #e0f2fe);
+    --status-text: var(--color-info-text, #0369a1);
+    --status-border: var(--color-info-border, #bae6fd);
+
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    background: var(--status-bg);
+    color: var(--status-text);
+    border: 1px solid var(--status-border);
+    border-left-width: 0.5rem;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    margin: 1rem 0;
+}
+
+
+#status-api[data-estado="sucesso"] {
+    --status-bg: var(--color-success-bg, #dcfce7);
+    --status-text: var(--color-success-text, #15803d);
+    --status-border: var(--color-success-border, #bbf7d0);
+}
+
+#status-api[data-estado="erro"] {
+    --status-bg: var(--color-error-bg, #fee2e2);
+    --status-text: var(--color-error-text, #b91c1c);
+    --status-border: var(--color-error-border, #fecaca);
+}
+
+#status-titulo {
+    margin: 0;
+    font-weight: 700;
+}
+
+#status-mensagem {
+    margin: 0;
+}
+
+/*vai mudar o botao tmb, pq a preferencia do id é maior que classe*/
+#status-tentar {
+    margin-left: auto;
+    cursor: pointer;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.85rem;
+    border-radius: 4px;
+    border: 1px solid currentColor;
+    background: transparent;
+    color: inherit;
+    font-weight: 600;
 }
