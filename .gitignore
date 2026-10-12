@@ -17,3 +17,4 @@ __pycache__/
 site/
 
 data/
+# esse caminho afeta tanto o src/data quanto o data/. Verificar se realmente deve ocorrer isso.
