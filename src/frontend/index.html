@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="css/style.css">
     <title>Brasil Hub - Indicadores Socioeconômicos</title>
     <link rel="icon" href="assets/brasil-map.png" type="image/png">
-    <i class="fa-brands fa-github"></i>
 </head>
 <body>
 
@@ -16,11 +15,19 @@
             <nav class="links">
                 <a href="#" class="active">Página Inicial</a>
                 <a href="#">Sobre</a>
-                <a href="#">Mapa</a>
+                <a href="#mapa">Mapa</a>
                 <a href="#">Análise</a>
                 <a href="#">Downloads</a>
             </nav>
         </header>
+
+        <section class="status-section">
+            <div id="status-api" class="status-box" hidden>
+                <h3 id="status-titulo">Título do Status</h3>
+                <p id="status-mensagem">Mensagem descritiva do status...</p>
+                <button id="status-tentar" class="btn" hidden>Tentar novamente</button>
+            </div>
+        </section>
         
         <main class="main-section">
             <div class="main-text">
@@ -44,7 +51,6 @@
         </section>
 
     </div>
-            <script type="module" src="js/main.js"></script>
-</body>
+        <script type="module" src="js/main.js"></script>
 </body>
 </html>
