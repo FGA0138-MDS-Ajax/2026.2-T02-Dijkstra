@@ -1,88 +1,20 @@
-export const API_BASE_URL ="http://127.0.0.1:8000";
-
-const TEMPO_LIMITE_MS = 8000;
-const TEMPO_LIMITE_SAUDE = 3000;
-
-export class ErroApi extends Error{
-    // erro é uma classe padrão do js
-    constructor(tipo,mensagem, {status = null , causa = null}={}){
-        super(mensagem);
-        this.name ="erroapi";
-        this.tipo=tipo; // "rede", "tempo_esgotado", "http" , "resposta_invalida"
-        this.status=status;
-        this.causa=causa;
-    }
-}
-
-function  montarURL(caminho, parametros={}){
-    const consulta = new URLSearchParams(); 
-    //vai deixar um pouco mais bonito a URL , sem estado==null ou =="", vai só não botar na url
-    Object.entries(parametros).forEach(([chave,valor])=>{
-        if(valor !== undefined && valor !== null && valor !== ""){
-            consulta.append(chave,String(valor));
-        }
-    });
-    const texto = consulta.toString();
-    return API_BASE_URL + caminho + (texto ? "?" + texto: "");
-}
-
+const API_BASE_URL ="http://127.0.0.1:8000";
 export async function verificarSaude() {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), TEMPO_LIMITE_SAUDE);
-    let resposta;
-    try{
-        resposta = await fetch(API_BASE_URL + "/health",{signal:controller.signal});
-    } catch(erro){
-        if(erro.name == "AbortError"){
-            throw new ErroApi("tempo_esgotado", "A Api demorou muito para responder");
-        }
-        throw new ErroApi("rede", "Não foi possivel se concetar a API", {causa : erro});
-    }
-    finally{
-        clearTimeout(timer);
-    }
-
+    const resposta = await fetch(API_BASE_URL + "/health");
     if(!resposta.ok){
-        throw new ErroApi("http","Erro na resposta do servidor" ,{status: resposta.status});
+        throw new Error ("API indisponível: "  + resposta.status);
+
     }
-    if(resposta.status===204){
-        return null;
-    }
-    try{
-        return await resposta.json();
-    }
-    catch(erro){
-        throw new ErroApi("resposta_invalida", "A reposta da Api não é um JSON válido",{status: resposta.status , causa: erro});
-    }
+    return await resposta.json();
 }
 
 export async function buscarIndicadores(filtros = {}) {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), TEMPO_LIMITE_MS);
-    let resposta;
-    try{
-        resposta = await fetch(montarURL("/api/indicadores",filtros),{signal:controller.signal});
-    } catch(erro){
-        if(erro.name == "AbortError"){
-            throw new ErroApi("tempo_esgotado", "A Api demorou muito para responder");
-        }
-        throw new ErroApi("rede", "Não foi possivel se concetar a API", {causa : erro});
-    }
-    finally{
-        //reseta o timer
-        clearTimeout(timer);
-    }
+        const parametros = new URLSearchParams(filtros);
+        const resposta = await fetch(API_BASE_URL +"/api/indicadores?" + parametros);
+         if (!resposta.ok){
+            throw new Error("Erro ao buscar indicadores: " + resposta.status);
 
-    if(!resposta.ok){
-        throw new ErroApi("http","Erro na resposta do servidor" ,{status: resposta.status});
+         }
+
+         return await resposta.json();
     }
-    if(resposta.status===204){
-        return null;
-    }
-    try{
-        return await resposta.json();
-    }
-    catch(erro){
-        throw new ErroApi("resposta_invalida", "A reposta da Api não é um JSON válido",{status: resposta.status , causa: erro});
-    }
-}
