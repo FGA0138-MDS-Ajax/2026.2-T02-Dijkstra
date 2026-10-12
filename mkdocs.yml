@@ -55,3 +55,5 @@ nav:
     - Commits: padroes/commits.md
     - Issues: padroes/issues.md
     - Pull Requests: padroes/pullrequest.md
+  - Ambiente e Docker:
+    - Ambiente: ambiente.md

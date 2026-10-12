@@ -1,5 +1,9 @@
 site/
 
+# Python cache
+__pycache__/
+*.pyc
+
 # banco de dados
 *.db
 data/
