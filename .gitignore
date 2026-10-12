@@ -1,1 +1,6 @@
 site/
+
+# banco de dados
+*.db
+data/
+
