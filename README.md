@@ -112,10 +112,10 @@ Este guia descreve a preparação do ambiente de desenvolvimento da estrutura in
 ### 1. Pré-requisitos
 
 - Git instalado;
-- Python **3.12.x**, conforme registrado em `.python-version`;
+- Python **3.12.x**, versão adotada pelo projeto;
 - pip e suporte à criação de ambientes virtuais (`venv`) para esse Python.
 
-O arquivo `.python-version` registra a série adotada pelo projeto; ele não instala o Python. Utilize a atualização de correção mais recente da série 3.12.
+O projeto utiliza Python **3.12.x**. Instale a atualização de correção mais recente dessa série antes de preparar o ambiente virtual.
 
 ### 2. Obter o projeto
 
