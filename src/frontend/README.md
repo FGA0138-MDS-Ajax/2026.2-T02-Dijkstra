@@ -19,7 +19,7 @@ sprints.
 3. Abra o arquivo `src/frontend/index.html`, clique com o botão direito e
    escolha **Open with Live Server** (ou clique em **Go Live**, no canto
    inferior direito).
-4. O navegador abrirá a página em `http://localhost:5500/src/frontend/`.
+4. Ou usar o comando "python -m http.server 5500" e abrir o navegador na página em `http://localhost:5500/src/frontend/` ou no link dado no terminal.
 
 ## Estrutura de pastas
 
