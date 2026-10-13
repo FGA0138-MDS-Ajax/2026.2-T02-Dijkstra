@@ -9,12 +9,13 @@ __pycache__/
 .pytest_cache/
 *.pyc
 *.pyo
-*pyd
+*.pyd
 
 *.sqlite3
 *.db
 
 site/
 
-data/
-# esse caminho afeta tanto o src/data quanto o data/. Verificar se realmente deve ocorrer isso.
+# Ignora dados locais na raiz, preservando o marcador da pasta.
+/data/*
+!/data/.gitkeep
