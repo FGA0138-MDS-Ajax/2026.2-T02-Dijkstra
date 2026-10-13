@@ -90,9 +90,11 @@ brasil-hub/
 │   ├── data/           # Leitura e tratamento dos dados
 │   └── database/       # Acesso e persistência dos dados
 ├── tests/              # Testes automatizados
+│   └── fixtures/       # Dados e arquivos de apoio aos testes
 ├── data/               # Dados de entrada, conforme configuração do projeto
 ├── docs/               # Documentação
-├── requirements.txt    # Dependências Python
+├── requirements.txt
+├── python-version      # Dependência python
 ├── mkdocs.yml          # Configuração do MkDocs
 └── README.md           # Apresentação do projeto
 ```
@@ -103,71 +105,121 @@ Arquivos de configuração locais, credenciais, senhas e bancos de dados com inf
 
 ---
 
-## 🚀 Como executar o projeto
+## 🚀 Configuração inicial
 
-O procedimento de inicialização depende da estrutura de arquivos e das configurações disponíveis no repositório.
+Este guia descreve a preparação do ambiente de desenvolvimento da estrutura inicial do projeto. Execute os comandos na raiz do repositório.
 
-### Pré-requisitos
+### 1. Pré-requisitos
 
-- Git;
-- Python;
-- pip, gerenciador de pacotes do Python;
-- Navegador web atualizado.
+- Git instalado;
+- Python **3.12.x**, conforme registrado em `.python-version`;
+- pip e suporte à criação de ambientes virtuais (`venv`) para esse Python.
 
-### 1. Clonar o repositório
+O arquivo `.python-version` registra a série adotada pelo projeto; ele não instala o Python. Utilize a atualização de correção mais recente da série 3.12.
+
+### 2. Obter o projeto
 
 ```bash
 git clone https://github.com/FGA0138-MDS-Ajax/2026.2-T02-Dijkstra.git
-cd <DIRETORIO_DO_PROJETO>
+cd 2026.2-T02-Dijkstra
 ```
 
-### 2. Preparar o ambiente Python
-
-Crie um ambiente virtual:
+Se você já tem o repositório local, entre na pasta existente. Enquanto esta entrega estiver na branch S3-02, atualize as referências do remoto e selecione essa branch:
 
 ```bash
-python -m venv .venv
+git fetch origin
+git switch S3-02-Estrutura-inicial-e-Arquivos-de-configuracao
 ```
 
-Ative o ambiente virtual.
+Esse passo seleciona a branch; não atualiza uma branch local já existente. Preserve suas alterações locais antes de trocar de branch. Após a integração da entrega, utilize a branch definida pela equipe para o desenvolvimento.
 
-**Windows — PowerShell:**
+### 3. Criar e ativar o ambiente virtual
+
+O ambiente virtual mantém as dependências deste projeto separadas das outras instalações Python.
+
+#### Linux ou macOS
+
+```bash
+python3.12 --version
+python3.12 -m venv .venv
+source .venv/bin/activate
+```
+
+#### Windows — PowerShell
 
 ```powershell
+py -3.12 --version
+py -3.12 -m venv .venv
 .\.venv\Scripts\Activate.ps1
 ```
+
+Se você não utiliza o launcher `py` no Windows, use `python` nos dois primeiros comandos, após confirmar que `python --version` mostra a série 3.12.
+
+Com o ambiente ativado, confirme o interpretador e o pip:
+
+```bash
+python --version
+python -m pip --version
+```
+
+O Python deve mostrar `3.12.x`, e o caminho do pip deve estar dentro de `.venv`. Reative o ambiente virtual sempre que abrir um novo terminal para trabalhar no projeto.
+
+### 4. Instalar as dependências
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+As dependências declaradas atualmente são Pandas, FastAPI e Pytest. O módulo `sqlite3` faz parte da biblioteca padrão do Python e não precisa ser instalado pelo pip.
+
+Para verificar se as bibliotecas podem ser importadas e se há conflitos entre as dependências instaladas:
+
+```bash
+python -c "import pandas, fastapi, pytest, sqlite3; print('Importações OK')"
+python -m pip check
+```
+
+Essas verificações validam o ambiente; os testes da aplicação serão adicionados nas próximas implementações.
+
+### 5. Preparar as configurações locais
+
+Copie o modelo `.env.example` para `.env`.
 
 **Linux ou macOS:**
 
 ```bash
-source .venv/bin/activate
+cp .env.example .env
 ```
 
-### 3. Instalar as dependências
+**Windows — PowerShell:**
 
-Com o ambiente virtual ativado, execute:
+```powershell
+Copy-Item .env.example .env
+```
+
+Faça a cópia apenas se você ainda não tiver um `.env`, para preservar suas configurações locais.
+
+| Variável atual | Finalidade |
+| --- | --- |
+| `APP_ENV` | Identifica o ambiente. O modelo usa `development` para desenvolvimento local. |
+| `DATABASE_PATH` | Define o caminho proposto para o arquivo SQLite: `data/brasil_hub.db`, relativo à raiz do projeto. SQLite não exige servidor nem credenciais. |
+| `IBGE_API_URL` | Define a URL proposta para consultas ao IBGE. O modelo atual aponta para a API de nomes; os endpoints dos indicadores socioeconômicos ainda precisam ser definidos. |
+
+O `.env.example` é versionado como modelo compartilhado. O `.env`, o ambiente `.venv/` e os bancos `*.db` são ignorados pelo Git.
+
+Nesta etapa, as variáveis são propostas de configuração: ainda não há código que carregue o `.env` ou utilize esses valores. A cópia do arquivo também não cria o banco SQLite. A integração com o IBGE deve seguir a [documentação dos serviços de dados](https://servicodados.ibge.gov.br/api/docs/).
+
+### 6. Estado da execução
+
+A entrega atual contém a estrutura dos pacotes Python e os arquivos de configuração. Ainda não existe `src/api/main.py` com uma aplicação FastAPI, nem testes implementados.
+
+Por isso, a preparação termina nas verificações do ambiente. O comando para iniciar a API e os comandos de testes deverão ser documentados quando essas implementações estiverem disponíveis. O Uvicorn está apenas comentado no `requirements.txt` e ainda não é instalado por ele.
+
+Para encerrar o ambiente virtual:
 
 ```bash
-pip install -r requirements.txt
+deactivate
 ```
-
-### 4. Iniciar a aplicação
-
-O comando de inicialização deverá corresponder ao ponto de entrada efetivamente adotado pelo projeto.
-
-Caso a API esteja configurada no módulo `src/api/main.py`, com a aplicação FastAPI exposta pela variável `app`, o comando será:
-
-```bash
-uvicorn src.api.main:app --reload
-```
-
-A documentação interativa da API poderá ser acessada em:
-
-```text
-http://127.0.0.1:8000/docs
-```
-
-> **Importante:** os comandos acima dependem da existência dos respectivos arquivos e configurações. Antes de utilizá-los como instruções definitivas, confirme o ponto de entrada da API e a configuração das dependências no repositório.
 
 ---
 
