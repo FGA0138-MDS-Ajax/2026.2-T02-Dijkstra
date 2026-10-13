@@ -48,6 +48,18 @@ nav:
     - Especificações: gestao/especificacoes.md
   - Acompanhamento:
     - Cronograma: acompanhamento/cronograma.md
+    - Sprints:
+      - Visão Geral:
+      - Sprint 1: acompanhamento/sprints/sprint01.md
+      - Sprint 2: acompanhamento/sprints/sprint02.md
+      - Sprint 3: acompanhamento/sprints/sprint03.md
+      - Sprint 4: acompanhamento/sprints/sprint04.md
+      - Sprint 5: acompanhamento/sprints/sprint05.md
+      - Sprint 6: acompanhamento/sprints/sprint06.md
+      - Sprint 7: acompanhamento/sprints/sprint07.md
+      - Sprint 8: acompanhamento/sprints/sprint08.md
+      - Sprint 9: acompanhamento/sprints/sprint09.md
+
     - Reuniões:
       - Visão Geral: acompanhamento/reunioes/index.md
       - Ata Reunião 01: acompanhamento/reunioes/ata01.md
