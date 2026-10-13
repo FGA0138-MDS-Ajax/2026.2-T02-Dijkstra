@@ -6,7 +6,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./backend:/app
+      - ./src:/app/src
       - ./data:/app/data
     environment:
       - DATABASE_URL=sqlite:////app/data/dijkstra.db
@@ -17,4 +17,4 @@ services:
     ports:
       - "3000:80"
     volumes:
-      - ./frontend:/usr/share/nginx/html:ro
+      - ./src/frontend:/usr/share/nginx/html:ro
