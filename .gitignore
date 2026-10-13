@@ -1,0 +1,21 @@
+.env
+
+.venv/
+
+.vscode/
+.idea/
+
+__pycache__/
+.pytest_cache/
+*.pyc
+*.pyo
+*.pyd
+
+*.sqlite3
+*.db
+
+site/
+
+# Ignora dados locais na raiz, preservando o marcador da pasta.
+/data/*
+!/data/.gitkeep
