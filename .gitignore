@@ -1,1 +1,6 @@
 site/
+
+# Bytecode e caches do Python
+__pycache__/
+*.py[cod]
+*$py.class
