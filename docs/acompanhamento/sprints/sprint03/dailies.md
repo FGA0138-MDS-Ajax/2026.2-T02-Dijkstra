@@ -1,12 +1,21 @@
-# Daily — 12 de outubro de 2026
+# Dailies — Sprint 3
+
+Esta página consolida os registros de acompanhamento diário da equipe durante a **Sprint 3**.
+
+### Acesso Rápido por Data
+- [Daily — 12 de outubro de 2026](#daily-12-de-outubro-de-2026)
+
+---
+
+## Daily — 12 de outubro de 2026
 
 **Sprint:** 3 — Ambiente e Back-end Base  
 **Data:** 12/10/2026  
 **Formato:** Acompanhamento assíncrono por mensagens no WhatsApp.
 
-Esta página consolida os registros de acompanhamento enviados pelos integrantes da equipe, incluindo atividades planejadas, avanços, pendências, impedimentos e próximos passos.
+Esta seção consolida os registros enviados pelos integrantes da equipe referentes a 12/10/2026.
 
-## 1. Resumo do acompanhamento
+### 1. Resumo do acompanhamento
 
 Durante o dia, foram registrados avanços iniciais em diferentes frentes do Brasil Hub.
 
@@ -20,7 +29,7 @@ Na frente de **prototipação e documentação**, houve progresso inicial no gui
 
 A atividade acadêmica de **GQM** também passou a demandar atenção da equipe, junto à preparação da apresentação do documento de visão.
 
-## 2. Registros individuais
+### 2. Registros individuais
 
 ??? note "César Augusto — Front-end"
 
@@ -168,7 +177,7 @@ A atividade acadêmica de **GQM** também passou a demandar atenção da equipe,
 
     Finalizar o esquema da tabela, realizar a configuração do banco SQLite e iniciar a implementação do repositório de indicadores.
 
-## 3. Pendências e encaminhamentos identificados
+### 3. Pendências e encaminhamentos identificados
 
 Com base nos registros enviados pelos integrantes, foram identificados os seguintes pontos de atenção:
 
@@ -185,7 +194,7 @@ Com base nos registros enviados pelos integrantes, foram identificados os seguin
 
 Os encaminhamentos acima sintetizam as necessidades identificadas nos relatos. Sua execução deve ser acompanhada nas respectivas issues do GitHub.
 
-## 4. Síntese do dia
+### 4. Síntese do dia
 
 O acompanhamento de 12/10 evidenciou avanços iniciais na configuração do ambiente, no desenvolvimento do front-end e na documentação. Entretanto, algumas atividades de back-end ainda dependiam da conclusão da estrutura inicial do projeto, e parte das entregas planejadas permaneceu pendente.
 
