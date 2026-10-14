@@ -1,11 +1,56 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Dijkstra - Front-end</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Brasil Hub - Indicadores Socioeconômicos</title>
+    <link rel="icon" href="assets/brasil-map.png" type="image/png">
 </head>
 <body>
-  <h1>Ambiente Front-end Local</h1>
-  <p>Serviço de arquivos estáticos configurado com sucesso via Docker Compose!</p>
+
+    <div class="page-wrapper">
+        <header class="floating-header">
+            <div class="logo">Brasil Hub</div>
+            <nav class="links">
+                <a href="#" class="active">Página Inicial</a>
+                <a href="#">Sobre</a>
+                <a href="#mapa">Mapa</a>
+                <a href="#">Análise</a>
+                <a href="#">Downloads</a>
+            </nav>
+        </header>
+
+        <section class="status-section">
+            <div id="status-api" class="status-box" hidden>
+                <h3 id="status-titulo">Título do Status</h3>
+                <p id="status-mensagem">Mensagem descritiva do status...</p>
+                <button id="status-tentar" class="btn" hidden>Tentar novamente</button>
+            </div>
+        </section>
+        
+        <main class="main-section">
+            <div class="main-text">
+                <h1>Conheça o desenvolvimento humano do Brasil, estado por estado</h1>
+                <p>Explore indicadores de renda, educação e longevidade em um mapa interativo, com dados oficiais do IBGE.</p>
+                <div class="main-buttons">
+                    <a href="#mapa" class="btn">Explorar o Mapa</a>
+                    <a href="#" class="btn">Conheça-nos</a>
+                </div>
+            </div>
+                <div class="main-image">
+                    <img src="assets/brasil-map.png" alt="Mapa do Brasil">
+                </div>
+        </main>
+
+        <section id="mapa" class="map-section">
+            <header>Mapa do Brasil  Interativo</header>
+            <div class="map-container">
+                <p>O mapa será exibido aqui</p>
+            </div>
+        </section>
+
+    </div>
+        <script type="module" src="js/main.js"></script>
 </body>
 </html>
