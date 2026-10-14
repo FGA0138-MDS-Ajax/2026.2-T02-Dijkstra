@@ -107,7 +107,7 @@ Arquivos de configuração locais, credenciais, senhas e bancos de dados com inf
 
 ## 🚀 Configuração inicial
 
-Este guia descreve a preparação do ambiente de desenvolvimento da estrutura inicial do projeto. Execute os comandos na raiz do repositório.
+Este guia descreve a preparação do ambiente de desenvolvimento. Execute os comandos na raiz do repositório.
 
 ### 1. Pré-requisitos
 
@@ -211,15 +211,67 @@ Nesta etapa, as variáveis são propostas de configuração: ainda não há cód
 
 ### 6. Estado da execução
 
-A entrega atual contém a estrutura dos pacotes Python e os arquivos de configuração. Ainda não existe `src/api/main.py` com uma aplicação FastAPI, nem testes implementados.
+Além da estrutura dos pacotes Python e dos arquivos de configuração, a leitura e o tratamento dos CSVs estão disponíveis em `data/processamento_csv.py`. Com o ambiente preparado, consulte a seção [Leitura e tratamento de CSV — S3-06](#leitura-e-tratamento-de-csv--s3-06) para executar a rotina.
 
-Por isso, a preparação termina nas verificações do ambiente. O comando para iniciar a API e os comandos de testes deverão ser documentados quando essas implementações estiverem disponíveis. O Uvicorn está apenas comentado no `requirements.txt` e ainda não é instalado por ele.
+A execução da API e os comandos de testes deverão ser documentados nas respectivas entregas. O Uvicorn está apenas comentado no `requirements.txt` e ainda não é instalado por ele.
 
 Para encerrar o ambiente virtual:
 
 ```bash
 deactivate
 ```
+
+---
+
+## Leitura e tratamento de CSV — S3-06
+
+A rotina está em `data/processamento_csv.py`. Os arquivos de entrada
+ficam em `data/raw/`.
+
+### Padrão de entrada
+
+- Codificação UTF-8, com ou sem BOM.
+- Separador de colunas: `;`.
+- Primeira linha contendo o título do indicador.
+- Segunda linha contendo o cabeçalho.
+- Colunas obrigatórias: `Sigla`, `Código` e `Estado`.
+- Pelo menos uma coluna de ano com quatro dígitos.
+- Valores decimais com vírgula ou ponto.
+
+Os arquivos reconhecidos são:
+
+- `idhm_geral_uf.csv`
+- `idhm_educacao_uf.csv`
+- `idhm_longevidade_uf.csv`
+- `idhm_renda_uf.csv`
+
+### Tratamento
+
+A função `ler_csv` lê o arquivo e valida as colunas obrigatórias.
+A função `tratar_csv` transforma as colunas de anos em linhas,
+padroniza os campos e converte os valores numéricos.
+
+Valores ausentes, não numéricos ou fora do intervalo de 0 a 1
+são representados como `NaN`, sem substituição por zero.
+
+A saída possui as colunas:
+`codigo_uf`, `sigla`, `estado`, `ano`, `dimensao` e `valor`.
+
+Colunas obrigatórias ausentes, códigos inválidos, ausência de anos
+e campos de sigla ou estado vazios interrompem o processamento
+com uma mensagem de erro.
+
+### Execução
+
+Com o ambiente virtual ativado e as dependências instaladas,
+execute na raiz do projeto:
+
+```bash
+python -c "from data.processamento_csv import ler_csv, tratar_csv; caminho = 'data/raw/idhm_renda_uf.csv'; print(ler_csv(caminho).head()); print(tratar_csv(caminho).head())"
+```
+
+O comando apresenta uma amostra do DataFrame de leitura e do
+DataFrame tratado. A rotina não grava os dados no banco.
 
 ---
 
