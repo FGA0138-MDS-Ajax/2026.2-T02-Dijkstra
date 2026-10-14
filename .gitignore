@@ -1,10 +1,17 @@
-site/
+.env
 
-# Python cache
+.venv/
+
+.vscode/
+.idea/
+
 __pycache__/
+.pytest_cache/
 *.pyc
+*.pyo
+*.pyd
 
-# banco de dados
+*.sqlite3
 *.db
-data/
 
+site/
