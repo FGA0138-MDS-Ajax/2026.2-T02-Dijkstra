@@ -1,0 +1,1 @@
+Explicação do framework ágil adotado pela equipe (ex: Scrum/Kanban adaptado), ritos, papéis e ferramentas de gestão.
