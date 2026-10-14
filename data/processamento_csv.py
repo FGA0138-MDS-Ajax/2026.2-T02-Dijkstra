@@ -8,7 +8,7 @@ DIMENSOES = {
     "idhm_renda_uf.csv": "renda",
 }
 
-COLUNAS_OBRIGATORIAS = { "Sigla", "Código", "Estado"}
+COLUNAS_OBRIGATORIAS = { "Sigla", "Codigo", "Estado"}
 
 def ler_csv(caminho: str | Path) -> pd.DataFrame:
     """Lê o formato dos CSVs de entrada do projeto."""
