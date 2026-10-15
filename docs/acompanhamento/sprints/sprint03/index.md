@@ -84,17 +84,11 @@ As entregas devem ser vinculadas às respectivas issues e aos Pull Requests do G
 
 ### 3.2. Entregas parcialmente concluídas
 
-**S3-05 — SQLite e repositório de indicadores**
-
-A implementação foi informada como concluída por Paulo, que abriu um Pull Request para revisão.
-
-O estado final deve ser confirmado no GitHub. Enquanto não houver confirmação de que os critérios de aceitação foram atendidos e de que a integração ocorreu conforme o processo definido, não se deve considerar a entrega definitivamente aceita.
-
 **S3-06 — Leitura e tratamento de CSV com Pandas**
 
-Ágatha informou ter iniciado a implementação da rotina de leitura e tratamento dos arquivos CSV.
+Iniciou a implementação da rotina de leitura e tratamento dos arquivos CSV.
 
-Entretanto, a atividade não foi concluída durante a Sprint, permanecendo pendentes a finalização da implementação, a validação do processamento e a execução dos testes previstos na issue.
+Entretanto, a atividade não foi concluída durante a Sprint, permanecendo pendentes a finalização da implementação, a validação do processamento e a execução dos testes previstos na issue. A equipe decidiu colocar para a próxima sprint, pois é crucial para o prosseguindo do trabalho.
 
 ### 3.3. Entregas não concluídas
 
