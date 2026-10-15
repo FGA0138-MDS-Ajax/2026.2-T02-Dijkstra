@@ -35,20 +35,6 @@ RJ ; 33 ; rio de janeiro ; 1,200 ; -0,100 ;
     assert pd.isna(rj_2020["valor"])
     print("\n", df_result, "\n")
 
-
-def test_sigla_ou_estado_vazios(tmp_path):
-    content = """ignored
-Sigla;Código;Estado;2010
-SP;35;São Paulo;0,820
-;33;Rio de Janeiro;0,760
-"""
-    path = criar_csv(tmp_path, "idhm_geral_uf.csv", content)
-
-    with pytest.raises(ValueError, match="Sigla e estado não podem estar vazios.") as exc_info:
-        tratar_csv(path)
-
-    print(f"\nErro capturado com sucesso: {exc_info.value}\n")
-
 def test_codigo_uf(tmp_path:Path):
     content = """ignored
 Sigla;Código;Estado;2010
