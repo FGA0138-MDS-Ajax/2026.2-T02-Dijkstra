@@ -1,6 +1,6 @@
 # Dailies — Sprint 3
 
-Esta seção reúne os registros dos acompanhamentos diários realizados durante a Sprint 3 do Brasil Hub.
+Esta seção reúne os registros dos acompanhamentos diários realizados durante a **Sprint 3** do Brasil Hub.
 
 Os registros são organizados por data e apresentam os avanços, as atividades pendentes, os impedimentos identificados e os próximos passos informados pelos integrantes.
 

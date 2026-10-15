@@ -53,8 +53,10 @@ nav:
       - Sprint 2: acompanhamento/sprints/sprint02/sprint02.md
       - Sprint 3: 
         - Visão Geral: acompanhamento/sprints/sprint03/index.md
-        - Dailies: acompanhamento/sprints/sprint03/dailies/index.md
-      - Sprint 4: acompanhamento/sprints/sprint04/sprint04.md
+        - Dailies: acompanhamento/sprints/sprint03/dailies/dailies.md
+      - Sprint 4: 
+        - Visão Geral: acompanhamento/sprints/sprint04/index.md
+        - Dailies: acompanhamento/sprints/sprint04/dailies/dailies.md
       - Sprint 5: acompanhamento/sprints/sprint05/sprint05.md
       - Sprint 6: acompanhamento/sprints/sprint06/sprint06.md
       - Sprint 7: acompanhamento/sprints/sprint07/sprint07.md
