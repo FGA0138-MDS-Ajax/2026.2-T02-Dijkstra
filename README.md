@@ -211,7 +211,7 @@ Nesta etapa, as variáveis são propostas de configuração: ainda não há cód
 
 ### 6. Estado da execução
 
-Além da estrutura dos pacotes Python e dos arquivos de configuração, a leitura e o tratamento dos CSVs estão disponíveis em `data/processamento_csv.py`. Com o ambiente preparado, consulte a seção [Leitura e tratamento de CSV — S3-06](#leitura-e-tratamento-de-csv--s3-06) para executar a rotina.
+Além da estrutura dos pacotes Python e dos arquivos de configuração, a leitura e o tratamento dos CSVs estão disponíveis em `src/data/processamento_csv.py`. Com o ambiente preparado, consulte a seção [Leitura e tratamento de CSV — S3-06](#leitura-e-tratamento-de-csv--s3-06) para executar a rotina.
 
 A execução da API e os comandos de testes deverão ser documentados nas respectivas entregas. O Uvicorn está apenas comentado no `requirements.txt` e ainda não é instalado por ele.
 
@@ -225,7 +225,7 @@ deactivate
 
 ## Leitura e tratamento de CSV — S3-06
 
-A rotina está em `data/processamento_csv.py`. Os arquivos de entrada
+A rotina está em `src/data/processamento_csv.py`. Os arquivos de entrada
 ficam em `data/raw/`.
 
 ### Padrão de entrada
@@ -267,7 +267,7 @@ Com o ambiente virtual ativado e as dependências instaladas,
 execute na raiz do projeto:
 
 ```bash
-python -c "from data.processamento_csv import ler_csv, tratar_csv; caminho = 'data/raw/idhm_renda_uf.csv'; print(ler_csv(caminho).head()); print(tratar_csv(caminho).head())"
+python -c "from src.data.processamento_csv import ler_csv, tratar_csv; caminho = 'data/raw/idhm_renda_uf.csv'; print(ler_csv(caminho).head()); print(tratar_csv(caminho).head())"
 ```
 
 O comando apresenta uma amostra do DataFrame de leitura e do

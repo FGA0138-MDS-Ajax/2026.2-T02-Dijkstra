@@ -1,7 +1,7 @@
 from pathlib import Path
 import pytest
 import pandas as pd
-from data.processamento_csv import tratar_csv, DIMENSOES
+from src.data.processamento_csv import tratar_csv, DIMENSOES
 
 def criar_csv(tmp_path:Path, file_name:str,content:str) -> Path:
     path = tmp_path/file_name

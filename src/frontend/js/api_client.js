@@ -15,7 +15,7 @@ export class ErroApi extends Error{
 }
 
 function  montarURL(caminho, parametros={}){
-    const consulta = new URLSearchParams();
+    const consulta = new URLSearchParams(); 
     //vai deixar um pouco mais bonito a URL , sem estado==null ou =="", vai só não botar na url
     Object.entries(parametros).forEach(([chave,valor])=>{
         if(valor !== undefined && valor !== null && valor !== ""){
