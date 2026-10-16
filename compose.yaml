@@ -9,7 +9,7 @@ services:
       - ./src:/app/src
       - ./data:/app/data
     environment:
-      - DATABASE_URL=sqlite:////app/data/dijkstra.db
+      - DB_PATH=/app/data/indicadores.db
       - ENVIRONMENT=development
 
   frontend:
