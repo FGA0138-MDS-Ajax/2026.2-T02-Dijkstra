@@ -5,7 +5,7 @@ theme:
   name: material
   language: pt-BR
   features:
-    -toc.follow
+    - toc.follow
   font:
     text: Inter
     code: Roboto Mono
@@ -37,6 +37,7 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Sobre: sobre.md
+  - API e indicadores: api-indicadores.md
   - Estratégia:
     - Metodologia: estrategia/metodologia.md
     - Engenharia de Software: estrategia/engsoftware.md
