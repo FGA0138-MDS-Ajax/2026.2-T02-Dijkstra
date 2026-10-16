@@ -6,3 +6,4 @@ uvicorn #-para o vercel não precisa, mas para testar localmente é necessário-
 
 # Testes
 pytest
+httpx2 # testclient do fastAPI precisa dessa dependecia
