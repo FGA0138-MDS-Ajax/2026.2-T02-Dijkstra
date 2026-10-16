@@ -1,6 +1,6 @@
 # Sobre o Projeto
 
-## 📌 Contexto e Motivação
+## Contexto e Motivação
 
 O acesso a indicadores socioeconômicos confiáveis e atualizados é essencial para o diagnóstico social, o desenvolvimento de pesquisas acadêmicas e a tomada de decisões em políticas públicas. No entanto, esses dados costumam estar dispersos em diversas fontes governamentais e em formatos técnicos de difícil assimilação pelo público geral.
 
@@ -8,7 +8,7 @@ O **Brasil Hub** foi concebido para mitigar esse gargalo. A plataforma tem como 
 
 ---
 
-## 🎯 Proposta de Valor e Diretrizes
+## Proposta de Valor e Diretrizes
 
 - **Centralização e Transparência:** Agrupamento de indicadores oficiais em um único repositório auditável.
 - **Visualização Espacial:** Mapeamento geográfico interativo das 27 unidades federativas brasileiras via Leaflet.
@@ -17,7 +17,7 @@ O **Brasil Hub** foi concebido para mitigar esse gargalo. A plataforma tem como 
 
 ---
 
-## 👥 A Equipe Dijkstra
+## A Equipe Dijkstra
 
 O projeto é planejado e construído colaborativamente pelo **Time Dijkstra**, composto por estudantes de Engenharia de Software da Universidade de Brasília:
 
@@ -34,7 +34,7 @@ O projeto é planejado e construído colaborativamente pelo **Time Dijkstra**, c
 
 ---
 
-## 🔄 Organização e Dinâmica de Engenharia
+## Organização e Dinâmica de Engenharia
 
 Para garantir produtividade, qualidade de código e alinhamento contínuo, a equipe adota:
 
@@ -44,7 +44,7 @@ Para garantir produtividade, qualidade de código e alinhamento contínuo, a equ
 
 ---
 
-## 🏛️ Contexto Acadêmico
+## Contexto Acadêmico
 
 - **Instituição:** Universidade de Brasília (UnB) — Campus Gama (FGA)
 - **Curso:** Engenharia de Software
