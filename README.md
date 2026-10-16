@@ -105,177 +105,114 @@ Arquivos de configuração locais, credenciais, senhas e bancos de dados com inf
 
 ---
 
-## 🚀 Configuração inicial
+## 🚀 Instalação e execução local
 
-Este guia descreve a preparação do ambiente de desenvolvimento. Execute os comandos na raiz do repositório.
+Execute os comandos na raiz do repositório.
 
-### 1. Pré-requisitos
+### 1. Pré-requisitos e dependências
 
-- Git instalado;
-- Python **3.12.x**, versão adotada pelo projeto;
-- pip e suporte à criação de ambientes virtuais (`venv`) para esse Python.
+- Git instalado.
+- Python **3.12.x**, com pip e suporte a ambientes virtuais (`venv`).
+- Dependências de `requirements.txt`: **Pandas** (tratamento dos dados),
+  **FastAPI** (API), **Uvicorn** (servidor), **Pytest** (testes) e
+  **httpx2** (cliente usado nos testes HTTP).
 
-O projeto utiliza Python **3.12.x**. Instale a atualização de correção mais recente dessa série antes de preparar o ambiente virtual.
+O SQLite é acessado pelo módulo `sqlite3`, incluído no Python. O DBeaver
+é opcional para visualizar o banco; sua instalação está no guia detalhado.
 
 ### 2. Obter o projeto
 
 ```bash
 git clone https://github.com/FGA0138-MDS-Ajax/2026.2-T02-Dijkstra.git
 cd 2026.2-T02-Dijkstra
-```
-
-Se você já tem o repositório local, entre na pasta existente. Enquanto esta entrega estiver na branch S3-02, atualize as referências do remoto e selecione essa branch:
-
-```bash
 git fetch origin
-git switch S3-02-Estrutura-inicial-e-Arquivos-de-configuracao
 ```
 
-Esse passo seleciona a branch; não atualiza uma branch local já existente. Preserve suas alterações locais antes de trocar de branch. Após a integração da entrega, utilize a branch definida pela equipe para o desenvolvimento.
-
-### 3. Criar e ativar o ambiente virtual
-
-O ambiente virtual mantém as dependências deste projeto separadas das outras instalações Python.
-
-#### Linux ou macOS
+Enquanto a API estiver em desenvolvimento e publicada na S3-07, selecione:
 
 ```bash
-python3.12 --version
-python3.12 -m venv .venv
-source .venv/bin/activate
+git switch S3-07-Implementar-API-FastAPI-para-consulta-de-indicadores
 ```
 
-#### Windows — PowerShell
+Após a integração, utilize a `developer` atualizada. Preserve alterações
+locais antes de trocar de branch. Novas branches de trabalho devem partir
+sempre da **`developer` atualizada**.
 
-```powershell
-py -3.12 --version
-py -3.12 -m venv .venv
-.\.venv\Scripts\Activate.ps1
-```
-
-Se você não utiliza o launcher `py` no Windows, use `python` nos dois primeiros comandos, após confirmar que `python --version` mostra a série 3.12.
-
-Com o ambiente ativado, confirme o interpretador e o pip:
-
-```bash
-python --version
-python -m pip --version
-```
-
-O Python deve mostrar `3.12.x`, e o caminho do pip deve estar dentro de `.venv`. Reative o ambiente virtual sempre que abrir um novo terminal para trabalhar no projeto.
-
-### 4. Instalar as dependências
-
-```bash
-python -m pip install -r requirements.txt
-```
-
-As dependências declaradas atualmente são Pandas, FastAPI e Pytest. O módulo `sqlite3` faz parte da biblioteca padrão do Python e não precisa ser instalado pelo pip.
-
-Para verificar se as bibliotecas podem ser importadas e se há conflitos entre as dependências instaladas:
-
-```bash
-python -c "import pandas, fastapi, pytest, sqlite3; print('Importações OK')"
-python -m pip check
-```
-
-Essas verificações validam o ambiente; os testes da aplicação serão adicionados nas próximas implementações.
-
-### 5. Preparar as configurações locais
-
-Copie o modelo `.env.example` para `.env`.
+### 3. Criar o ambiente virtual
 
 **Linux ou macOS:**
 
 ```bash
-cp .env.example .env
+python3.12 -m venv .venv
+source .venv/bin/activate
 ```
 
 **Windows — PowerShell:**
 
 ```powershell
-Copy-Item .env.example .env
+py -3.12 -m venv .venv
+.\.venv\Scripts\Activate.ps1
 ```
 
-Faça a cópia apenas se você ainda não tiver um `.env`, para preservar suas configurações locais.
-
-| Variável atual | Finalidade |
-| --- | --- |
-| `APP_ENV` | Identifica o ambiente. O modelo usa `development` para desenvolvimento local. |
-| `DATABASE_PATH` | Define o caminho proposto para o arquivo SQLite: `data/brasil_hub.db`, relativo à raiz do projeto. SQLite não exige servidor nem credenciais. |
-| `IBGE_API_URL` | Define a URL proposta para consultas ao IBGE. O modelo atual aponta para a API de nomes; os endpoints dos indicadores socioeconômicos ainda precisam ser definidos. |
-
-O `.env.example` é versionado como modelo compartilhado. O `.env`, o ambiente `.venv/` e os bancos `*.db` são ignorados pelo Git.
-
-Nesta etapa, as variáveis são propostas de configuração: ainda não há código que carregue o `.env` ou utilize esses valores. A cópia do arquivo também não cria o banco SQLite. A integração com o IBGE deve seguir a [documentação dos serviços de dados](https://servicodados.ibge.gov.br/api/docs/).
-
-### 6. Estado da execução
-
-Além da estrutura dos pacotes Python e dos arquivos de configuração, a leitura e o tratamento dos CSVs estão disponíveis em `src/data/processamento_csv.py`. Com o ambiente preparado, consulte a seção [Leitura e tratamento de CSV — S3-06](#leitura-e-tratamento-de-csv--s3-06) para executar a rotina.
-
-A execução da API e os comandos de testes deverão ser documentados nas respectivas entregas. O Uvicorn está apenas comentado no `requirements.txt` e ainda não é instalado por ele.
-
-Para encerrar o ambiente virtual:
+Com a `.venv` ativada, instale as dependências:
 
 ```bash
-deactivate
+python -m pip install -r requirements.txt
 ```
 
----
-
-## Leitura e tratamento de CSV — S3-06
-
-A rotina está em `src/data/processamento_csv.py`. Os arquivos de entrada
-ficam em `data/raw/`.
-
-### Padrão de entrada
-
-- Codificação UTF-8, com ou sem BOM.
-- Separador de colunas: `;`.
-- Primeira linha contendo o título do indicador.
-- Segunda linha contendo o cabeçalho.
-- Colunas obrigatórias: `Sigla`, `Código` e `Estado`.
-- Pelo menos uma coluna de ano com quatro dígitos.
-- Valores decimais com vírgula ou ponto.
-
-Os arquivos reconhecidos são:
-
-- `idhm_geral_uf.csv`
-- `idhm_educacao_uf.csv`
-- `idhm_longevidade_uf.csv`
-- `idhm_renda_uf.csv`
-
-### Tratamento
-
-A função `ler_csv` lê o arquivo e valida as colunas obrigatórias.
-A função `tratar_csv` transforma as colunas de anos em linhas,
-padroniza os campos e converte os valores numéricos.
-
-Valores ausentes, não numéricos ou fora do intervalo de 0 a 1
-são representados como `NaN`, sem substituição por zero.
-
-A saída possui as colunas:
-`codigo_uf`, `sigla`, `estado`, `ano`, `dimensao` e `valor`.
-
-Colunas obrigatórias ausentes, códigos inválidos, ausência de anos
-e campos de sigla ou estado vazios interrompem o processamento
-com uma mensagem de erro.
-
-### Execução
-
-Com o ambiente virtual ativado e as dependências instaladas,
-execute na raiz do projeto:
+Reative a `.venv` em cada novo terminal. Para conferir o ambiente:
 
 ```bash
-python -c "from src.data.processamento_csv import ler_csv, tratar_csv; caminho = 'data/raw/idhm_renda_uf.csv'; print(ler_csv(caminho).head()); print(tratar_csv(caminho).head())"
+python --version
+python -m pip --version
+python -c "import pandas, fastapi, uvicorn, pytest, sqlite3; print('Importações OK')"
 ```
 
-O comando apresenta uma amostra do DataFrame de leitura e do
-DataFrame tratado. A rotina não grava os dados no banco.
+### 4. Importar os dados e iniciar a API
+
+```bash
+python -m src.data.importar_csv
+python -m uvicorn src.api.main:app --reload
+```
+
+A carga reúne os quatro CSVs de `data/raw/` na tabela `indicadores`.
+Com os arquivos atuais, são **1.728 registros**. O banco padrão é
+`data/indicadores.db`; se ele já contiver indicadores, o importador
+cancela a carga para evitar duplicações. Nesse caso, inicie apenas a API.
+
+Acesse a documentação interativa em **http://127.0.0.1:8000/docs**.
+Para encerrar o servidor, pressione `Ctrl+C`; para sair da `.venv`,
+execute `deactivate`.
+
+O banco pode ser configurado pela variável de ambiente `DB_PATH`.
+O código atual não carrega `.env` automaticamente. O banco `.db` é local
+e ignorado pelo Git; cada integrante pode recriá-lo a partir dos CSVs.
+
+Consulte o [guia da API e dos indicadores](docs/api-indicadores.md) para
+entender as dimensões, o tratamento dos CSVs, os filtros, a configuração
+do banco e a instalação e conexão pelo DBeaver.
 
 ---
 
 ## 🧪 Testes e qualidade
+
+Com a `.venv` ativada, execute:
+
+```bash
+python -m pytest -q
+```
+
+Se plugins externos do ambiente causarem erros, como importação de `lark`
+ou incompatibilidade com `launch_testing`, use:
+
+```bash
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q
+```
+
+Os testes cobrem tratamento de CSV, repositório SQLite, rotas da API e
+tratamento de falhas operacionais. Os testes HTTP utilizam dependências
+simuladas; as verificações com os dados reais estão descritas no
+[guia da API](docs/api-indicadores.md#verificacoes-e-testes).
 
 A estratégia de testes contempla diferentes níveis de verificação para aumentar a confiabilidade do sistema.
 

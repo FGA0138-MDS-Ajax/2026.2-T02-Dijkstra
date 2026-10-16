@@ -2,6 +2,7 @@ import pandas as pd
 
 from src.database.database import get_connection
 
+
 COLUNAS = [
     "nome_indicador",
     "unidade_territorial",
@@ -22,6 +23,7 @@ class IndicadorRepository:
         unidade_territorial=None,
         nome_indicador=None,
         periodo_referencia=None,
+        dimensao=None,
     ) -> list[dict]:
         query = "SELECT * FROM indicadores WHERE 1=1"
         params = []
@@ -34,7 +36,9 @@ class IndicadorRepository:
         if periodo_referencia:
             query += " AND periodo_referencia = ?"
             params.append(periodo_referencia)
-
+        if dimensao is not None:
+            query += " AND dimensao = ?"
+            params.append(dimensao)
         conn = get_connection(self.db_path)
         try:
             return [dict(row) for row in conn.execute(query, params).fetchall()]
