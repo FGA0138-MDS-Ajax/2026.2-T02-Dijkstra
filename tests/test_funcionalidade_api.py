@@ -1,7 +1,11 @@
+import sqlite3
+
 from fastapi.testclient import TestClient
 import pytest
 from src.api.main import app, get_indicador_service, consultar_indicadores
 from src.api.schemas import Dimensao
+from src.database.indicador_repository import IndicadorRepository
+from src.services.indicador_service import IndicadorService
 
 client = TestClient(app)
 
@@ -22,7 +26,13 @@ class MockIndicadorService:
             return test_json
         return []
 
-app.dependency_overrides[get_indicador_service] = lambda : MockIndicadorService()
+@pytest.fixture(autouse=True)
+def servico_simulado(monkeypatch):
+    monkeypatch.setitem(
+        app.dependency_overrides,
+        get_indicador_service,
+        lambda: MockIndicadorService(),
+    )
 
 """Teste com o main.consultar_indicadores()"""
 def test_estado_com_dados():
@@ -114,3 +124,22 @@ def test_sucesso_busca_indicadores_via_http():
 
     assert response.status_code == 200
     assert response.json() == test_json
+
+
+def test_falha_operacional_do_banco_retorna_503(monkeypatch):
+    def falhar(self, **filtros):
+        raise sqlite3.OperationalError("unable to open database file: /caminho/interno.db")
+
+    monkeypatch.setattr(IndicadorRepository, "listar", falhar)
+    monkeypatch.setitem(
+        app.dependency_overrides,
+        get_indicador_service,
+        lambda: IndicadorService(IndicadorRepository()),
+    )
+
+    response = client.get("/api/indicadores?estado=AC&dimensao=educacao&periodo=1991")
+
+    assert response.status_code == 503
+    assert response.json() == {
+        "detail": "Não foi possível consultar os indicadores no momento."
+    }

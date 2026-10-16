@@ -114,7 +114,8 @@ Execute os comandos na raiz do repositório.
 - Git instalado.
 - Python **3.12.x**, com pip e suporte a ambientes virtuais (`venv`).
 - Dependências de `requirements.txt`: **Pandas** (tratamento dos dados),
-  **FastAPI** (API), **Uvicorn** (servidor) e **Pytest** (testes).
+  **FastAPI** (API), **Uvicorn** (servidor), **Pytest** (testes) e
+  **httpx2** (cliente usado nos testes HTTP).
 
 O SQLite é acessado pelo módulo `sqlite3`, incluído no Python. O DBeaver
 é opcional para visualizar o banco; sua instalação está no guia detalhado.
@@ -208,8 +209,9 @@ ou incompatibilidade com `launch_testing`, use:
 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q
 ```
 
-Os testes atualmente presentes cobrem o tratamento de CSV e o repositório
-SQLite. As verificações das rotas estão descritas no
+Os testes cobrem tratamento de CSV, repositório SQLite, rotas da API e
+tratamento de falhas operacionais. Os testes HTTP utilizam dependências
+simuladas; as verificações com os dados reais estão descritas no
 [guia da API](docs/api-indicadores.md#verificacoes-e-testes).
 
 A estratégia de testes contempla diferentes níveis de verificação para aumentar a confiabilidade do sistema.

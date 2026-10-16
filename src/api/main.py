@@ -1,9 +1,12 @@
 from fastapi import FastAPI, Query
-from fastapi import Depends
+from fastapi import Depends, HTTPException
 
 from src.api.schemas import Dimensao, IndicadorResponse
 from src.database.indicador_repository import IndicadorRepository
-from src.services.indicador_service import IndicadorService
+from src.services.indicador_service import (
+    ConsultaIndicadoresIndisponivel,
+    IndicadorService,
+)
 from contextlib import asynccontextmanager
 
 from src.database.database import init_db
@@ -33,8 +36,11 @@ def get_indicador_service() -> IndicadorService:
     service = IndicadorService(repository)
     return service
 
-@app.get("/api/indicadores"
-         , response_model=list[IndicadorResponse])
+@app.get(
+    "/api/indicadores",
+    response_model=list[IndicadorResponse],
+    responses={503: {"description": "Consulta de indicadores indisponível"}},
+)
 
 def consultar_indicadores(
     estado: str | None = Query(
@@ -53,8 +59,14 @@ def consultar_indicadores(
     ),
     service: IndicadorService = Depends(get_indicador_service)
 ):
-    return service.consultar(
-        estado=estado,
-        dimensao=dimensao.value if dimensao is not None else None,
-        periodo=periodo
-    )
+    try:
+        return service.consultar(
+            estado=estado,
+            dimensao=dimensao.value if dimensao is not None else None,
+            periodo=periodo,
+        )
+    except ConsultaIndicadoresIndisponivel as erro:
+        raise HTTPException(
+            status_code=503,
+            detail="Não foi possível consultar os indicadores no momento.",
+        ) from erro

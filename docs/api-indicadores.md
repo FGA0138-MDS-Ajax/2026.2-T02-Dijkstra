@@ -179,9 +179,20 @@ para o texto usado em `periodo_referencia`. A rota valida a resposta com
 `IndicadorResponse`, incluindo o enum da dimensão.
 
 Consultas sem correspondência retornam **200 com `[]`**. Parâmetros
-inválidos, como `estado=XX`, retornam **422**. Falhas inesperadas de acesso
-ao banco ainda não têm tratamento específico e não equivalem a uma
-consulta sem resultados.
+inválidos, como `estado=XX`, retornam **422**.
+
+Se a consulta falhar com `sqlite3.OperationalError`, por exemplo por
+bloqueio ou impossibilidade de abrir o banco, o serviço registra o erro
+completo no log e lança `ConsultaIndicadoresIndisponivel`. A rota responde
+com **503** e este JSON, sem expor caminhos ou detalhes internos:
+
+```json
+{"detail": "Não foi possível consultar os indicadores no momento."}
+```
+
+Isso sinaliza uma consulta indisponível, não ausência de dados. Não há
+tentativa automática de recuperação ou repetição. Outros tipos de erro
+continuam sendo propagados para diagnóstico.
 
 ## Visualizar pelo DBeaver
 
@@ -265,10 +276,13 @@ python -m pytest -q
 Remove-Item Env:PYTEST_DISABLE_PLUGIN_AUTOLOAD
 ```
 
-A suíte atual tem dez testes: seis de tratamento de CSV e quatro de
-repositório. Os testes HTTP usados durante o desenvolvimento não estão
-presentes atualmente; passar essa suíte não comprova todos os cenários
-da API e do importador. Os testes do repositório usam bancos temporários.
+A suíte cobre tratamento de CSV, repositório SQLite, rotas e validações
+da API, além da tradução e do registro de falhas operacionais no serviço.
+Os testes HTTP usam um serviço simulado para os casos de sucesso e um
+repositório com falha simulada para verificar a resposta 503. Os testes
+do repositório usam bancos temporários. Nenhum deles precisa bloquear
+ou danificar o banco de desenvolvimento. A suíte não substitui a
+validação completa da importação e das consultas com os CSVs reais.
 
 Para conferir a integração, importe os dados, inicie a API e teste no
 `/docs`:
