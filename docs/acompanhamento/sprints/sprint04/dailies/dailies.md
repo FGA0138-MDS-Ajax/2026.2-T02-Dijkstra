@@ -10,5 +10,6 @@ Os registros são organizados por data e apresentam os avanços, as atividades p
 |---|---|
 | 14/10/2026 | [Acessar daily de 14 de outubro](14-10-26.md) |
 | 15/10/2026 | [Acessar daily de 15 de outubro](15-10-26.md) |
+| 16/10/2026 | [Acessar daily de 16 de outubro](16-10-26.md) |
 
 > Os registros refletem as informações disponibilizadas pela equipe. Dias sem acompanhamento formal não são apresentados como se uma daily tivesse ocorrido.
