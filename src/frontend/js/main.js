@@ -1,3 +1,4 @@
+import { inicializarMapa } from "./map.js";
 import { API_BASE_URL, ErroApi, verificarSaude} from "./api_client.js";
 
 const esconder_mensagem_MS = 5000;
@@ -5,7 +6,8 @@ const esconder_mensagem_MS = 5000;
 const caixaStatus = document.getElementById("status-api");
 const tituloStatus = document.getElementById("status-titulo");
 const mensagemStatus = document.getElementById("status-mensagem");
-const botaoTentar= document.getElementById("status-tentar");
+const botaoTentar = document.getElementById("status-tentar");
+const mapa = inicializarMapa("mapa-brasil")
 
 const Estado = Object.freeze({
     carregando : "carregando",
@@ -29,6 +31,7 @@ function mostrarStatus(tipoestado,titulo,mensagem,{permitirNovaTentativa=false}=
         timerSucesso = setTimeout(()=>{caixaStatus.hidden=true;},esconder_mensagem_MS);
     }
 }
+
 
 //função que passsa por todos os tipos de erro decididos no api client e muda a mensagem especifica
 //pra mostrar na pagina
