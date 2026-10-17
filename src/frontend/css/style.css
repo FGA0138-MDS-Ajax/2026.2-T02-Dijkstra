@@ -233,15 +233,17 @@ body{
 
 .map-container {
     display: grid;
-    place-items: center;
+    width: 100%;
+    height: 70vh;
     min-height: 25rem;
-    padding: var(--space-2);
+    padding: 0;
     background: var(--color-surface);
-    border: var(--border-width) dashed var(--color-border);
     border-radius: var(--radius);
+    position: relative; 
+    overflow: hidden;
     color: var(--color-text-muted);
-    text-align: center;
 }
+
 
 #status-api {
     --status-bg: var(--color-info-bg, #e0f2fe);
@@ -295,4 +297,52 @@ body{
     background: transparent;
     color: inherit;
     font-weight: 600;
+}
+
+.info-legenda {
+    background: var(--color-surface);
+    color: var(--color-text);
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    border-radius: var(--radius);
+    box-shadow: var(--box-shadow);
+    border: var(--border-width) solid var(--color-border);
+    line-height: 1.5;
+}
+
+.info-legenda h4 {
+    margin: 0 0 8px 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-primary);
+}
+
+.legenda-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.cor-amostra {
+    width: 18px;
+    height: 18px;
+    display: inline-block;
+    border-radius: 3px;
+}
+
+.popup-conteiner{
+    font-family: var(--font-body);
+    min-width: 180px;
+}
+
+.popup-titulo {
+    margin: 0 0 4px 0;
+    font-size: 1rem;
+    color: var(--color-primary);
+}
+.popup-item {
+    margin: 4px 0;
+    font-size: 0.9rem;;
+    color: var(--color-text);
 }
