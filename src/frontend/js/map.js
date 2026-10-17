@@ -59,7 +59,7 @@ export function inicializarMapa(idContainer) {
             color: '#000000',    
             weight: 2,            
             fillColor: corPorIdh(valor),    
-            fillOpacity: 0.2  
+            fillOpacity: 0.6  
         };
     }
 
