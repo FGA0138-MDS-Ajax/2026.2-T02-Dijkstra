@@ -1,5 +1,7 @@
 from fastapi import FastAPI, Query
 from fastapi import Depends, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+
 
 from src.api.schemas import Dimensao, IndicadorResponse
 from src.database.indicador_repository import IndicadorRepository
@@ -20,6 +22,14 @@ app = FastAPI(
     title="Brasil Hub API",
     version="0.1.0",
     lifespan=lifespan
+)
+# mexer depois @all
+# permite diferentes dominios chamarem a API!!
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["GET"],
+    allow_headers=["*"],
 )
 
 

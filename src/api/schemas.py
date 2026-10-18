@@ -5,7 +5,7 @@ class Dimensao(str, Enum):
     idhm_geral = "idhm_geral"
     educacao = "educacao"
     longevidade = "longevidade"
-    renda = "renda",
+    renda = "renda"
 
 class IndicadorResponse(BaseModel):
     id: int
