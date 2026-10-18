@@ -3,6 +3,7 @@ import { buscarIndicadores } from "./api_client.js";
 const COR_SEM_DADOS = '#011f83';
 const DIMENSAO_COR = "idhm_geral";
 
+//tabela de cores a ser usada
 const FAIXAS_IDHM = [
     { min: 0.800, cor: "#95150e", rotulo: "Muito alto (≥ 0,800)" },
     { min: 0.700, cor: "#7e570e", rotulo: "Alto (0,700 - 0,799)" },
@@ -22,6 +23,8 @@ function obterValorIdhParaAno(listaIndicadores,  ano){
         return null;
     }
    const ind = listaIndicadores.find(i=>
+    // esse dimensão cor é só pra falar que a dimensão observada é idhm_geral, e não outra dimensão que não está no foco.
+    // a galera do filtros vai poder filtrar isso aqui.
     i.periodo_referencia === ano && i.dimensao === DIMENSAO_COR
    );
    return ind ? ind.valor : null;
@@ -32,7 +35,7 @@ function formatarValor(valor) {
 }
 
 
-
+//Inicializador do mapa
 export function inicializarMapa(idContainer) {
     const mapa=L.map(idContainer).setView([-14,-54],4);
     mapa.setMaxBounds([[-35,-75],[8,-34]]);
@@ -43,16 +46,18 @@ export function inicializarMapa(idContainer) {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(mapa);
 
+
     let indicadoresporUf = {};
     let anosDisponiveis = [];
     let anoSelecionado = null;
     let camadaEstados = null;
     
-    //funcções para separar as cores por estado
+    // função para retonar indicadores do estado da mesma uf do que foi passado
     function indicadoresDoEstado(feature){
         return indicadoresporUf[feature.properties.sigla] || [];
     }
 
+    //escolhe a cor e preenche os estados com base no ano selecionado e idhm_geral
     function estiloEstado(feature){
         const valor = obterValorIdhParaAno(indicadoresDoEstado(feature), anoSelecionado);
         return {
@@ -63,6 +68,7 @@ export function inicializarMapa(idContainer) {
         };
     }
 
+    //monta popup ao clicar, procura o ano especifico.E vai mostrando as informações, 1° nome e ano. Ai depois passa por cada dimensão do ano e imprime o valor
     function montarPopup(feature) {
         const nome = feature.properties.name;
         const doAno = indicadoresDoEstado(feature).filter(
@@ -83,6 +89,8 @@ export function inicializarMapa(idContainer) {
         return html;
     }
 
+    //fecha o popup, troca o ano selecionado e chama o troca style com a nova informação de ano (essa variavel está acima, logo não precisa
+    //passar por nenhuma função dentro desse function)
     function aplicarAno(ano) {
         anoSelecionado = ano;
         mapa.closePopup();
@@ -116,7 +124,8 @@ export function inicializarMapa(idContainer) {
     ])
     .then(([dados, geojson]) => {
         const indicadores = Array.isArray(dados) ? dados : [];
- 
+        // array dos dados, para cada dado eu pego a uf e crio um vetor dela no meu vetor de dados pra cada uf.
+        // ai toda vez que aparece um dado de uma uf conhecida eu coloco nesse vetor.
         indicadores.forEach(item => {
             const uf = item.unidade_territorial;
             if (!uf) return;
@@ -130,6 +139,7 @@ export function inicializarMapa(idContainer) {
         anosDisponiveis = [...new Set(indicadores.map(i => String(i.periodo_referencia)))].sort();
         anoSelecionado = anosDisponiveis[anosDisponiveis.length - 1] || null;
  
+        //declara o desenho dos estados com base nas informações, tmb binda no final o montar popup que mostra informações ao clicar
         camadaEstados = L.geoJSON(geojson, {
             style: estiloEstado,
             onEachFeature: function (feature, layer) {
