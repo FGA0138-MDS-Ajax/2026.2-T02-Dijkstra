@@ -1,7 +1,7 @@
 import { inicializarMapa } from "./map.js";
 import { API_BASE_URL, ErroApi, verificarSaude} from "./api_client.js";
 
-const esconder_mensagem_MS = 5000;
+const esconder_mensagem_MS = 3000;
 
 const caixaStatus = document.getElementById("status-api");
 const tituloStatus = document.getElementById("status-titulo");
@@ -21,6 +21,7 @@ function mostrarStatus(tipoestado,titulo,mensagem,{permitirNovaTentativa=false}=
     // só chamo quando tem erro
     clearTimeout(timerSucesso);
     caixaStatus.hidden=false;
+    caixaStatus.style.display="";
     caixaStatus.dataset.estado=tipoestado;
     tituloStatus.textContent=titulo;
     mensagemStatus.textContent=mensagem;
@@ -28,7 +29,10 @@ function mostrarStatus(tipoestado,titulo,mensagem,{permitirNovaTentativa=false}=
 
     //verifica se o estado mudou, ai faz a caixa status esconder com base no tempo esconder_mensagem_MS
     if(tipoestado === Estado.sucesso && esconder_mensagem_MS > 0){
-        timerSucesso = setTimeout(()=>{caixaStatus.hidden=true;},esconder_mensagem_MS);
+        timerSucesso = setTimeout(()=>{
+            caixaStatus.hidden=true;
+            caixaStatus.style.display="none";
+        },esconder_mensagem_MS);
     }
 }
 
