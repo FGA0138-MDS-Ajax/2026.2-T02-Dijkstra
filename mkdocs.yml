@@ -58,3 +58,4 @@ nav:
     - Pull Requests: padroes/pullrequest.md
   - Ambiente e Docker:
     - Ambiente: ambiente.md
+    - Integração Contínua (CI): ci.md 
