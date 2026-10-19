@@ -1,104 +1,15 @@
-:root {
-    /*CSS padrão (sem ser o dark theme e o high contrast*/
-    --font-body: "Atkinson Hyperlegible", "Inter", system-ui;
-    --font-heading: var(--font-body);
-    --font-scale:1;
-    --font-size-1: 1rem;
-    --font-size-2: 1.25rem;
-    --font-size-3: 2.25rem;
-
-    --space-1: 0.5rem;
-    --space-2: 1rem;
-    --space-3: 1.5rem;
-    --space-4: 2.5rem;
-    --space-5: 6rem;
-
-    --border-width: 1px;
-
-    /* Tema Claro (Base) */
-    --color-bg: #f4f7f8;
-    --color-surface: #ffffff;
-    --color-text: #14232b;
-    --color-text-muted: #455660;
-    --color-border: #b9c6cc;
-
-    --color-primary: #0b5d4f;
-    --color-primary-hover: #084539;
-    --color-on-primary: #ffffff;
-
-    --color-header-bg: #ffffff;
-    --color-header-text: rgb(33,92,50);
-
-    --color-focus: #b45f00;
-    --color-button: rgb(1,50,254);
-    --color-button-hover: rgb(11, 137, 254);
-
-    --box-shadow: 0 0.25rem 1.5rem rgba(0, 0, 0, 0.04);
-    --header-shadow: 0 0.25rem 1.5rem rgba(21, 53, 8, 0.871);
-
-    /*esqueci de botar*/
-    --radius: 0.5rem;
-}
-
-html[data-theme="dark"] {
-    --color-bg: #0b1418;
-    --color-surface: #16252d;
-    --color-text: #e8eef1;
-    --color-text-muted: #adbdc5;
-    --color-border: #3b505b;
- 
-    --color-primary: #62c7ac;
-    --color-primary-hover: #86d8c2;
-    --color-on-primary: #08201a;
- 
-    --color-header-bg: #1f333d;
-    --color-header-text: #62c7ac;
-    --color-header-border: #4a6572;
-    --header-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.55);
- 
-    --color-focus: #ffb454;
-    --color-button: #62c7ac;
-    --color-button-hover: #86d8c2;
-    --color-on-button: #08201a;
-}
- 
-html[data-theme="high-contrast"] {
-    --color-bg: #000000;
-    --color-surface: #000000;
-    --color-text: #ffffff;
-    --color-text-muted: #ffffff;
-    --color-border: #ffffff;
-    --border-width: 2px;
- 
-    --color-primary: #ffd400;
-    --color-primary-hover: #ffffff;
-    --color-on-primary: #000000;
- 
-    --color-header-bg: #000000;
-    --color-header-text: #ffffff;
-    --color-header-border: #ffffff;
-    --header-shadow: none;
- 
-    --color-focus: #ffd400;
-    --color-button: #ffd400;
-    --color-button-hover: #ffffff;
-    --color-on-button: #000000;
-}
-
-html[data-font-scale="large"] { --font-scale: 1.25; }
-html[data-font-scale="xlarge"] { --font-scale: 1.5; }
- 
+@import url('./variables.css');
 
 *, *::before, *::after {
     box-sizing: border-box;
 }
 
-html{
+html {
     font-size: calc(100% * var(--font-scale));
     scroll-behavior: smooth;
 }
 
-body{
+body {
     margin: 0;
     min-height: 100vh;
     background-color: var(--color-bg);
@@ -109,14 +20,14 @@ body{
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.page-wrapper{
+.page-wrapper {
     max-width: 75rem;
     margin: 0 auto;
 }
 
-.floating-header{
-    position: sticky; /*ficar grudado na tela*/
-    top:var(--space-1);
+.floating-header {
+    position: sticky;
+    top: var(--space-1);
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -131,21 +42,21 @@ body{
     transition: background-color 0.3s ease;
 }
 
-.logo{
+.logo {
     font-size: 1.6rem;
     font-weight: 800;
     color: var(--color-header-text);
 }
 
-.links{
-    display:flex;
+.links {
+    display: flex;
     flex-wrap: wrap;
     gap: var(--space-3);
     align-items: center;
 }
 
 .links a {
-    color:var(--color-text);
+    color: var(--color-text);
     font-weight: 500;
     font-size: 0.95rem;
     padding-block: 0.25rem;
@@ -160,7 +71,7 @@ body{
 
 .main-section {
     display: grid;
-    grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     align-items: center;
     gap: var(--space-4);
     padding: var(--space-4) 0;
@@ -183,7 +94,7 @@ body{
 
 .main-buttons {
     display: flex;
-    font-size:var(--font-size-2);
+    font-size: var(--font-size-2);
     flex-wrap: wrap;
     gap: var(--space-4);
     margin-bottom: var(--space-4);
@@ -204,7 +115,7 @@ body{
 
 .btn:hover {
     background: var(--color-button-hover);
-    border-color: var(--color-button-hover); /*tirar a linhas escrota*/
+    border-color: var(--color-button-hover);
 }
 
 .btn-outline {
@@ -220,7 +131,6 @@ body{
     height: auto;
     object-fit: contain;
 }
-
 
 :focus-visible {
     outline: 3px solid var(--color-focus);
@@ -239,11 +149,10 @@ body{
     padding: 0;
     background: var(--color-surface);
     border-radius: var(--radius);
-    position: relative; 
+    position: relative;
     overflow: hidden;
     color: var(--color-text-muted);
 }
-
 
 #status-api {
     --status-bg: var(--color-info-bg, #e0f2fe);
@@ -263,7 +172,6 @@ body{
     font-size: 0.95rem;
     margin: 1rem 0;
 }
-
 
 #status-api[data-estado="sucesso"] {
     --status-bg: var(--color-success-bg, #dcfce7);
@@ -286,7 +194,6 @@ body{
     margin: 0;
 }
 
-/*vai mudar o botao tmb, pq a preferencia do id é maior que classe*/
 #status-tentar {
     margin-left: auto;
     cursor: pointer;
@@ -331,18 +238,60 @@ body{
     border-radius: 3px;
 }
 
-.popup-conteiner{
-    font-family: var(--font-body);
-    min-width: 180px;
+/* Estilização Moderna para o Popup do Mapa */
+.leaflet-popup-content-wrapper {
+    background: var(--color-surface, #ffffff);
+    color: var(--color-text, #14232b);
+    border-radius: 12px;
+    padding: 0;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    border: 1px solid var(--color-border, #b9c6cc);
 }
 
-.popup-titulo {
-    margin: 0 0 4px 0;
-    font-size: 1rem;
-    color: var(--color-primary);
+.leaflet-popup-content {
+    margin: 0;
+    line-height: 1.4;
+    font-family: var(--font-body);
 }
-.popup-item {
-    margin: 4px 0;
-    font-size: 0.9rem;;
+
+.popup-card {
+    padding: 14px 16px;
+    min-width: 210px;
+}
+
+.popup-header h4 {
+    margin: 0 0 10px 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    border-bottom: 2px solid var(--color-border, #eee);
+    padding-bottom: 6px;
+}
+
+.popup-body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.popup-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+}
+
+.popup-val {
+    font-weight: 600;
     color: var(--color-text);
+}
+
+.popup-vazio {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    font-style: italic;
+}
+
+.leaflet-popup-tip {
+    background: var(--color-surface, #ffffff);
 }
