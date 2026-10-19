@@ -152,7 +152,9 @@ body {
     position: relative;
     overflow: hidden;
     color: var(--color-text-muted);
+    margin-top: 2.5rem;
 }
+
 
 #status-api {
     --status-bg: var(--color-info-bg, #e0f2fe);
@@ -172,6 +174,8 @@ body {
     font-size: 0.95rem;
     margin: 1rem 0;
 }
+
+#status-api[hidden], #status-tentar[hidden] { display: none; }
 
 #status-api[data-estado="sucesso"] {
     --status-bg: var(--color-success-bg, #dcfce7);
@@ -294,4 +298,47 @@ body {
 
 .leaflet-popup-tip {
     background: var(--color-surface, #ffffff);
+}
+
+
+
+/*filterss*/
+
+.filtros {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: var(--space-2);
+    margin-top: var(--space-2);
+}
+.filtros__campo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex: 1 1 14rem;
+}
+.filtros__campo label { font-weight: 700; }
+.filtros select {
+    padding: 0.6rem 0.75rem;
+    font: inherit;
+    color: var(--color-text);
+    background: var(--color-surface);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius);
+}
+.filtros__limpar {
+    padding: 0.6rem 1.2rem;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    color: var(--color-button);
+    background: transparent;
+    border: var(--border-width) solid var(--color-button);
+    border-radius: var(--radius);
+}
+.filtros__limpar:hover { background: var(--color-surface); }
+.filtros__resumo { color: var(--color-text-muted); margin: var(--space-2) 0 0; }
+
+@media (max-width: 40rem) {
+    .filtros__limpar { width: 100%; }
 }
