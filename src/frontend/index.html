@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-     crossorigin=""/>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin=""/>
     <link rel="stylesheet" href="css/style.css">
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-     crossorigin=""></script>
+    <link rel="stylesheet" href="css/variables.css">
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" 
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
     <title>Brasil Hub - Indicadores Socioeconômicos</title>
     <link rel="icon" href="assets/brasil-map.png" type="image/png">
 </head>
@@ -19,11 +20,10 @@
         <header class="floating-header">
             <div class="logo">Brasil Hub</div>
             <nav class="links">
-                <a href="#" class="active">Página Inicial</a>
-                <a href="#">Sobre</a>
-                <a href="#mapa">Mapa</a>
-                <a href="#">Análise</a>
-                <a href="#">Downloads</a>
+                <a href="./index.html" class="active">Página Inicial</a>
+                <a href="./sobre.html">Sobre</a>
+                <a href="./mapa.html">Mapa</a>
+                <a class="btn" href="./area-adm.html">Área do administrador</a>
             </nav>
         </header>
 
@@ -41,7 +41,7 @@
                 <p>Explore indicadores de renda, educação e longevidade em um mapa interativo, com dados oficiais do IBGE.</p>
                 <div class="main-buttons">
                     <a href="#mapa" class="btn">Explorar o Mapa</a>
-                    <a href="#" class="btn">Conheça-nos</a>
+                    <a href="./sobre.html" class="btn">Conheça-nos</a>
                 </div>
             </div>
                 <div class="main-image">
@@ -50,9 +50,13 @@
         </main>
 
         <section id="mapa" class="map-section">
-            <header>Mapa do Brasil  Interativo</header>
+            <div class="map-call">
+                <h2>Mapa do Brasil  Interativo</h2>
+                <button class="btn" type="button" src="./mapa.html">Compare os dados</button>
+            </div>
             <div class="map-container" id="mapa-brasil">
             </div>
+            
         </section>
 
     </div>
