@@ -1,5 +1,5 @@
 import { inicializarMapa } from "./map.js";
-import { inicializarFiltros } from "./filters.js";
+import { inicializarFiltros, obterFiltros } from "./filters.js";
 import { buscarIndicadores, API_BASE_URL, ErroApi, verificarSaude } from "./api_client.js";
 
 const esconder_mensagem_MS = 5000;
@@ -8,7 +8,7 @@ const caixaStatus = document.getElementById("status-api");
 const tituloStatus = document.getElementById("status-titulo");
 const mensagemStatus = document.getElementById("status-mensagem");
 const botaoTentar = document.getElementById("status-tentar");
-const mapa = inicializarMapa("mapa-brasil")
+const {mapa, atualizarIndicadores} = inicializarMapa("mapa-brasil")
 
 const Estado = Object.freeze({
     carregando : "carregando",
@@ -72,6 +72,7 @@ async function verificarConexaoApi(){
 
 function TentarNovamente(){
     verificarConexaoApi();
+    aoMudarFiltros(obterFiltros());
 }
 
 function iniciar(){
@@ -106,9 +107,15 @@ try {
     if (idRequisicao !== ultimaRequisicao) return; 
     console.log("[Brasil Hub] indicadores recebidos:", dados);
 
+    if(!dados || dados.length === 0){
+        mostrarStatus(Estado.erro, "Sem resultados", "Nenhum indicador encontrado para os filtros selecionados.");
+        atualizarIndicadores([], filtros.dimensao);
+    } else {
+        atualizarIndicadores(dados, filtros.dimensao);
+    }
 } catch (erro) {
     if (idRequisicao !== ultimaRequisicao) return;
-    mostrarStatus(Estado.erro, "Não foi possível aplicar os filtros", descreverErro(erro));
+    mostrarStatus(Estado.erro, "Não foi possível aplicar os filtros", descreverErro(erro), {permitirNovaTentativa: true});
 }
 }
 

@@ -18,14 +18,14 @@ function corPorIdh(valor) {
     return faixa ? faixa.cor : COR_SEM_DADOS;
 }
 
-function obterValorIdhParaAno(listaIndicadores,  ano){
+function obterValorIdhParaAno(listaIndicadores,  ano, dimensao){
     if(!listaIndicadores){
         return null;
     }
    const ind = listaIndicadores.find(i=>
     // esse dimensão cor é só pra falar que a dimensão observada é idhm_geral, e não outra dimensão que não está no foco.
     // a galera do filtros vai poder filtrar isso aqui.
-    i.periodo_referencia === ano && i.dimensao === DIMENSAO_COR
+    i.periodo_referencia === ano && i.dimensao === dimensao
    );
    return ind ? ind.valor : null;
 }
@@ -51,15 +51,43 @@ export function inicializarMapa(idContainer) {
     let anosDisponiveis = [];
     let anoSelecionado = null;
     let camadaEstados = null;
+    let dimensaoAtiva = DIMENSAO_COR;
     
     // função para retonar indicadores do estado da mesma uf do que foi passado
     function indicadoresDoEstado(feature){
         return indicadoresporUf[feature.properties.sigla] || [];
     }
 
+    function atualizarIndicadores(lista, dimensao){
+        indicadoresporUf = {};
+        
+        
+
+        const indicadores = Array.isArray(lista) ? lista : [];
+        // array dos dados, para cada dado eu pego a uf e crio um vetor dela no meu vetor de dados pra cada uf.
+        // ai toda vez que aparece um dado de uma uf conhecida eu coloco nesse vetor.
+        indicadores.forEach(item => {
+            const uf = item.unidade_territorial;
+            if (!uf) return;
+            if (!indicadoresporUf[uf]) {
+                indicadoresporUf[uf] = [];
+            }
+            indicadoresporUf[uf].push(item);
+        });
+
+        dimensaoAtiva = dimensao || DIMENSAO_COR;
+
+        anosDisponiveis = [...new Set(indicadores.map(i => String(i.periodo_referencia)))].sort();
+        anoSelecionado = anosDisponiveis[anosDisponiveis.length - 1] || null;
+ 
+        if(camadaEstados){
+            camadaEstados.setStyle(estiloEstado);
+        }
+
+    }
     //escolhe a cor e preenche os estados com base no ano selecionado e idhm_geral
     function estiloEstado(feature){
-        const valor = obterValorIdhParaAno(indicadoresDoEstado(feature), anoSelecionado);
+        const valor = obterValorIdhParaAno(indicadoresDoEstado(feature), anoSelecionado, dimensaoAtiva);
         return {
             color: '#000000',    
             weight: 2,            
@@ -123,22 +151,8 @@ export function inicializarMapa(idContainer) {
     fetch('assets/geojson/brazil-states.geojson').then(response => response.json()),
     ])
     .then(([dados, geojson]) => {
-        const indicadores = Array.isArray(dados) ? dados : [];
-        // array dos dados, para cada dado eu pego a uf e crio um vetor dela no meu vetor de dados pra cada uf.
-        // ai toda vez que aparece um dado de uma uf conhecida eu coloco nesse vetor.
-        indicadores.forEach(item => {
-            const uf = item.unidade_territorial;
-            if (!uf) return;
-            if (!indicadoresporUf[uf]) {
-                indicadoresporUf[uf] = [];
-            }
-            indicadoresporUf[uf].push(item);
-        });
- 
-        //adiciona os anos e pega o mais recente, que vai ser o inicial
-        anosDisponiveis = [...new Set(indicadores.map(i => String(i.periodo_referencia)))].sort();
-        anoSelecionado = anosDisponiveis[anosDisponiveis.length - 1] || null;
- 
+        atualizarIndicadores(dados);
+        
         //declara o desenho dos estados com base nas informações, tmb binda no final o montar popup que mostra informações ao clicar
         camadaEstados = L.geoJSON(geojson, {
             style: estiloEstado,
@@ -173,5 +187,5 @@ export function inicializarMapa(idContainer) {
     };
     legenda.addTo(mapa);
  
-    return mapa;
+    return {mapa, atualizarIndicadores};
 }
