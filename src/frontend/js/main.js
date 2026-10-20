@@ -1,5 +1,6 @@
 import { inicializarMapa } from "./map.js";
-import { API_BASE_URL, ErroApi, verificarSaude} from "./api_client.js";
+import { inicializarFiltros } from "./filters.js";
+import { buscarIndicadores, API_BASE_URL, ErroApi, verificarSaude } from "./api_client.js";
 
 const esconder_mensagem_MS = 5000;
 
@@ -76,7 +77,39 @@ function TentarNovamente(){
 function iniciar(){
     //aperta sozinho o tentar novamente pra garantir que ta funcionando
     botaoTentar.addEventListener("click", TentarNovamente);
+    inicializarFiltros(aoMudarFiltros);
     verificarConexaoApi();
+}
+
+//filters ligação
+
+const resumoFiltros = document.getElementById("filtros-resumo");
+let ultimaRequisicao = 0;
+
+function atualizarResumo(filtros) {
+    if (!resumoFiltros) return;
+    const partes = [];
+    if (filtros.estado) partes.push("estado: " + filtros.estado);
+    if (filtros.dimensao) partes.push("dimensão: " + filtros.dimensao);
+    resumoFiltros.textContent = partes.length
+    ? "Filtrando por " + partes.join(", ") + "."
+    : "Escolha um estado e/ou uma dimensão para filtrar.";
+}
+
+async function aoMudarFiltros(filtros) {
+    const idRequisicao = ++ultimaRequisicao;
+    atualizarResumo(filtros);
+    console.log("[Brasil Hub] filtros:", filtros); 
+
+try {
+    const dados = await buscarIndicadores(filtros);
+    if (idRequisicao !== ultimaRequisicao) return; 
+    console.log("[Brasil Hub] indicadores recebidos:", dados);
+
+} catch (erro) {
+    if (idRequisicao !== ultimaRequisicao) return;
+    mostrarStatus(Estado.erro, "Não foi possível aplicar os filtros", descreverErro(erro));
+}
 }
 
 iniciar();
