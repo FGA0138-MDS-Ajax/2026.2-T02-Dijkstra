@@ -83,10 +83,10 @@ Como a base oficial contém dados de todos os estados, simulamos a ausência com
 
 | ID | Data | Responsável | Commit Testado | Resultado Esperado | Resultado Obtido | Status | Evidência | Defeitos / Issues |
 |---|---|---|---|---|---|---|---|---|
-| **TI-01** | --/--/2026 | Paulo | `<hash>` | Acre colorido, outros 26 estados neutros | | [ ] Aprovado <br> [ ] Reprovado | `docs/assets/testes/S4-03/TI-01.png` | N/A |
-| **TI-02** | --/--/2026 | Paulo | `<hash>` | Bahia colorida por renda e popup com valor | | [ ] Aprovado <br> [ ] Reprovado | `docs/assets/testes/S4-03/TI-02.png` | N/A |
-| **TI-03** | --/--/2026 | Paulo | `<hash>` | Alerta de sem registros e mapa neutro | | [ ] Aprovado <br> [ ] Reprovado | `docs/assets/testes/S4-03/TI-03.png` | N/A |
-| **TI-04** | --/--/2026 | Paulo | `<hash>` | Mensagem de servidor indisponível + retry funcional | | [ ] Aprovado <br> [ ] Reprovado | `docs/assets/testes/S4-03/TI-04.png` | N/A |
+| **TI-01** | 20/10/2026 | Paulo | `4bee6c0` | Acre colorido, outros 26 estados neutros | `GET /api/indicadores?estado=AC` retornou 200. O Acre foi colorido (faixa "Alto", IDHM 0,754 em 2024); os outros estados ficaram em "Sem dados". | [x] Aprovado <br> [ ] Reprovado | `docs/assets/testes/S4-03/TI-01.png` | N/A |
+| **TI-02** | 20/10/2026 | Paulo | `4bee6c0` | Bahia colorida por renda e popup com valor | A requisição enviou `estado=BA&dimensao=renda` e retornou 200. A Bahia foi colorida pela faixa de renda e o popup exibiu o valor da dimensão selecionada. | [x] Aprovado <br> [ ] Reprovado | `docs/assets/testes/S4-03/TI-02.png` | N/A |
+| **TI-03** | 20/10/2026 | Paulo | `4bee6c0` | Alerta de sem registros e mapa neutro | Com a API apontando para um banco vazio, `GET /api/indicadores?estado=SP` retornou 200 com `[]`. A interface exibiu o alerta "Sem resultados" e o mapa ficou sem estados coloridos. | [x] Aprovado <br> [ ] Reprovado | `docs/assets/testes/S4-03/TI-03.png` | N/A |
+| **TI-04** | 20/10/2026 | Paulo | `4bee6c0` | Mensagem de servidor indisponível + retry funcional | Com a API parada, a interface exibiu o alerta "Não foi possível aplicar os filtros" com o botão "Tentar novamente", sem quebrar o JavaScript. Após reiniciar a API e clicar no botão, os dados foram recarregados e o alerta foi ocultado. | [x] Aprovado <br> [ ] Reprovado | `docs/assets/testes/S4-03/TI-04.png` | N/A |
 
 ---
 
