@@ -1,0 +1,1 @@
+Registro formal das decisões tomadas na primeira reunião da equipe.

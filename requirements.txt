@@ -1,8 +1,9 @@
 # Backend
 pandas
 fastapi
-#uvicorn -para o vercel não precisa, mas para testar localmente é necessário-
+uvicorn #-para o vercel não precisa, mas para testar localmente é necessário-
 #sqlite3 -já vem embutido no python aparentemente-
 
 # Testes
 pytest
+httpx2 # testclient do fastAPI precisa dessa dependecia
