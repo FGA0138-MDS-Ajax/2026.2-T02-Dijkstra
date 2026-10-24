@@ -440,3 +440,30 @@ h1, h2, h3, h4, .logo {
 @media (max-width: 40rem) {
     .footer-grid { grid-template-columns: 1fr; gap: var(--space-3); }
 }
+
+.theme-toggle{
+    color: var(--color-link);
+    background-color: transparent;
+    border: none;
+}
+
+.theme-toggle:hover {
+    color: var(--color-link-hover);
+    background-color: transparent;
+    border: none;
+}
+
+.theme-toggle svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* claro: mostra a lua (vai para escuro); escuro: mostra o sol (vai para claro) */
+.theme-toggle .icon-sun { display: none; }
+html[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
+html[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
