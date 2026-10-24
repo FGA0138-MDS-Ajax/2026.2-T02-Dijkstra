@@ -3,15 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-        crossorigin=""/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""/>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/variables.css">
-        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-        crossorigin=""></script>
-    <title>Sobre - Brasil Hub</title>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""></script>
+    <title>Mapa Interativo - Brasil Hub</title>
     <link rel="icon" href="assets/brasil-map.png" type="image/png">
 </head>
 <body>
@@ -26,3 +25,60 @@
                 <a class="btn" href="./area-adm.html">Área do administrador</a>
             </nav>
         </header>
+
+
+
+        <section class="main-text">
+            <h1>Sobre o Brasil Hub</h1>
+            <p>Texto de apresentação do projeto.</p>
+        </section>
+
+        <section>
+            <h2>O que é o IDH</h2>
+            <p>Texto explicando o IDH e suas dimensões: renda, educação e longevidade.</p>
+        </section>
+
+        <section>
+            <h2>De onde vêm os dados</h2>
+            <p>Texto sobre a fonte dos dados (IBGE) e a atualização.</p>
+        </section>
+
+        <section>
+            <h2>Quem faz</h2>
+            <p>Texto sobre a equipe e a disciplina.</p>
+        </section>
+
+
+
+
+    <footer class="site-footer">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <p class="logo">Brasil Hub</p>
+                    <p>Indicadores de desenvolvimento humano dos estados brasileiros, em um mapa interativo.</p>
+                </div>
+
+                <nav class="footer-col" aria-label="Rodapé">
+                    <h3>Navegue</h3>
+                    <ul>
+                        <li><a href="./index.html">Página inicial</a></li>
+                        <li><a href="./mapa.html">Mapa</a></li>
+                        <li><a href="./sobre.html">Sobre</a></li>
+                    </ul>
+                </nav>
+
+                <div class="footer-col">
+                    <h3>Dados e código</h3>
+                    <ul>
+                        <li><a href="https://www.ibge.gov.br" target="_blank" rel="noopener">IBGE</a></li>
+                        <li><a href="https://github.com/FGA0138-MDS-Ajax/2026.2-T02-Dijkstra" target="_blank" rel="noopener">Repositório no GitHub</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <p class="footer-copy">© 2026 Brasil Hub. Projeto da disciplina MDS, UnB.</p>
+        </footer>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
