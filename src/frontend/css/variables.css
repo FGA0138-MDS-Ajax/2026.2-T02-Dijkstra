@@ -1,10 +1,14 @@
+
 :root {
-    /* ---------- Variaveis Primary ---------- */
+    /* ---------- variables primary ---------- */
     --white: #ffffff;
     --black: #000000;
 
     --gray-100: #e6e6e6;
     --gray-600: #545454;
+    --gray-700: #3a3a38;  
+    --gray-800: #2b2b29;   
+    --gray-900: #222221;   
 
     --green-50:  #edfbf0;
     --green-100: #d3f5dc;
@@ -22,8 +26,7 @@
     --blue-600: #001f99;
     --blue-900: #000e47;
 
-    /* tipografia - Poppins no texto, Aclonica em títulos e no nome do site */
-
+    /* tipografia: Poppins no texto, Aclonica em títulos e no nome do site */
     --font-body: "Poppins", "Atkinson Hyperlegible", system-ui, sans-serif;
     --font-heading: "Aclonica", "Poppins", system-ui, sans-serif;
     --font-scale: 1;
@@ -52,13 +55,13 @@
     --dur: 250ms;
     --dur-slow: 700ms;
 
-    /*---------- sombras -------- */
+    /*--------- sombras --------*/
     --shadow-sm: 0 2px 10px rgb(31 90 46 / 0.08);
     --shadow-md: 0 8px 28px rgb(31 90 46 / 0.14);
     --shadow-lg: 0 16px 40px rgb(31 90 46 / 0.2);
 
-    /* ---------- tema claro ---------- */
-    --border-width: 0;
+    /* ---------- tema claro (base) ---------- */
+    --border-width: 0; 
     --color-bg: var(--white);
     --color-surface: var(--white);
     --color-surface-soft: var(--green-50);
@@ -114,47 +117,47 @@
     --color-on-button: var(--color-on-action);
 }
 
-/* ---------- Tema escuro ---------- */
+/* ---------- Tema escuro --------- */
 html[data-theme="dark"] {
-    --color-bg: var(--green-950);
-    --color-surface: color-mix(in srgb, var(--green-900) 35%, var(--green-950));
-    --color-surface-soft: color-mix(in srgb, var(--green-900) 60%, var(--green-950));
-    --color-text: #e8f3ec;
-    --color-text-muted: #b2c9ba;
-    --color-border: #3d5c48;
-    --color-border-soft: #2f4c3a;
+    --color-bg: var(--gray-900);
+    --color-surface: var(--gray-800);
+    --color-surface-soft: var(--gray-700);
+    --color-text: #f2f1ec;
+    --color-text-muted: #b8b6ac;
+    --color-border: #4a4a46;
+    --color-border-soft: #3f3f3b;
 
     --color-primary: var(--green-400);
     --color-primary-hover: var(--green-200);
-    --color-on-primary: var(--green-950);
+    --color-on-primary: var(--gray-900);
 
-    --color-link: #b2c9ba;
+    --color-link: #b8b6ac;
     --color-link-hover: var(--green-400);
     --color-link-active: var(--green-400);
 
     --color-action: var(--blue-300);
     --color-action-hover: var(--blue-200);
     --color-on-action: var(--blue-900);
-    --color-action-soft: color-mix(in srgb, var(--blue-300) 18%, var(--green-950));
-    --color-action-soft-hover: color-mix(in srgb, var(--blue-300) 30%, var(--green-950));
+    --color-action-soft: color-mix(in srgb, var(--blue-300) 18%, var(--gray-800));
+    --color-action-soft-hover: color-mix(in srgb, var(--blue-300) 30%, var(--gray-800));
 
     --color-focus: #ffb454;
 
-    --color-header-bg: color-mix(in srgb, var(--green-900) 45%, var(--green-950));
+    --color-header-bg: var(--gray-800);
     --color-header-text: var(--green-400);
-    --color-header-border: #3d5c48;
+    --color-header-border: #4a4a46;
 
-    --color-info-bg: #0d1b4d;
+    --color-info-bg: color-mix(in srgb, #5b7bff 18%, var(--gray-800));
     --color-info-text: #c7d2ff;
     --color-info-border: #5b7bff;
-    --color-success-bg: #0f2e18;
+    --color-success-bg: color-mix(in srgb, var(--green-600) 18%, var(--gray-800));
     --color-success-text: var(--green-200);
     --color-success-border: var(--green-600);
-    --color-error-bg: #3b0d0d;
+    --color-error-bg: color-mix(in srgb, #f87171 18%, var(--gray-800));
     --color-error-text: #fecaca;
     --color-error-border: #f87171;
 
-    --map-1: #1c4a2c;
+    --map-1: #2f4a38;
     --map-2: var(--green-700);
     --map-3: var(--green-600);
     --map-4: var(--green-400);
