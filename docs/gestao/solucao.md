@@ -1,0 +1,1 @@
+Descrição detalhada da solução proposta, o problema dos dados dispersos de IDH e como a plataforma resolve isso.

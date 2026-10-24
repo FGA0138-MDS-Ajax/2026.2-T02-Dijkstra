@@ -1,0 +1,88 @@
+:root {
+    /* Fontes */
+    --font-body: "Atkinson Hyperlegible", "Inter", system-ui;
+    --font-heading: var(--font-body);
+    --font-scale: 1;
+    --font-size-1: 1rem;
+    --font-size-2: 1.25rem;
+    --font-size-3: 2.25rem;
+
+    /* Espaçamentos */
+    --space-1: 0.5rem;
+    --space-2: 1rem;
+    --space-3: 1.5rem;
+    --space-4: 2.5rem;
+    --space-5: 6rem;
+
+    --border-width: 1px;
+    --radius: 0.5rem;
+
+    /* Tema Claro (Base) */
+    --color-bg: #f4f7f8;
+    --color-surface: #ffffff;
+    --color-text: #14232b;
+    --color-text-muted: #455660;
+    --color-border: #b9c6cc;
+
+    --color-primary: #0b5d4f;
+    --color-primary-hover: #084539;
+    --color-on-primary: #ffffff;
+
+    --color-header-bg: #ffffff;
+    --color-header-text: rgb(33, 92, 50);
+
+    --color-focus: #b45f00;
+    --color-button: rgb(1, 50, 254);
+    --color-button-hover: rgb(11, 137, 254);
+
+    --box-shadow: 0 0.25rem 1.5rem rgba(0, 0, 0, 0.04);
+    --header-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.25);
+}
+
+html[data-theme="dark"] {
+    --color-bg: #0b1418;
+    --color-surface: #16252d;
+    --color-text: #e8eef1;
+    --color-text-muted: #adbdc5;
+    --color-border: #3b505b;
+
+    --color-primary: #62c7ac;
+    --color-primary-hover: #86d8c2;
+    --color-on-primary: #08201a;
+
+    --color-header-bg: #1f333d;
+    --color-header-text: #62c7ac;
+    --color-header-border: #4a6572;
+    --header-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.55);
+
+    --color-focus: #ffb454;
+    --color-button: #62c7ac;
+    --color-button-hover: #86d8c2;
+    --color-on-button: #08201a;
+}
+
+html[data-theme="high-contrast"] {
+    --color-bg: #000000;
+    --color-surface: #000000;
+    --color-text: #ffffff;
+    --color-text-muted: #ffffff;
+    --color-border: #ffffff;
+    --border-width: 2px;
+
+    --color-primary: #ffd400;
+    --color-primary-hover: #ffffff;
+    --color-on-primary: #000000;
+
+    --color-header-bg: #000000;
+    --color-header-text: #ffffff;
+    --color-header-border: #ffffff;
+    --header-shadow: none;
+
+    --color-focus: #ffd400;
+    --color-button: #ffd400;
+    --color-button-hover: #ffffff;
+    --color-on-button: #000000;
+}
+
+html[data-font-scale="large"] { --font-scale: 1.25; }
+html[data-font-scale="xlarge"] { --font-scale: 1.5; }
