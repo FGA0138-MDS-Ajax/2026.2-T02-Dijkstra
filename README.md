@@ -61,7 +61,7 @@ A arquitetura proposta utiliza uma organização em camadas, separando a interfa
 | Visualização geográfica | Leaflet | Exibição e interação com o mapa. |
 | Back-end e API | Python e FastAPI | Exposição dos endpoints e processamento das requisições. |
 | Tratamento de dados | Pandas | Leitura, validação e transformação dos arquivos de indicadores. |
-| Banco de dados | SQLite | Persistência dos indicadores e dos dados administrativos necessários. |
+| Banco de dados | PostgreSQL | Persistência dos indicadores e dos dados administrativos necessários. |
 | Testes do back-end | Pytest | Automatização de testes das funcionalidades implementadas em Python. |
 | Testes do front-end | Jest | Automatização de testes das funcionalidades JavaScript. |
 | Documentação | MkDocs e Material for MkDocs | Organização e publicação da documentação do projeto. |
@@ -117,8 +117,8 @@ Execute os comandos na raiz do repositório.
   **FastAPI** (API), **Uvicorn** (servidor), **Pytest** (testes) e
   **httpx2** (cliente usado nos testes HTTP).
 
-O SQLite é acessado pelo módulo `sqlite3`, incluído no Python. O DBeaver
-é opcional para visualizar o banco; sua instalação está no guia detalhado.
+O PostgreSQL local pode ser iniciado pelo Docker Compose. O DBeaver é
+opcional para visualizar o banco; sua instalação está no guia detalhado.
 
 ### 2. Obter o projeto
 
@@ -165,28 +165,31 @@ Reative a `.venv` em cada novo terminal. Para conferir o ambiente:
 ```bash
 python --version
 python -m pip --version
-python -c "import pandas, fastapi, uvicorn, pytest, sqlite3; print('Importações OK')"
+python -c "import pandas, fastapi, uvicorn, pytest, psycopg, dotenv; print('Importações OK')"
 ```
 
 ### 4. Importar os dados e iniciar a API
 
 ```bash
+cp .env.example .env
+docker compose up -d db
 python -m src.data.importar_csv
 python -m uvicorn src.api.main:app --reload
 ```
 
 A carga reúne os quatro CSVs de `data/raw/` na tabela `indicadores`.
-Com os arquivos atuais, são **1.728 registros**. O banco padrão é
-`data/indicadores.db`; se ele já contiver indicadores, o importador
-cancela a carga para evitar duplicações. Nesse caso, inicie apenas a API.
+Com os arquivos atuais, são **1.728 registros**. O `.env.example` configura
+o PostgreSQL de teste local na porta `5434`. Se a tabela já contiver
+indicadores, o importador cancela a carga para evitar duplicações. Nesse
+caso, inicie apenas a API.
 
 Acesse a documentação interativa em **http://127.0.0.1:8000/docs**.
 Para encerrar o servidor, pressione `Ctrl+C`; para sair da `.venv`,
 execute `deactivate`.
 
-O banco pode ser configurado pela variável de ambiente `DB_PATH`.
-O código atual não carrega `.env` automaticamente. O banco `.db` é local
-e ignorado pelo Git; cada integrante pode recriá-lo a partir dos CSVs.
+O banco é configurado pela variável `DATABASE_URL`, carregada do `.env`.
+Esse arquivo é local e ignorado pelo Git. Cada integrante pode iniciar
+seu próprio PostgreSQL pelo Compose e importar os CSVs.
 
 Consulte o [guia da API e dos indicadores](docs/api-indicadores.md) para
 entender as dimensões, o tratamento dos CSVs, os filtros, a configuração
@@ -209,7 +212,7 @@ ou incompatibilidade com `launch_testing`, use:
 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q
 ```
 
-Os testes cobrem tratamento de CSV, repositório SQLite, rotas da API e
+Os testes cobrem tratamento de CSV, repositório PostgreSQL, rotas da API e
 tratamento de falhas operacionais. Os testes HTTP utilizam dependências
 simuladas; as verificações com os dados reais estão descritas no
 [guia da API](docs/api-indicadores.md#verificacoes-e-testes).

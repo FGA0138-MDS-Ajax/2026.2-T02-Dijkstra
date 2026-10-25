@@ -38,6 +38,7 @@ nav:
   - Home: index.md
   - Sobre: sobre.md
   - API e indicadores: api-indicadores.md
+  - Persistência PostgreSQL: persistencia-postgresql.md
   - Estratégia:
     - Metodologia: estrategia/metodologia.md
     - Engenharia de Software: estrategia/engsoftware.md
