@@ -1,4 +1,4 @@
-import sqlite3
+import psycopg
 
 from fastapi.testclient import TestClient
 import pytest
@@ -132,7 +132,7 @@ def test_sucesso_busca_indicadores_via_http():
 
 def test_falha_operacional_do_banco_retorna_503(monkeypatch):
     def falhar(self, **filtros):
-        raise sqlite3.OperationalError("unable to open database file: /caminho/interno.db")
+        raise psycopg.OperationalError("connection refused")
 
     monkeypatch.setattr(IndicadorRepository, "listar", falhar)
     monkeypatch.setitem(

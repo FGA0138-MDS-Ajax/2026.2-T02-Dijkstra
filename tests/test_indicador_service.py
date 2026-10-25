@@ -1,5 +1,5 @@
 import logging
-import sqlite3
+import psycopg
 from unittest.mock import Mock
 
 import pytest
@@ -12,12 +12,12 @@ from src.services.indicador_service import (
 
 
 @pytest.mark.parametrize("mensagem", [
-    "database is locked",
-    "unable to open database file",
+    "connection refused",
+    "server closed the connection",
 ])
 def test_falha_operacional_e_traduzida_e_registrada(mensagem, caplog):
     repository = Mock(spec=IndicadorRepository)
-    falha = sqlite3.OperationalError(mensagem)
+    falha = psycopg.OperationalError(mensagem)
     repository.listar.side_effect = falha
     service = IndicadorService(repository)
 
@@ -34,7 +34,7 @@ def test_falha_operacional_e_traduzida_e_registrada(mensagem, caplog):
 
 @pytest.mark.parametrize("falha", [
     ValueError("Erro inesperado"),
-    sqlite3.ProgrammingError("Uso incorreto da conexão"),
+    psycopg.ProgrammingError("Uso incorreto da conexão"),
 ])
 def test_erros_inesperados_nao_sao_traduzidos_para_indisponibilidade(falha):
     repository = Mock(spec=IndicadorRepository)

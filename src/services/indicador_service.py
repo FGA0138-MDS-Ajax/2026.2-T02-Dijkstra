@@ -1,5 +1,5 @@
 import logging
-import sqlite3
+import psycopg
 
 from src.database.indicador_repository import IndicadorRepository
 
@@ -27,6 +27,6 @@ class IndicadorService:
                 dimensao=dimensao,
                 periodo_referencia=str(periodo) if periodo is not None else None,
             )
-        except sqlite3.OperationalError as erro:
+        except psycopg.OperationalError as erro:
             logger.exception("Falha operacional ao consultar indicadores.")
             raise ConsultaIndicadoresIndisponivel() from erro
