@@ -61,7 +61,7 @@ nomeado do Docker (`postgres_data`).
 - A validação vale apenas para o ambiente local com Docker Compose. O volume
   `postgres_data` existe na máquina de quem executa o ambiente.
 - `docker compose down -v` remove o volume e apaga o banco. Depois disso é
-  preciso importar os CSVs novamente. 
+  preciso importar os CSVs novamente. Confirmado que depois do comando a contagem vai 0 e ao subir volta a 1728 registros.
 - Plataformas serverless (como a Vercel) não mantêm arquivos gravados em disco
   entre requisições. Nelas, o PostgreSQL precisaria ser um serviço externo
   (por exemplo, Neon ou Supabase), com a `DATABASE_URL` configurada como
