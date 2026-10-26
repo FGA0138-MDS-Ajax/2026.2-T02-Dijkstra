@@ -37,6 +37,23 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Sobre: sobre.md
+  - Documentação do projeto:
+    - Documento de Visão:
+      - Apresentação: documentos/visao/index.md
+      - Visão Geral do Produto: documentos/visao/visao-geral-produto.md
+      - Visão Geral do Projeto: documentos/visao/visao-geral-projeto.md
+      - Processo de Desenvolvimento: documentos/visao/processo-desenvolvimento.md
+      - Escopo e Backlog: documentos/visao/escopo-backlog.md
+      - Métricas: documentos/visao/metricas.md
+      - Testes de Software: documentos/visao/testes.md
+      - Referências: documentos/visao/referencias.md
+    - Documento de Arquitetura:
+        - Apresentação: documentos/arquitetura/index.md
+        - Introdução: documentos/arquitetura/introducao.md
+        - Representação Arquitetural: documentos/arquitetura/representacao-arquitetural.md
+        - Visões Arquiteturais: documentos/arquitetura/visoes.md
+        - Implantação e Restrições: documentos/arquitetura/implantacao-restricoes.md          - Referências: documentos/arquitetura/referencias.md
+
   - Estratégia:
     - Metodologia: estrategia/metodologia.md
     - Engenharia de Software: estrategia/engsoftware.md
