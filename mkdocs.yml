@@ -52,7 +52,8 @@ nav:
         - Introdução: documentos/arquitetura/introducao.md
         - Representação Arquitetural: documentos/arquitetura/representacao-arquitetural.md
         - Visões Arquiteturais: documentos/arquitetura/visoes.md
-        - Implantação e Restrições: documentos/arquitetura/implantacao-restricoes.md          - Referências: documentos/arquitetura/referencias.md
+        - Implantação e Restrições: documentos/arquitetura/implantacao-restricoes.md          
+        - Referências: documentos/arquitetura/referencias.md
 
   - Estratégia:
     - Metodologia: estrategia/metodologia.md
