@@ -6,9 +6,13 @@ import platform
 import statistics
 import subprocess
 import time
-from src.api.main import app, get_indicador_service, consultar_indicadores
+from src.api.main import app, get_indicador_service, consultar_indicadores, get_auth_service
 from src.api.schemas import Dimensao
+from src.auth.security import PasswordHasher
+from src.database.admin_repository import AdminRepository
+from src.database.database import init_db
 from src.database.indicador_repository import IndicadorRepository
+from src.services.auth_service import AuthService
 from src.services.indicador_service import IndicadorService
 
 client = TestClient(app)
@@ -348,3 +352,63 @@ def test_b05_parametros_invalidos_retornam_422_sem_consultar(servico_b05, query)
 
     assert response.status_code == 422
     assert servico_b05.chamadas == 0  # parâmetro inválido nem chega ao serviço
+
+ADMIN_TESTE = "admin"
+SENHA_TESTE = "senha-de-teste"
+
+@pytest.fixture
+def auth_com_banco_temporario(tmp_path, monkeypatch):
+    # banco SQLite descartável, com um administrador real (hash bcrypt)
+    db_path = str(tmp_path / "teste_auth.db")
+    init_db(db_path)
+    repository = AdminRepository(db_path)
+    repository.salvar(ADMIN_TESTE, PasswordHasher.gerar_hash(SENHA_TESTE))
+
+    monkeypatch.setitem(
+        app.dependency_overrides,
+        get_auth_service,
+        lambda: AuthService(repository, PasswordHasher()),
+    )
+
+def test_login_com_credenciais_validas(auth_com_banco_temporario):
+    # Simulando: curl -X POST "/api/auth/login" -H "Content-Type: application/json" -d '{"usuario": "admin", "senha": "senha-de-teste"}'
+    response = client.post(
+        "/api/auth/login",
+        json={"usuario": ADMIN_TESTE, "senha": SENHA_TESTE}
+    )
+
+    assert response.status_code == 200
+    data = response.json()
+    assert data["usuario"] == ADMIN_TESTE
+    assert data["mensagem"] == "Autenticação foi realizada com sucesso."
+    # dados seguros: a resposta não expõe senha nem hash
+    assert set(data) == {"id", "usuario", "mensagem"}
+    assert "password_hash" not in data
+    assert "senha" not in data
+
+@pytest.mark.parametrize(
+    "usuario, senha",
+    [
+        (ADMIN_TESTE, "senha_incorreta"),         # senha errada
+        ("usuario_inexistente", SENHA_TESTE),     # usuário incorreto
+    ],
+)
+def test_login_com_credenciais_invalidas(auth_com_banco_temporario, usuario, senha):
+    # Simulando: curl -X POST "/api/auth/login" -H "Content-Type: application/json" -d '{"usuario": "admin", "senha": "senha_incorreta"}'
+    response = client.post(
+        "/api/auth/login",
+        json={"usuario": usuario, "senha": senha}
+    )
+
+    assert response.status_code == 401
+    data = response.json()
+    assert data["detail"] == "Credenciais inválidas."
+
+def test_rota_protegida_sem_autenticacao(auth_com_banco_temporario):
+    # Simulando: curl "/api/admin/painel"
+    response = client.get("/api/admin/painel")
+
+    assert response.status_code == 401
+    data = response.json()
+    assert data["detail"] == "Autenticação necessária"
+    assert response.headers["WWW-Authenticate"] == "Basic"

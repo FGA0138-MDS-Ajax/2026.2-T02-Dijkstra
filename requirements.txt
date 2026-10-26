@@ -4,6 +4,7 @@ fastapi
 uvicorn #-para o vercel não precisa, mas para testar localmente é necessário-
 #sqlite3 -já vem embutido no python aparentemente-
 bcrypt
+python-dotenv
 
 # Testes
 pytest

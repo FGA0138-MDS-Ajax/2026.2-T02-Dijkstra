@@ -167,8 +167,24 @@ python --version
 python -m pip --version
 python -c "import pandas, fastapi, uvicorn, pytest, sqlite3; print('Importações OK')"
 ```
+### 4. Criar o administrador inicial
 
-### 4. Importar os dados e iniciar a API
+Copie o arquivo de exemplo e defina o usuário e a senha do administrador:
+
+```bash
+cp .env.example .env
+```
+
+Edite o `.env` e altere `ADMIN_USER` e `ADMIN_PASSWORD`. Depois execute:
+
+```bash
+python -m scripts.seed_admin
+```
+
+O script grava apenas o hash bcrypt da senha na tabela `administradores`.
+Se o usuário já existir, nada é alterado. Nunca versione o arquivo `.env`.
+
+### 5. Importar os dados e iniciar a API
 
 ```bash
 python -m src.data.importar_csv
