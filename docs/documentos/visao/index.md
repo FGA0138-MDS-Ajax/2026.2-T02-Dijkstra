@@ -1,61 +1,59 @@
-# Documento de Visão e Projeto da Equipe Dijkstra
+# Documento de Visão e Projeto — Equipe Dijkstra
 
 ## 1. Sobre o Documento
 
-Este documento possui 6 tópicos abordando sobre o nosso projeto.
+O Documento de Visão e Projeto apresenta as principais definições do Brasil Hub, uma plataforma web destinada à centralização, ao tratamento e à visualização de indicadores socioeconômicos brasileiros, com foco nas dimensões de renda, educação e longevidade.
 
-- [Visão Geral do Produto](visao-geral-produto.md)
-- [Visão Geral do Projeto](visao-geral-projeto.md)
-- [Processo de Desenvolvimento de Software](processo-desenvolvimento.md)
-- [Escopo e Backlog](escopo-backlog.md)
-- [Métricas](metricas.md)
-- [Testes de Software](testes.md)
-## 2. Planejamento e resultados
+Seu objetivo é estabelecer uma visão compartilhada do produto e do projeto, documentando os objetivos, os requisitos, o planejamento, o processo de desenvolvimento e os critérios utilizados para acompanhar a qualidade e a evolução do software.
 
-## 3. Principais resultados
+O conteúdo está organizado em seis seções principais, complementadas pelas referências bibliográficas utilizadas na elaboração do documento.
 
-- Organização inicial do repositório e dos diretórios do projeto.
-- Definição do fluxo de branches, Pull Requests e revisão de código.
-- Preparação do ambiente de desenvolvimento com Docker e Docker Compose.
-- Criação da estrutura inicial do front-end.
-- Preparação da persistência de dados com SQLite.
-- Início do processamento dos arquivos CSV e da implementação da API.
+## 1.1 Documento de Visão
 
-As atividades de processamento de dados, consulta pela API e testes integrados permaneceram como pendências para continuidade do desenvolvimento.
+O documento pode ser consultado diretamente abaixo ou aberto separadamente.
 
-## 4. Métricas
+[**Abrir PDF em uma nova aba**](docs-visao.pdf)
+---
 
-| Métrica | Meta | Resultado preliminar |
-|---|---|---|
-| Conclusão das issues | > 90% | 62,5%, considerando 5 de 8 issues concluídas |
-| Proporção de defeitos | < 10% | Nenhum defeito identificado |
-| Saldo de débito técnico | saldo <= zero | saldo 3 issues não finalizadas |
-| Desempenho B-05 | Resposta em até 3 segundos | Não avaliado |
+<iframe
+    src="docs-visao.pdf"
+    width="100%"
+    height="600"
+    style="border: 1px solid #ccc; border-radius: 8px;"
+    title="Documento de Visão e Projeto do Brasil Hub">
+</iframe>
 
-**Observação:** o percentual de conclusão considera cinco issues concluídas entre as oito planejadas.
+---
+## 2. Navegação do Documento
+## 2.1 Visão geral do Produto
 
-## 5. Pendências e próximos passos
-
-| Pendência | Encaminhamento |
-|---|---|
-| S3-06 — Processamento de CSV | Finalizar e validar a ingestão dos dados. |
-| S3-07 — API de consulta | Concluir e testar os endpoints necessários. |
-| S3-08 — Testes de integração | Executar os testes após a conclusão das dependências. |
-| Requisito B-05 | Medir e documentar o tempo de resposta das consultas. |
-| Pull Requests | Verificar revisões e integração das alterações. |
-
-As pendências devem ser acompanhadas na Sprint 4, respeitando as dependências entre as atividades.
-
-## 6. Acompanhamento
-
-Os registros diários da equipe estão disponíveis na seção de dailies:
-
-- [Acessar as dailies da Sprint 3](dailies/dailies.md)
-
-As issues e os Pull Requests correspondentes devem ser utilizados como referência para verificar o andamento e as evidências das entregas.
-
-## 7. Conclusão
-
-A Sprint 3 estabeleceu parte da estrutura técnica necessária ao desenvolvimento do Brasil Hub, incluindo a organização do repositório, o ambiente de desenvolvimento e a preparação da persistência dos dados.
-
-Entretanto, o processamento dos arquivos CSV, a API de consulta e os testes integrados não foram concluídos dentro do período planejado. Essas pendências devem ser priorizadas na Sprint 4 para viabilizar a integração entre o back-end, o mapa interativo e os filtros da aplicação.
+Apresenta o problema que motivou o desenvolvimento do Brasil Hub, o posicionamento da solução, seus objetivos e as tecnologias inicialmente previstas.
+- [Acessar Visão Geral do Produto](visao-geral-produto.md)
+---
+## 2.2 Visão geral do Projeto
+Descreve a organização do projeto, o ciclo de vida adotado, os papéis da equipe, o planejamento das Sprints, a comunicação e o gerenciamento de riscos.
+- [Acessar Visão Geral do Projeto](visao-geral-projeto.md)
+---
+## 2.3. Processo de Desenvolvimento de Software
+Apresenta o processo de desenvolvimento adotado pela equipe, incluindo as práticas de trabalho, a organização das atividades e os procedimentos utilizados durante a construção do sistema.
+- [Acessar Processo de Desenvolvimento de Software](processo-desenvolvimento.md)
+---
+## 2.4. Escopo e Backlog
+Define o escopo do produto, os perfis de acesso, os cenários de utilização e os requisitos funcionais e não funcionais que orientam o desenvolvimento do Brasil Hub.
+- [Acessar Escopo e Backlog](escopo-backlog.md)
+---
+## 2.5. Métricas
+Apresenta as métricas utilizadas para acompanhar o andamento do projeto e avaliar aspectos relacionados à qualidade e à evolução do desenvolvimento, com base na abordagem GQM (Goal-Question-Metric).
+- [Acessar Métricas](metricas.md)
+---
+## 2.6. Testes de Software
+Documenta a estratégia de testes do projeto, os níveis de teste previstos e os casos utilizados para verificar o funcionamento do sistema e o atendimento aos requisitos estabelecidos.
+- [Acessar Testes de Software](testes.md)
+---
+## 2.7. Referências Bibliográficas
+Reúne as fontes bibliográficas e documentais utilizadas como fundamentação para a elaboração do Documento de Visão e Projeto.
+- [Acessar Referências bibliográficas](referencias.md)
+---
+###### **Projeto:** Brasil Hub
+###### **Equipe:** Dijkstra
+###### **Disciplina:** Métodos de Desenvolvimento de Software (MDS), Prof. Ajax.

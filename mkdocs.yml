@@ -6,6 +6,7 @@ theme:
   language: pt-BR
   features:
     - toc.follow
+    - navigation.footer
   font:
     text: Inter
     code: Roboto Mono
