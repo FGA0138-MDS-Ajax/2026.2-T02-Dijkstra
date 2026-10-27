@@ -1,5 +1,9 @@
 # Integração do Mapa e Filtros à API (S4-03)
 
+> Registro histórico da S4-03. O procedimento abaixo que usa `DB_PATH` e
+> um arquivo `.db` pertence à versão anterior com SQLite. Para executar
+> a versão atual com PostgreSQL, siga o [guia da API](api-indicadores.md).
+
 ---
 
 ## 1. Visão Geral da Integração

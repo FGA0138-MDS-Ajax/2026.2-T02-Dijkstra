@@ -4,7 +4,7 @@ import pandas as pd
 
 from src.data.mapeamento_indicadores import preparar_para_persistencia
 from src.data.processamento_csv import DIMENSOES, tratar_csv
-from src.database.database import get_db_path, init_db
+from src.database.database import init_db
 from src.database.indicador_repository import IndicadorRepository
 
 
@@ -38,4 +38,4 @@ def importar_csvs() -> int:
 
 if __name__ == "__main__":
     quantidade = importar_csvs()
-    print(f"{quantidade} indicadores importados para {get_db_path()}.")
+    print(f"{quantidade} indicadores importados para o PostgreSQL.")

@@ -1,1 +1,1 @@
-"""Acesso e persistência no banco SQLite."""
+"""Acesso e persistência no PostgreSQL."""

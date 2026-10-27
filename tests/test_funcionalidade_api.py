@@ -1,4 +1,9 @@
-import sqlite3
+import os
+import uuid
+
+import psycopg
+from psycopg import sql
+from psycopg.rows import dict_row
 
 from fastapi.testclient import TestClient
 import pytest
@@ -10,6 +15,8 @@ from src.api.main import app, get_indicador_service, consultar_indicadores, get_
 from src.api.schemas import Dimensao
 from src.auth.security import PasswordHasher
 from src.database.admin_repository import AdminRepository
+from src.database import admin_repository as admin_repository_module
+from src.database import database as database_module
 from src.database.database import init_db
 from src.database.indicador_repository import IndicadorRepository
 from src.services.auth_service import AuthService
@@ -136,7 +143,7 @@ def test_sucesso_busca_indicadores_via_http():
 
 def test_falha_operacional_do_banco_retorna_503(monkeypatch):
     def falhar(self, **filtros):
-        raise sqlite3.OperationalError("unable to open database file: /caminho/interno.db")
+        raise psycopg.OperationalError("connection refused")
 
     monkeypatch.setattr(IndicadorRepository, "listar", falhar)
     monkeypatch.setitem(
@@ -353,15 +360,32 @@ def test_b05_parametros_invalidos_retornam_422_sem_consultar(servico_b05, query)
     assert response.status_code == 422
     assert servico_b05.chamadas == 0  # parâmetro inválido nem chega ao serviço
 
+
 ADMIN_TESTE = "admin"
 SENHA_TESTE = "senha-de-teste"
 
 @pytest.fixture
-def auth_com_banco_temporario(tmp_path, monkeypatch):
-    # banco SQLite descartável, com um administrador real (hash bcrypt)
-    db_path = str(tmp_path / "teste_auth.db")
-    init_db(db_path)
-    repository = AdminRepository(db_path)
+def auth_com_banco_temporario(monkeypatch):
+    # Cada teste recebe um schema isolado no PostgreSQL de teste.
+    database_url = os.getenv("TEST_DATABASE_URL")
+    if not database_url:
+        pytest.skip("Configure TEST_DATABASE_URL para executar os testes de autenticação.")
+
+    schema = f"test_auth_{uuid.uuid4().hex}"
+    with psycopg.connect(database_url) as conn:
+        conn.execute(sql.SQL("CREATE SCHEMA {}").format(sql.Identifier(schema)))
+
+    def get_test_connection():
+        return psycopg.connect(
+            database_url,
+            options=f"-c search_path={schema}",
+            row_factory=dict_row,
+        )
+
+    monkeypatch.setattr(database_module, "get_connection", get_test_connection)
+    monkeypatch.setattr(admin_repository_module, "get_connection", get_test_connection)
+    init_db()
+    repository = AdminRepository()
     repository.salvar(ADMIN_TESTE, PasswordHasher.gerar_hash(SENHA_TESTE))
 
     monkeypatch.setitem(
@@ -369,6 +393,10 @@ def auth_com_banco_temporario(tmp_path, monkeypatch):
         get_auth_service,
         lambda: AuthService(repository, PasswordHasher()),
     )
+    yield
+
+    with psycopg.connect(database_url) as conn:
+        conn.execute(sql.SQL("DROP SCHEMA {} CASCADE").format(sql.Identifier(schema)))
 
 def test_login_com_credenciais_validas(auth_com_banco_temporario):
     # Simulando: curl -X POST "/api/auth/login" -H "Content-Type: application/json" -d '{"usuario": "admin", "senha": "senha-de-teste"}'

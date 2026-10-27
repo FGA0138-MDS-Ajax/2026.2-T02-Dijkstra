@@ -15,9 +15,6 @@ COLUNAS = [
 
 
 class IndicadorRepository:
-    def __init__(self, db_path: str | None = None):
-        self.db_path = db_path
-
     def listar(
         self,
         unidade_territorial=None,
@@ -28,18 +25,18 @@ class IndicadorRepository:
         query = "SELECT * FROM indicadores WHERE 1=1"
         params = []
         if unidade_territorial:
-            query += " AND unidade_territorial = ?"
+            query += " AND unidade_territorial = %s"
             params.append(unidade_territorial)
         if nome_indicador:
-            query += " AND nome_indicador = ?"
+            query += " AND nome_indicador = %s"
             params.append(nome_indicador)
         if periodo_referencia:
-            query += " AND periodo_referencia = ?"
+            query += " AND periodo_referencia = %s"
             params.append(periodo_referencia)
         if dimensao is not None:
-            query += " AND dimensao = ?"
+            query += " AND dimensao = %s"
             params.append(dimensao)
-        conn = get_connection(self.db_path)
+        conn = get_connection()
         try:
             return [dict(row) for row in conn.execute(query, params).fetchall()]
         finally:
@@ -50,15 +47,16 @@ class IndicadorRepository:
         dados = dados.where(pd.notna(dados), None)
         linhas = list(dados.itertuples(index=False, name=None))
 
-        conn = get_connection(self.db_path)
+        conn = get_connection()
         try:
-            conn.executemany(
-                "INSERT INTO indicadores "
-                "(nome_indicador, unidade_territorial, dimensao, valor, "
-                "periodo_referencia, unidade_medida, fonte) "
-                "VALUES (?, ?, ?, ?, ?, ?, ?)",
-                linhas,
-            )
+            with conn.cursor() as cursor:
+                cursor.executemany(
+                    "INSERT INTO indicadores "
+                    "(nome_indicador, unidade_territorial, dimensao, valor, "
+                    "periodo_referencia, unidade_medida, fonte) "
+                    "VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                    linhas,
+                )
             conn.commit()
             return len(linhas)
         finally:
