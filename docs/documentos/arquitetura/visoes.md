@@ -173,7 +173,7 @@ Em resumo, a comunicação entre o navegador e o servidor usa HTTP com JSON, e o
 
 **Figura 4 — Diagrama de Pacotes**
 
-![alt text]()
+![alt text](assets/diagrama-pacotes.png)
 
 *Fonte: produzido por Ágatha Natasha.*
 
