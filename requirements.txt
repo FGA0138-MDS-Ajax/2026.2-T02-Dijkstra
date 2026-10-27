@@ -4,6 +4,7 @@ fastapi
 psycopg[binary]
 python-dotenv
 uvicorn #-para o vercel não precisa, mas para testar localmente é necessário-
+bcrypt
 
 # Testes
 pytest
