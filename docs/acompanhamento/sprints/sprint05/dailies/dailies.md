@@ -1,4 +1,4 @@
-# Dailies — Sprint 4
+# Dailies — Sprint 5
 
 Esta seção reúne os registros dos acompanhamentos diários realizados durante a **Sprint 5** do Brasil Hub.
 

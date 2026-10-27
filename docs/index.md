@@ -40,4 +40,4 @@ O sistema adota uma arquitetura em camadas para assegurar desacoplamento e testa
 ## Links Úteis
 
 - [Repositório Oficial no GitHub](https://github.com/FGA0138-MDS-Ajax/2026.2-T02-Dijkstra)
-- [Guia de Contribuição](../CONTRIBUTING.md)
+- [Guia de Contribuição](https://github.com/FGA0138-MDS-Ajax/2026.2-T02-Dijkstra)

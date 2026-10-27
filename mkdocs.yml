@@ -1,5 +1,9 @@
 site_name: Brasil Hub
 site_description: Documentação do projeto Brasil Hub - Equipe Dijkstra
+site_url: https://fga0138-mds-ajax.github.io/2026.2-T02-Dijkstra/
+repo_url: https://github.com/FGA0138-MDS-Ajax/2026.2-T02-Dijkstra
+repo_name: Equipe Dijkstra          
+copyright: Equipe Dijkstra — MDS 2026.2 — UnB/FGA
 
 theme:
   name: material
@@ -7,6 +11,11 @@ theme:
   features:
     - toc.follow
     - navigation.footer
+    - navigation.tabs        
+    - navigation.indexes     
+    - navigation.top         
+    - search.highlight
+    - content.code.copy      
   font:
     text: Inter
     code: Roboto Mono
@@ -30,9 +39,15 @@ extra_css:
   - stylesheets/extra.css
 
 markdown_extensions:
+  - toc:
+      permalink: true
   - admonition
   - pymdownx.details
   - pymdownx.superfences
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.tasklist:       
+      custom_checkbox: true
   - tables
 
 nav:
