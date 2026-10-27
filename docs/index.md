@@ -19,10 +19,9 @@ Acesse diretamente as principais seções da documentação:
 | Seção | Objetivo | Acesso Direto |
 | :--- | :--- | :--- |
 |  **Sobre & Equipe** | Contexto do problema, proposta de valor e membros do time. | [Ir para Sobre](sobre.md) |
-|  **Gestão do Produto** | Requisitos funcionais, especificações, regras de negócio e protótipos. | [Ir para Requisitos](gestao/requisitos.md) |
+|  **Documentação do Projeto** | Documentos de Visão e de Arquitetura. | [Ir para Documento de Visão](documentos/visao/index.md) [Ir para Documento de Arquitetura](documentos/arquitetura/index.md)|
 |  **Estratégia & Metodologia** | Processo ágil (Scrum/Kanban), papéis e critérios de DoR e DoD. | [Ir para Metodologia](estrategia/metodologia.md) |
 |  **Acompanhamento & Sprints** | Cronograma da disciplina, atas de reunião e histórico de Sprints. | [Ir para Cronograma](acompanhamento/cronograma.md) |
-|  **Métricas & Qualidade** | Metodologia GQM (Goal Question Metric) para o produto e para o projeto. | [Ir para Métricas](metricas/gqm-projeto.md) |
 |  **Padrões de Engenharia** | Padrões de branches, commits semânticos, Pull Requests e code review. | [Ir para Padrões](padroes/branches.md) |
 
 ---

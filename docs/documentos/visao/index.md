@@ -13,6 +13,7 @@ O conteúdo está organizado em seis seções principais, complementadas pelas r
 O documento pode ser consultado diretamente abaixo ou aberto separadamente.
 
 [**Abrir PDF em uma nova aba**](docs-visao.pdf)
+
 ---
 
 <iframe
