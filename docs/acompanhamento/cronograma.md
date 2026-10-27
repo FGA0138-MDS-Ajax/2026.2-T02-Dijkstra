@@ -1,1 +1,0 @@
-Planejamento de entregas, marcos da disciplina e prazos das sprints.

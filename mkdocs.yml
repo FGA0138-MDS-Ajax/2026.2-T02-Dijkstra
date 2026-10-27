@@ -81,7 +81,6 @@ nav:
     - Requisitos: gestao/requisitos.md
     - Especificações: gestao/especificacoes.md
   - Acompanhamento:
-    - Cronograma: acompanhamento/cronograma.md
     - Sprints:
       - Sprint 1: acompanhamento/sprints/sprint01/sprint01.md
       - Sprint 2: acompanhamento/sprints/sprint02/sprint02.md
