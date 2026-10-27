@@ -115,7 +115,7 @@ Execute os comandos na raiz do repositório.
 - Python **3.12.x**, com pip e suporte a ambientes virtuais (`venv`).
 - Dependências de `requirements.txt`: **Pandas** (tratamento dos dados),
   **FastAPI** (API), **Uvicorn** (servidor), **Pytest** (testes) e
-  **httpx2** (cliente usado nos testes HTTP).
+  **httpx** (cliente usado nos testes HTTP) e **bcrypt** (hash das senhas).
 
 O PostgreSQL local pode ser iniciado pelo Docker Compose. O DBeaver é
 opcional para visualizar o banco; sua instalação está no guia detalhado.
@@ -165,7 +165,7 @@ Reative a `.venv` em cada novo terminal. Para conferir o ambiente:
 ```bash
 python --version
 python -m pip --version
-python -c "import pandas, fastapi, uvicorn, pytest, psycopg, dotenv; print('Importações OK')"
+python -c "import pandas, fastapi, uvicorn, pytest, psycopg, dotenv, bcrypt, httpx; print('Importações OK')"
 ```
 ### 4. Criar o administrador inicial
 
@@ -214,6 +214,14 @@ do banco e a instalação e conexão pelo DBeaver.
 ---
 
 ## 🧪 Testes e qualidade
+
+Os testes de autenticação usam um schema temporário no PostgreSQL. Inicie o
+banco local configurado em `TEST_DATABASE_URL` antes de executar a suíte:
+
+```bash
+cp .env.example .env
+docker compose up -d db
+```
 
 Com a `.venv` ativada, execute:
 

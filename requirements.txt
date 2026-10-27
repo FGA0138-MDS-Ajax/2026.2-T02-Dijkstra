@@ -8,4 +8,4 @@ bcrypt
 
 # Testes
 pytest
-httpx2 # testclient do fastAPI precisa dessa dependecia
+httpx # dependência usada pelo TestClient do FastAPI
