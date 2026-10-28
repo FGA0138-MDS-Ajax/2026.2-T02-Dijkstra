@@ -7,6 +7,7 @@ from fastapi import UploadFile
 
 from src.database.indicador_repository import IndicadorRepository
 from src.data.processamento_csv import tratar_csv
+from src.data.mapeamento_indicadores import preparar_para_persistencia
 
 
 logger = logging.getLogger(__name__)
@@ -47,33 +48,32 @@ class ImportacaoService:
 
     def processar_upload(self, file: UploadFile) -> int:
         """
-        Recebe o UploadFile, salva em disco temporariamente, trata via Pandas
-        e delega a persistência (Upsert) para o repositório.
+        Recebe o UploadFile, usa TemporaryDirectory preservando o nome original,
+        trata via Pandas, mapeia com preparar_para_persistencia e delega o Upsert.
         """
-        temp_path = None
         try:
-            # Salva arquivo temporariamente em disco para leitura pelo Pandas
-            with tempfile.NamedTemporaryFile(delete=False, suffix=".csv") as temp_file:
-                shutil.copyfileobj(file.file, temp_file)
-                temp_path = temp_file.name
+            with tempfile.TemporaryDirectory() as pasta_temp:
+                nome_arquivo = Path(file.filename).name if file.filename else "idhm_geral_uf.csv"
+                temp_path = Path(pasta_temp) / nome_arquivo
+                
+                with open(temp_path, "wb") as destino:
+                    shutil.copyfileobj(file.file, destino)
 
-            # Processar e validar dados
-            df_tratado = tratar_csv(temp_path)
+                # Processar e validar dados
+                df_tratado = tratar_csv(temp_path)
 
-        # Captura erros de validação
         except ValueError as erro:
             raise ErroProcessamentoCSV(str(erro)) from erro
         except Exception as erro:
             logger.exception("Erro ao manipular o arquivo CSV enviado.")
             raise ErroProcessamentoCSV("O arquivo enviado é inválido ou está corrompido.") from erro
-        finally:
-            # Remoção do arquivo temporário
-            if temp_path and Path(temp_path).exists():
-                Path(temp_path).unlink()
+
+        # Mapeia os dados tratados para o formato de persistência
+        dados_persistidos = preparar_para_persistencia(df_tratado, fonte="IPEA")
 
         # Persistir os dados de forma atômica no banco (Upsert)
         try:
-            return self._repository.salvar_ou_atualizar_indicadores(df_tratado)
+            return self._repository.salvar_ou_atualizar_indicadores(dados_persistidos)
         except psycopg.OperationalError as erro:
             logger.exception("Falha operacional ao persistir os indicadores no banco.")
             raise ErroPersistenciaIndicadores("Erro ao conectar ou gravar na base de dados.") from erro

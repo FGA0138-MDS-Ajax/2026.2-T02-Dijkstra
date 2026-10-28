@@ -71,8 +71,6 @@ class IndicadorRepository:
         conn = get_connection()
         try:
             with conn.cursor() as cursor:
-                # Exemplo de Upsert no PostgreSQL usando ON CONFLICT
-                # Upsert no PostgreSQL: insere ou atualiza em caso de conflito
                 cursor.executemany(
                     """
                     INSERT INTO indicadores 

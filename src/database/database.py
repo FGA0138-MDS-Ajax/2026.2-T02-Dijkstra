@@ -17,7 +17,8 @@ CREATE TABLE IF NOT EXISTS indicadores (
     valor DOUBLE PRECISION,
     periodo_referencia TEXT NOT NULL,
     unidade_medida TEXT,
-    fonte TEXT
+    fonte TEXT,
+    CONSTRAINT uk_indicador_unico UNIQUE (unidade_territorial, dimensao, periodo_referencia)
 )
 """,
     """
