@@ -6,7 +6,7 @@
 |---|---|
 | Período | 21/10/2026 a 27/10/2026 |
 | Objetivo | Aprimorar a segurança do Brasil Hub e avançar no desenvolvimento da área administrativa, contemplando o controle de acesso, a proteção de credenciais e as funcionalidades de gerenciamento da plataforma. |
-| Resultado | Em andamento |
+| Resultado | Finalizada com 2 débito técnico |
 | Issues planejadas | 5 |
 
 ## 2. Planejamento e resultados
@@ -15,16 +15,16 @@ A Sprint 5 tem como objetivo ampliar a segurança do Brasil Hub e desenvolver fu
 
 As atividades estão concentradas na implementação ou no aprimoramento da autenticação, na restrição de acesso às funcionalidades administrativas e no desenvolvimento dos recursos necessários para o gerenciamento dos dados da plataforma.
 
-O acompanhamento das entregas será realizado por meio das issues do GitHub, dos Pull Requests e dos registros diários da equipe. Como a Sprint ainda está em andamento, a situação definitiva de cada entrega será atualizada conforme o progresso das atividades.
+O acompanhamento das entregas será realizado por meio das issues do GitHub, dos Pull Requests e dos registros diários da equipe. 
 
 | Issue | Entrega planejada | Situação ao final da Sprint |
 |---|---|---|
-| S5-01 | Validar a persistência dos dados no ambiente de implantação | Em andamento |
+| S5-01 | Validar a persistência dos dados no ambiente de implantação | Finalizado |
 | S5-02 | Implementar autenticação do administrador e hash de senhas `(B-09)`
  | Finalizado |
-| S5-03 | Implementar endpoint protegido para upload de CSV `(B-04)` | Esperando liberar a `S5-01` |
-| S5-04 | Implementar interface administrativa para login e upload de CSV `(B-04)` | Esperando liberar a `S5-01` |
-| S5-05 | Validar o fluxo administrativo e atualizar a documentação da Sprint 5 | A confirmar |
+| S5-03 | Implementar endpoint protegido para upload de CSV `(B-04)` | Finalizado |
+| S5-04 | Implementar interface administrativa para login e upload de CSV `(B-04)` | Não finalizada na Sprint 5. Realocada para Sprint 6 como débito técnico |
+| S5-05 | Validar o fluxo administrativo e atualizar a documentação da Sprint 5 | Parte da documentação iniciada na sprint 5. Será finalizada na Sprint 6 |
 
 **Observação:** os identificadores das issues e as entregas definitivas deverão ser ajustados de acordo com o backlog oficial da Sprint 5 no GitHub. As situações apresentadas são provisórias e não representam a conclusão efetiva das atividades.
 
@@ -40,21 +40,17 @@ Como a Sprint 5 ainda está em andamento, os resultados abaixo representam os ob
 - Desenvolvimento e execução de testes para verificar o comportamento das funcionalidades implementadas.
 - Integração das alterações ao repositório por meio do fluxo de branches, Pull Requests e revisões de código adotado pela equipe.
 
-Os resultados efetivamente alcançados serão documentados após a conclusão das respectivas issues, considerando as evidências disponíveis no repositório.
-
 ## 4. Métricas
 
 As métricas abaixo serão utilizadas para avaliar o cumprimento do planejamento e acompanhar a qualidade das entregas. Os resultados finais deverão ser preenchidos ao término da Sprint.
 
 | Métrica | Meta | Resultado final |
 |---|---|---|
-| Conclusão das issues | > 90% | A apurar ao final da Sprint |
-| Proporção de defeitos | < 10% | A apurar com base nos testes e defeitos identificados |
-| Segurança das credenciais | Senhas armazenadas de forma segura, sem texto puro | A validar após a implementação e os testes |
-| Controle de acesso | Funcionalidades administrativas acessíveis somente a usuários autorizados | A validar após a implementação e os testes |
-| Testes das funcionalidades | Executar os testes previstos para as entregas da Sprint | A apurar ao final da Sprint |
-
-A avaliação das métricas deverá considerar o número total de issues planejadas, a quantidade de issues concluídas, os resultados dos testes e as evidências registradas durante o desenvolvimento.
+| Conclusão das issues | > 90% | 3 completas de 5 issues -> 60% de conclusão |
+| Proporção de defeitos | < 10% | Nenhum defeito identificado |
+| Segurança das credenciais | Senhas armazenadas de forma segura, sem texto puro | Credenciais estão criptogradas. Teste em `tests/test_auth-service.py`  |
+| Controle de acesso | Funcionalidades administrativas acessíveis somente a usuários autorizados | Não finalizada. Será realocada na sprint 6 |
+| Testes das funcionalidades | Executar os testes previstos para as entregas da Sprint | Testes feitos para o que foi concluído no prazo |
 
 ## 5. Pendências e próximos passos
 
@@ -66,8 +62,6 @@ A avaliação das métricas deverá considerar o número total de issues planeja
 | Validar as funcionalidades desenvolvidas | Executar os testes previstos, corrigir falhas identificadas e registrar as evidências. |
 | Finalizar as revisões de código | Submeter as alterações a Pull Requests e realizar as revisões antes da integração. |
 | Consolidar os resultados da Sprint | Atualizar as situações das issues, calcular as métricas e registrar as entregas efetivamente concluídas. |
-
-Ao final da Sprint, será possível avaliar o cumprimento do escopo planejado, identificar eventuais débitos técnicos e definir as prioridades do ciclo seguinte.
 
 ## 6. Acompanhamento
 
@@ -83,9 +77,9 @@ O acompanhamento deverá ser atualizado ao longo da Sprint, de modo que a docume
 
 A Sprint 5 direciona o desenvolvimento do Brasil Hub para duas frentes importantes: o fortalecimento da segurança da aplicação e a evolução da área administrativa. Essas frentes contribuem para proteger o acesso aos recursos restritos e preparar a plataforma para atividades de gerenciamento que exigem permissões específicas.
 
-Como o ciclo ainda está em andamento, não é possível determinar o percentual definitivo de conclusão nem afirmar que todos os objetivos foram alcançados. A avaliação final dependerá da conclusão das issues planejadas, da validação das funcionalidades implementadas e da análise das métricas estabelecidas.
+Nesta Sprint, faltou organização da equipe, pois as features que precisavam ser implementadas para prosseguir com outras funcionalidades atrasou todo o resto do trabalho. As evidências mostram que o percentual de conclusão das issues ficou em 60% (muito abaixo dos 90% esperado).  
 
-Após o encerramento da Sprint, esta seção deverá ser atualizada com os resultados efetivos, os principais desafios enfrentados, as pendências remanescentes e as contribuições das entregas para a evolução do Brasil Hub.
+Foi um momento de várias outras atividades acadêmicas e externas, tal como o período de eleitoral no Brasil, sendo essas uma das causas para o atraso das entregas.
 
 ---
 
