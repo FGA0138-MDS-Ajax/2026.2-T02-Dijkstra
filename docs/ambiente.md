@@ -35,8 +35,8 @@ docker compose logs -f
 
 ### 3. Acessar os Serviços
 - Front-end: [http://localhost:3000](http://localhost:3000)
-- Back-end Docker (API): [http://localhost:8001](http://localhost:8001)
-- Documentação interativa (Swagger): [http://localhost:8001/docs](http://localhost:8001/docs)
+- Back-end Docker (API): [http://localhost:8000](http://localhost:8000)
+- Documentação interativa (Swagger): [http://localhost:8000/docs](http://localhost:8000/docs)
 
 O frontend atual chama a porta `8000`. Para testá-lo com o backend do
 Compose, ajuste `API_BASE_URL` em `src/frontend/js/api_client.js` para
