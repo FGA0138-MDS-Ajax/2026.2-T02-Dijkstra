@@ -27,6 +27,10 @@ CREATE TABLE IF NOT EXISTS administradores (
     password_hash TEXT NOT NULL
 )
 """,
+    """
+CREATE UNIQUE INDEX IF NOT EXISTS indicadores_unico_idx
+ON indicadores (unidade_territorial, dimensao, periodo_referencia)
+""",
 )
 
 
