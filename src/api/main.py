@@ -144,7 +144,7 @@ def painel_admin(admin: dict = Depends(obter_admin_autenticado)):
     }
 
 
-    #endpoint com rota /api/admin/indicadores/upload
+    #Endpoint com rota /api/admin/indicadores/upload
 @app.post(
     "/api/admin/indicadores/upload",
     status_code=status.HTTP_200_OK,
@@ -171,7 +171,7 @@ def upload_csv_indicadores(
 
     temp_path = None
     try:
-        #Salvar arquivo temporariamente em disco para leitura pelo Pandas
+        # Salva arquivo temporariamente em disco para leitura pelo Pandas
         with tempfile.NamedTemporaryFile(delete=False, suffix=".csv") as temp_file:
             shutil.copyfileobj(file.file, temp_file)
             temp_path = temp_file.name
@@ -187,7 +187,7 @@ def upload_csv_indicadores(
             status_code=400, detail="Erro ao ler ou processar o arquivo CSV enviado."
         ) from erro
     finally:
-        #Assegurar a remoção do arquivo temporário
+        # Assegurar a remoção do arquivo temporário
         if temp_path and Path(temp_path).exists():
             Path(temp_path).unlink()
 
@@ -198,7 +198,7 @@ def upload_csv_indicadores(
             "mensagem": "Base de indicadores atualizada com sucesso.",
             "registros_processados": total_processado,
             "atualizado_por": admin["usuario"]
-            # lembrar que admin tem id, usuario e password_hash
+            # Lembrar que admin tem id, usuario e password_hash
         }
     except Exception as erro:
         raise HTTPException(
