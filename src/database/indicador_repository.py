@@ -61,3 +61,30 @@ class IndicadorRepository:
             return len(linhas)
         finally:
             conn.close()
+
+    def salvar_ou_atualizar_indicadores(self, df: pd.DataFrame) -> int:
+        """Insere novos indicadores ou atualiza os existentes"""
+        dados = df[COLUNAS].astype(object)
+        dados = dados.where(pd.notna(dados), None)
+        linhas = list(dados.itertuples(index=False, name=None))
+
+        conn = get_connection()
+        try:
+            with conn.cursor() as cursor:
+                cursor.executemany(
+                    """
+                    INSERT INTO indicadores 
+                    (nome_indicador, unidade_territorial, dimensao, valor, periodo_referencia, unidade_medida, fonte) 
+                    VALUES (%s, %s, %s, %s, %s, %s, %s)
+                    ON CONFLICT (unidade_territorial, dimensao, periodo_referencia) 
+                    DO UPDATE SET valor = EXCLUDED.valor, fonte = EXCLUDED.fonte;
+                    """,
+                    linhas,
+                )
+            conn.commit()
+            return len(linhas)
+        except Exception as e:
+            conn.rollback()
+            raise e
+        finally:
+            conn.close()
