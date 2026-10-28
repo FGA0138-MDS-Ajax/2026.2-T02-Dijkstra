@@ -36,8 +36,8 @@ O arquivo CSV enviado deve conter obrigatoriamente as seguintes colunas correspo
 ```database/indicador_repository.py```
 
 -  **O que mudou:** Adicionado o método `salvar_ou_atualizar_indicadores(df)`.
-- **Como funciona:** Ele realiza uma inserção em lote utilizando Upsert (`ON CONFLICT`) do PostgreSQL com base na chave composta (`unidade_territorial`, `dimensao`, `periodo_referencia`). 
-- Executa um rollback em caso de erro, para que a base de dados nunca fique parcialmente atualizada
+- **Como funciona:** Ele realiza uma inserção em lote utilizando Upsert (`ON CONFLICT`) do PostgreSQL.
+- Executa um rollback em caso de erro, para que a base de dados nunca fique parcialmente atualizada.
 
 ```api/main.py```
 -  Adicionado o novo endpoint  **`POST /api/admin/indicadores/upload`**.
