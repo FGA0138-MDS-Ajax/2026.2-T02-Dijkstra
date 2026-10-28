@@ -2,20 +2,19 @@ from fastapi import FastAPI, Query
 from fastapi import Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
-import shutil
-import tempfile
-from pathlib import Path
 from fastapi import File, UploadFile, status
 
-from src.data.processamento_csv import tratar_csv
 from src.api.schemas import Dimensao, IndicadorResponse, LoginRequest, LoginResponse
 from src.auth.security import PasswordHasher
 from src.database.admin_repository import AdminRepository
 from src.database.indicador_repository import IndicadorRepository
 from src.services.auth_service import AuthService, CredenciaisInvalidasException
 from src.services.indicador_service import (
-    ConsultaIndicadoresIndisponivel,
     IndicadorService,
+    ImportacaoService, 
+    ErroProcessamentoCSV, 
+    ErroPersistenciaIndicadores,
+    ConsultaIndicadoresIndisponivel
 )
 from contextlib import asynccontextmanager
 
@@ -143,6 +142,10 @@ def painel_admin(admin: dict = Depends(obter_admin_autenticado)):
         "admin_id": admin["id"],
     }
 
+def get_importacao_service() -> ImportacaoService:
+    repository = IndicadorRepository()
+    return ImportacaoService(repository)
+
 
     #Endpoint com rota /api/admin/indicadores/upload
 @app.post(
@@ -151,56 +154,31 @@ def painel_admin(admin: dict = Depends(obter_admin_autenticado)):
     responses={
         400: {"description": "Arquivo CSV inválido ou malformado"},
         401: {"description": "Não autenticado / Credenciais inválidas"},
+        500: {"description": "Erro interno ao persistir os dados no banco de dados"},
     },
 )
 def upload_csv_indicadores(
     file: UploadFile = File(...),
     admin: dict = Depends(obter_admin_autenticado),
-    service: IndicadorService = Depends(get_indicador_service),
+    import_service: ImportacaoService = Depends(get_importacao_service),
 ):
-    #docstring
     """
     Endpoint protegido (B-04) para upload e atualização da base de indicadores via CSV.
-    Requer autenticação válida de administrador via Basic Auth.
     """
-    # Verificar formato do arquivo .csv
     if not file.filename or not file.filename.endswith(".csv"):
         raise HTTPException(
             status_code=400, detail="Apenas arquivos com extensão .csv são permitidos."
         )
 
-    temp_path = None
     try:
-        # Salva arquivo temporariamente em disco para leitura pelo Pandas
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".csv") as temp_file:
-            shutil.copyfileobj(file.file, temp_file)
-            temp_path = temp_file.name
-
-        # Processar e validar dados
-        df_tratado = tratar_csv(temp_path)
-
-    except ValueError as erro:
-        # Captura erros de validação
-        raise HTTPException(status_code=400, detail=str(erro)) from erro
-    except Exception as erro:
-        raise HTTPException(
-            status_code=400, detail="Erro ao ler ou processar o arquivo CSV enviado."
-        ) from erro
-    finally:
-        # Assegurar a remoção do arquivo temporário
-        if temp_path and Path(temp_path).exists():
-            Path(temp_path).unlink()
-
-    # Persistir os dados de forma atômica no banco (Upsert)
-    try:
-        total_processado = service.repository.salvar_ou_atualizar_indicadores(df_tratado)
+        total_processado = import_service.processar_upload(file)
+        
         return {
             "mensagem": "Base de indicadores atualizada com sucesso.",
             "registros_processados": total_processado,
             "atualizado_por": admin["usuario"]
-            # Lembrar que admin tem id, usuario e password_hash
         }
-    except Exception as erro:
-        raise HTTPException(
-            status_code=500, detail="Erro interno ao persistir os dados na base de dados."
-        ) from erro
+    except ErroProcessamentoCSV as erro:
+        raise HTTPException(status_code=400, detail=str(erro))
+    except ErroPersistenciaIndicadores:
+        raise HTTPException(status_code=500, detail="Erro interno ao persistir os dados na base de dados.")
