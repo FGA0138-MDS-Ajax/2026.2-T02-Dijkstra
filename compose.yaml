@@ -19,11 +19,14 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    env_file:
+      - .env
     ports:
       - "8000:8000"
     volumes:
       - ./src:/app/src
       - ./data:/app/data
+      - ./scripts:/app/scripts
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER:-brasilhub}:${POSTGRES_PASSWORD:?Defina POSTGRES_PASSWORD no arquivo .env}@db:5432/${POSTGRES_DB:-brasilhub}
       ENVIRONMENT: development
