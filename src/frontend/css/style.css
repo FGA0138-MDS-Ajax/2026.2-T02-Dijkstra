@@ -467,3 +467,148 @@ h1, h2, h3, h4, .logo {
 .theme-toggle .icon-sun { display: none; }
 html[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
 html[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+
+
+/*administração*/
+
+
+.card {
+padding: var(--space-3);
+background: var(--color-bg);
+border: var(--border-width) solid var(--color-border);
+border-radius: var(--radius);
+box-shadow: var(--box-shadow);
+}
+
+.card h1,
+.card h2,
+.card h3 {
+margin: 0 0 var(--space-1);
+color: var(--color-primary);
+font-weight: 400;
+}
+
+.card p {
+margin: 0 0 var(--space-2);
+font-size: var(--font-size-0);
+color: var(--color-text-muted);
+}
+
+.card label {
+display: block;
+margin-bottom: var(--space-0);
+font-size: var(--font-size-0);
+font-weight: 600;
+}
+
+.card input {
+width: 100%;
+margin-bottom: var(--space-2);
+padding: var(--space-1) var(--space-1-5);
+font: inherit;
+font-size: var(--font-size-0);
+color: var(--color-text);
+background: var(--color-surface-soft);
+border: var(--border-width) solid var(--color-border);
+border-radius: var(--radius-sm);
+}
+
+.card .btn:disabled {
+opacity: 0.6;
+cursor: wait;
+}
+
+/* login */
+.login-section {
+display: flex;
+justify-content: center;
+padding: var(--space-4) 0;
+}
+
+.login-section .card {
+width: 100%;
+max-width: 26rem;
+text-align: center;
+}
+
+.login-section label {
+text-align: left;
+}
+
+/* painel */
+.admin-layout {
+display: grid;
+grid-template-columns: 16rem minmax(0, 1fr);
+gap: var(--space-3);
+max-width: 75rem;
+min-height: calc(100vh - 2 * var(--space-2));
+margin: 0 auto;
+}
+
+.admin-sidebar {
+position: sticky;
+top: var(--space-2);
+align-self: start;
+display: flex;
+flex-direction: column;
+gap: var(--space-1);
+padding: var(--space-3);
+background: var(--color-surface-soft);
+border: var(--border-width) solid var(--color-border);
+border-radius: var(--radius-xl);
+box-shadow: var(--box-shadow);
+}
+
+.admin-sidebar p {
+margin: 0;
+font-size: var(--font-size-0);
+color: var(--color-text-muted);
+}
+
+.admin-sidebar .links {
+flex-direction: column;
+align-items: flex-start;
+margin-top: var(--space-2);
+}
+
+.admin-content {
+display: flex;
+flex-direction: column;
+gap: var(--space-2);
+}
+
+.admin-content h2 {
+margin: 0;
+color: var(--color-primary);
+font-weight: 400;
+}
+
+.admin-boasvindas {
+display: flex;
+justify-content: space-between;
+align-items: center;
+gap: var(--space-2);
+}
+
+.admin-boasvindas p {
+margin: 0;
+font-size: var(--font-size-1);
+color: var(--color-text);
+}
+
+.admin-grid {
+display: grid;
+grid-template-columns: repeat(2, minmax(0, 1fr));
+gap: var(--space-3);
+}
+
+@media (max-width: 48rem) {
+.admin-layout,
+.admin-grid {
+    grid-template-columns: 1fr;
+}
+
+.admin-sidebar {
+    position: static;
+}
+}
