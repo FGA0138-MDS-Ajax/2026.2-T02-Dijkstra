@@ -22,12 +22,12 @@ function obterValorIdhParaAno(listaIndicadores,  ano, dimensao){
     if(!listaIndicadores){
         return null;
     }
-   const ind = listaIndicadores.find(i=>
+    const ind = listaIndicadores.find(i=>
     // esse dimensão cor é só pra falar que a dimensão observada é idhm_geral, e não outra dimensão que não está no foco.
     // a galera do filtros vai poder filtrar isso aqui.
     i.periodo_referencia === ano && i.dimensao === dimensao
-   );
-   return ind ? ind.valor : null;
+    );
+    return ind ? ind.valor : null;
 }
 
 function formatarValor(valor) {
@@ -98,30 +98,29 @@ export function inicializarMapa(idContainer) {
 
     //monta popup ao clicar, procura o ano especifico.E vai mostrando as informações, 1° nome e ano. Ai depois passa por cada dimensão do ano e imprime o valor
     function montarPopup(feature) {
-        const nome = feature.properties.name;
-        const doAno = indicadoresDoEstado(feature).filter(
-            ind => ind.periodo_referencia === anoSelecionado
-        );
+    const doAno = indicadoresDoEstado(feature).filter(
+        ind => ind.periodo_referencia === anoSelecionado
+    );
 
-        let html = `<div class="popup-container">`;
-        html += `<h3 class="popup-titulo">${feature.properties.name}<span class="popup-periodo">(${anoSelecionado ?? "—"})</span></h3>`;
-        html += `<div class="popup-divider">`;
-        if (doAno.length > 0) {
-            doAno.forEach(ind => {
-                html += `<p class="popup-item"><strong>${ind.dimensao}:</strong> ${ind.valor ?? 'N/D'}</p>`;
-            });
-        } else {
-            html += `<p class="popup-vazio">Sem dados disponíveis para este estado neste ano.</p>`;
-        }
-        html += `</div></div>`;
-        return html;
+    let html = `<div class="popup-card">`;
+    html += `<div class="popup-header"><h4>${feature.properties.name} (${anoSelecionado ?? "—"})</h4></div>`;
+    if (doAno.length > 0) {
+        html += `<div class="popup-body">`;
+        doAno.forEach(ind => {
+            html += `<div class="popup-row"><span>${ind.dimensao}</span><span class="popup-val">${ind.valor ?? 'N/D'}</span></div>`;
+        });
+        html += `</div>`;
+    } else {
+        html += `<p class="popup-vazio">Sem dados disponíveis para este estado neste ano.</p>`;
     }
+    return html + `</div>`;
+}
 
     //fecha o popup, troca o ano selecionado e chama o troca style com a nova informação de ano (essa variavel está acima, logo não precisa
     //passar por nenhuma função dentro desse function)
     function aplicarAno(ano) {
         anoSelecionado = ano;
-        mapa.closePopup();
+        infoEstado.update();
         camadaEstados.setStyle(estiloEstado);
     }
 
@@ -139,6 +138,21 @@ export function inicializarMapa(idContainer) {
             L.DomEvent.disableClickPropagation(div); 
         div.querySelector('select').addEventListener('change',e=>aplicarAno(e.target.value));
         return div;
+    };
+
+    // Painel fixo com os dados do estado clicado (no lugar do popup, para não cobrir o mapa)
+    let estadoSelecionado = null;
+    const infoEstado = L.control({ position: 'topright' });
+    infoEstado.onAdd = function () {
+        this._div = L.DomUtil.create('div', 'info-legenda info-estado');
+        L.DomEvent.disableClickPropagation(this._div);
+        this.update();
+        return this._div;
+    };
+    infoEstado.update = function () {
+        this._div.innerHTML = estadoSelecionado
+            ? montarPopup(estadoSelecionado)
+            : '<h4>Estado</h4><p class="popup-vazio">Clique em um estado para ver os dados.</p>';
     };
 
     Promise.all([
@@ -161,16 +175,20 @@ export function inicializarMapa(idContainer) {
                 //Aparecer os nomes do estado, não permanente pra não ficar feio. Só ao passar o mouse por cima
                 layer.bindTooltip(feature.properties.name, { permanent: false, direction: "center", className: "rotulo-estado" });
                 //popup montado ao clicar, com o ano atual
-                layer.bindPopup(() => montarPopup(feature));
+                layer.on('click', () => {
+                estadoSelecionado = feature;
+                infoEstado.update();
+});
             }
         }).addTo(mapa);
- 
+
         if (anosDisponiveis.length > 0) {
             seletorAno.addTo(mapa);
         }
+        infoEstado.addTo(mapa);
     })
     .catch(error => console.error('Erro ao carregar o GeoJSON:', error));
- 
+
     //legenda no canto, com as faixas de IDHM
     const legenda = L.control({ position: 'bottomright' });
     legenda.onAdd = function () {
@@ -186,6 +204,6 @@ export function inicializarMapa(idContainer) {
         return div;
     };
     legenda.addTo(mapa);
- 
+
     return {mapa, atualizarIndicadores};
 }

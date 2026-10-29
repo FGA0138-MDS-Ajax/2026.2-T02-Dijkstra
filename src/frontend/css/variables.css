@@ -1,88 +1,226 @@
+
 :root {
-    /* Fontes */
-    --font-body: "Atkinson Hyperlegible", "Inter", system-ui;
-    --font-heading: var(--font-body);
+    /* ---------- variables primary ---------- */
+    --white: #ffffff;
+    --black: #000000;
+
+    --gray-100: #e6e6e6;
+    --gray-600: #545454;
+    --gray-700: #3a3a38;  
+    --gray-800: #2b2b29;   
+    --gray-900: #222221;   
+
+    --green-50:  #edfbf0;
+    --green-100: #d3f5dc;
+    --green-200: #acecbc;
+    --green-400: #6ede8a;
+    --green-600: #43c363;
+    --green-700: #2a7f40;
+    --green-900: #1f5a2e;
+    --green-950: #0b1f13;
+
+    --blue-50:  #e8edff;
+    --blue-200: #bfcbff;
+    --blue-300: #9db1ff;
+    --blue-500: #0033ff;
+    --blue-600: #001f99;
+    --blue-900: #000e47;
+
+    /* tipografia: Poppins no texto, Aclonica em títulos e no nome do site */
+    --font-body: "Poppins", "Atkinson Hyperlegible", system-ui, sans-serif;
+    --font-heading: "Aclonica", "Poppins", system-ui, sans-serif;
     --font-scale: 1;
+    --font-size-0: 0.875rem;
     --font-size-1: 1rem;
     --font-size-2: 1.25rem;
     --font-size-3: 2.25rem;
+    --font-size-4: 3rem;
+    --font-size-logo: 1.75rem;
 
-    /* Espaçamentos */
+    --space-0: 0.25rem;
     --space-1: 0.5rem;
+    --space-1-5: 0.75rem;
     --space-2: 1rem;
     --space-3: 1.5rem;
     --space-4: 2.5rem;
     --space-5: 6rem;
 
-    --border-width: 1px;
-    --radius: 0.5rem;
+    --radius-sm: 0.5rem;
+    --radius: 0.75rem;
+    --radius-lg: 1.25rem;
+    --radius-xl: 1.75rem;
 
-    /* Tema Claro (Base) */
-    --color-bg: #f4f7f8;
-    --color-surface: #ffffff;
-    --color-text: #14232b;
-    --color-text-muted: #455660;
-    --color-border: #b9c6cc;
+    --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+    --dur-fast: 150ms;
+    --dur: 250ms;
+    --dur-slow: 700ms;
 
-    --color-primary: #0b5d4f;
-    --color-primary-hover: #084539;
-    --color-on-primary: #ffffff;
+    /*--------- sombras --------*/
+    --shadow-sm: 0 2px 10px rgb(31 90 46 / 0.08);
+    --shadow-md: 0 8px 28px rgb(31 90 46 / 0.14);
+    --shadow-lg: 0 16px 40px rgb(31 90 46 / 0.2);
 
-    --color-header-bg: #ffffff;
-    --color-header-text: rgb(33, 92, 50);
+    /* ---------- tema claro (base) ---------- */
+    --border-width: 0; 
+    --color-bg: var(--white);
+    --color-surface: var(--white);
+    --color-surface-soft: var(--green-50);
+    --color-text: var(--green-900);
+    --color-text-muted: var(--green-700);
+    --color-border: var(--green-200);
+    --color-border-soft: var(--green-200);
+
+    --color-primary: var(--green-900);
+    --color-primary-hover: var(--green-700);
+    --color-on-primary: var(--white);
+
+    /* links do menu */
+    --color-link: var(--green-700);
+    --color-link-hover: var(--green-900);
+    --color-link-active: var(--green-900);
+
+    --color-action: var(--blue-500);
+    --color-action-hover: var(--blue-600);
+    --color-on-action: var(--white);
+    --color-action-soft: var(--blue-50);
+    --color-action-soft-hover: var(--blue-200);
 
     --color-focus: #b45f00;
-    --color-button: rgb(1, 50, 254);
-    --color-button-hover: rgb(11, 137, 254);
 
-    --box-shadow: 0 0.25rem 1.5rem rgba(0, 0, 0, 0.04);
-    --header-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.25);
+    --color-header-bg: var(--white);
+    --color-header-text: var(--green-900);
+    --color-header-border: var(--green-200);
+
+    --color-info-bg: var(--blue-50);
+    --color-info-text: var(--blue-600);
+    --color-info-border: var(--blue-500);
+    --color-success-bg: var(--green-50);
+    --color-success-text: var(--green-900);
+    --color-success-border: var(--green-600);
+    --color-error-bg: #fee2e2;
+    --color-error-text: #991b1b;
+    --color-error-border: #dc2626;
+
+    --map-1: var(--green-100);
+    --map-2: var(--green-200);
+    --map-3: var(--green-400);
+    --map-4: var(--green-700);
+    --map-5: var(--green-900);
+
+    --box-shadow: var(--shadow-sm);
+    --header-shadow: var(--shadow-md);
+    --popup-shadow: var(--shadow-lg);
+
+    
+    --color-button: var(--color-action);
+    --color-button-hover: var(--color-action-hover);
+    --color-on-button: var(--color-on-action);
 }
 
+/* ---------- Tema escuro --------- */
 html[data-theme="dark"] {
-    --color-bg: #0b1418;
-    --color-surface: #16252d;
-    --color-text: #e8eef1;
-    --color-text-muted: #adbdc5;
-    --color-border: #3b505b;
+    --color-bg: var(--gray-900);
+    --color-surface: var(--gray-800);
+    --color-surface-soft: var(--gray-700);
+    --color-text: #f2f1ec;
+    --color-text-muted: #b8b6ac;
+    --color-border: #4a4a46;
+    --color-border-soft: #3f3f3b;
 
-    --color-primary: #62c7ac;
-    --color-primary-hover: #86d8c2;
-    --color-on-primary: #08201a;
+    --color-primary: var(--green-400);
+    --color-primary-hover: var(--green-200);
+    --color-on-primary: var(--gray-900);
 
-    --color-header-bg: #1f333d;
-    --color-header-text: #62c7ac;
-    --color-header-border: #4a6572;
-    --header-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.55);
+    --color-link: #b8b6ac;
+    --color-link-hover: var(--green-400);
+    --color-link-active: var(--green-400);
+
+    --color-action: var(--blue-300);
+    --color-action-hover: var(--blue-200);
+    --color-on-action: var(--blue-900);
+    --color-action-soft: color-mix(in srgb, var(--blue-300) 18%, var(--gray-800));
+    --color-action-soft-hover: color-mix(in srgb, var(--blue-300) 30%, var(--gray-800));
 
     --color-focus: #ffb454;
-    --color-button: #62c7ac;
-    --color-button-hover: #86d8c2;
-    --color-on-button: #08201a;
+
+    --color-header-bg: var(--gray-800);
+    --color-header-text: var(--green-400);
+    --color-header-border: #4a4a46;
+
+    --color-info-bg: color-mix(in srgb, #5b7bff 18%, var(--gray-800));
+    --color-info-text: #c7d2ff;
+    --color-info-border: #5b7bff;
+    --color-success-bg: color-mix(in srgb, var(--green-600) 18%, var(--gray-800));
+    --color-success-text: var(--green-200);
+    --color-success-border: var(--green-600);
+    --color-error-bg: color-mix(in srgb, #f87171 18%, var(--gray-800));
+    --color-error-text: #fecaca;
+    --color-error-border: #f87171;
+
+    --map-1: #2f4a38;
+    --map-2: var(--green-700);
+    --map-3: var(--green-600);
+    --map-4: var(--green-400);
+    --map-5: var(--green-200);
+
+    --shadow-sm: 0 2px 12px rgb(0 0 0 / 0.35);
+    --shadow-md: 0 8px 28px rgb(0 0 0 / 0.5);
+    --shadow-lg: 0 16px 40px rgb(0 0 0 / 0.6);
 }
 
+/* ---------- Alto contraste  ---------- */
 html[data-theme="high-contrast"] {
+    --border-width: 2px;
     --color-bg: #000000;
     --color-surface: #000000;
+    --color-surface-soft: #000000;
     --color-text: #ffffff;
     --color-text-muted: #ffffff;
     --color-border: #ffffff;
-    --border-width: 2px;
+    --color-border-soft: #ffffff;
 
     --color-primary: #ffd400;
     --color-primary-hover: #ffffff;
     --color-on-primary: #000000;
 
+    --color-link: #ffffff;
+    --color-link-hover: #ffd400;
+    --color-link-active: #ffd400;
+
+    --color-action: #ffd400;
+    --color-action-hover: #ffffff;
+    --color-on-action: #000000;
+    --color-action-soft: #000000;
+    --color-action-soft-hover: #333333;
+
+    --color-focus: #ffd400;
+
     --color-header-bg: #000000;
     --color-header-text: #ffffff;
     --color-header-border: #ffffff;
-    --header-shadow: none;
 
-    --color-focus: #ffd400;
-    --color-button: #ffd400;
-    --color-button-hover: #ffffff;
-    --color-on-button: #000000;
+    --color-info-bg: #000000;
+    --color-info-text: #ffffff;
+    --color-info-border: #ffffff;
+    --color-success-bg: #000000;
+    --color-success-text: #ffffff;
+    --color-success-border: #ffffff;
+    --color-error-bg: #000000;
+    --color-error-text: #ffffff;
+    --color-error-border: #ffd400;
+
+    --map-1: #333300;
+    --map-2: #666600;
+    --map-3: #999900;
+    --map-4: #ccb000;
+    --map-5: #ffd400;
+
+    --shadow-sm: none;
+    --shadow-md: none;
+    --shadow-lg: none;
 }
 
-html[data-font-scale="large"] { --font-scale: 1.25; }
+html[data-theme="high-contrast"] a:not(.btn) { text-decoration: underline; }
+
+html[data-font-scale="large"]  { --font-scale: 1.25; }
 html[data-font-scale="xlarge"] { --font-scale: 1.5; }

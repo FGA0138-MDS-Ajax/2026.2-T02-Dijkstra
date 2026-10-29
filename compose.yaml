@@ -1,16 +1,38 @@
 services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-brasilhub}
+      POSTGRES_USER: ${POSTGRES_USER:-brasilhub}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Defina POSTGRES_PASSWORD no arquivo .env}
+    ports:
+      - "127.0.0.1:5434:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
   backend:
     build:
       context: .
       dockerfile: Dockerfile
+    env_file:
+      - .env
     ports:
       - "8000:8000"
     volumes:
       - ./src:/app/src
       - ./data:/app/data
+      - ./scripts:/app/scripts
     environment:
-      - DB_PATH=/app/data/indicadores.db
-      - ENVIRONMENT=development
+      DATABASE_URL: postgresql://${POSTGRES_USER:-brasilhub}:${POSTGRES_PASSWORD:?Defina POSTGRES_PASSWORD no arquivo .env}@db:5432/${POSTGRES_DB:-brasilhub}
+      ENVIRONMENT: development
+    depends_on:
+      db:
+        condition: service_healthy
 
   frontend:
     image: nginx:alpine
@@ -18,3 +40,6 @@ services:
       - "3000:80"
     volumes:
       - ./src/frontend:/usr/share/nginx/html:ro
+
+volumes:
+  postgres_data:

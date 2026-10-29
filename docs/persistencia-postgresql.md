@@ -1,6 +1,7 @@
-## Persistência dos indicadores (SQLite)
+## Persistência dos indicadores (PostgreSQL)
 
-Os indicadores socioeconômicos ficam em um banco SQLite acessado pelo `IndicadorRepository` (`src/database/indicador_repository.py`).
+Os indicadores socioeconômicos ficam em um banco PostgreSQL acessado pelo
+`IndicadorRepository` (`src/database/indicador_repository.py`).
 
 ### Como inicializar o banco
 
@@ -8,7 +9,9 @@ Os indicadores socioeconômicos ficam em um banco SQLite acessado pelo `Indicado
 python -c "from src.database.database import init_db; init_db()"
 ```
 
-O caminho do arquivo vem da variável de ambiente `DB_PATH`. Sem ela, usa `data/indicadores.db`. O arquivo `.db` não é versionado.
+A conexão vem da variável `DATABASE_URL`, carregada do `.env` local. O
+`compose.yaml` inicia um PostgreSQL com volume próprio; o arquivo `.env`
+não é versionado.
 
 ### Tabela `indicadores` (mapeamento dos campos)
 
@@ -26,7 +29,7 @@ O caminho do arquivo vem da variável de ambiente `DB_PATH`. Sem ela, usa `data/
 ### Regras
 
 - Valores ausentes não viram zero: são gravados como NULL.
-- Todas as consultas usam parâmetros (`?`), sem concatenar valores no SQL.
+- Todas as consultas usam parâmetros (`%s`), sem concatenar valores no SQL.
 - A tabela `administradores` (com `password_hash`) existe no esquema, mas a autenticação é da Sprint 5.
 
 ### Testes

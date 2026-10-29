@@ -7,7 +7,7 @@ Execute os comandos deste guia na raiz do projeto, com a `.venv` ativada.
 ## Como os dados chegam à API
 
 ```text
-CSVs → leitura e tratamento → adaptação das colunas → SQLite
+CSVs → leitura e tratamento → adaptação das colunas → PostgreSQL
                                                       ↓
 Cliente ← JSON ← rota FastAPI ← serviço ← repositório ← consulta
 ```
@@ -55,7 +55,7 @@ e a API os retorna como `null`, sem substituir por zero.
 
 | Coluna do banco | Origem ou regra |
 | --- | --- |
-| `id` | Gerado pelo SQLite |
+| `id` | Gerado pelo PostgreSQL |
 | `nome_indicador` | `IDHM` |
 | `unidade_territorial` | `sigla` do resultado tratado |
 | `dimensao` | Mantida do tratamento |
@@ -79,44 +79,28 @@ python -m src.data.importar_csv
 ```
 
 O comando trata os quatro arquivos antes de iniciar a gravação e
-importa o conjunto usando `salvar_indicadores()`. Com o banco padrão,
-a saída esperada é:
+importa o conjunto usando `salvar_indicadores()`. A saída esperada é:
 
 ```text
-1728 indicadores importados para data/indicadores.db.
+1728 indicadores importados para o PostgreSQL.
 ```
 
-Os CSVs permanecem em `data/raw/`; o `.db` é um arquivo adicional.
+Os CSVs permanecem em `data/raw/`; os registros ficam no PostgreSQL.
 Se a tabela já contiver qualquer indicador, a carga é cancelada para
 impedir duplicações. A rotina não atualiza nem substitui registros.
 
-O caminho padrão é `data/indicadores.db`, relativo ao diretório de
-execução. Para usar outro banco sem apagar o existente, configure
-`DB_PATH` antes de importar e iniciar a API.
-
-**Linux/macOS:**
+Para iniciar o banco de teste local e carregar a conexão no Python:
 
 ```bash
-export DB_PATH="$PWD/data/indicadores_alternativo.db"
+cp .env.example .env
+docker compose up -d db
+python -m src.data.importar_csv
 ```
 
-**PowerShell:**
-
-```powershell
-$env:DB_PATH = Join-Path (Get-Location) "data/indicadores_alternativo.db"
-```
-
-Use o mesmo valor nos terminais da importação e da API e na conexão do
-DBeaver. Para conferir o caminho configurado:
-
-```bash
-python -c "from src.database.database import get_db_path; print(get_db_path())"
-```
-
-O código lê `DB_PATH`, não o nome antigo `DATABASE_PATH` presente no
-`.env.example`, e não carrega `.env` automaticamente. Os bancos locais
-são ignorados pelo Git. Em outra máquina, recrie a `.venv`, instale as
-dependências e execute a importação para gerar seu banco.
+O código lê `DATABASE_URL` do `.env`. O exemplo aponta para
+`127.0.0.1:5434`, a porta publicada pelo Compose para comandos no
+computador. Dentro do Compose, o backend usa `db:5432`. Cada integrante
+pode criar seu próprio banco local e executar a importação uma vez.
 
 ## Consultar a API
 
@@ -181,8 +165,8 @@ para o texto usado em `periodo_referencia`. A rota valida a resposta com
 Consultas sem correspondência retornam **200 com `[]`**. Parâmetros
 inválidos, como `estado=XX`, retornam **422**.
 
-Se a consulta falhar com `sqlite3.OperationalError`, por exemplo por
-bloqueio ou impossibilidade de abrir o banco, o serviço registra o erro
+Se a consulta falhar com `psycopg.OperationalError`, por exemplo por
+falha na conexão com o PostgreSQL, o serviço registra o erro
 completo no log e lança `ConsultaIndicadoresIndisponivel`. A rota responde
 com **503** e este JSON, sem expor caminhos ou detalhes internos:
 
@@ -205,15 +189,13 @@ com `sudo apt install ./NOME_DO_PACOTE.deb`, usando o nome real do arquivo.
 
 Para conectar ao banco local:
 
-1. Abra **Nova conexão / New Database Connection** e selecione **SQLite**.
-2. Em **Path / Caminho**, selecione `data/indicadores.db` desta cópia do
-   projeto, ou o arquivo definido em `DB_PATH`.
-3. Se solicitado, permita o download do driver.
-4. Clique em **Testar conexão** e **Concluir**.
+1. Abra **Nova conexão / New Database Connection** e selecione **PostgreSQL**.
+2. Informe host `127.0.0.1`, porta `5434`, banco `brasilhub` e usuário
+   `brasilhub`, conforme o `.env.example`.
+3. Informe a senha definida no `.env` local e teste a conexão.
 
-Esse banco local não exige servidor, porta, usuário ou senha. O caminho
-é do arquivo `.db`, não do CSV nem do driver. Consulte também a
-[documentação oficial de conexão SQLite](https://dbeaver.com/docs/dbeaver/Database-driver-SQLite/).
+O DBeaver consulta o mesmo banco usado pelo importador quando ambos
+apontam para `127.0.0.1:5434/brasilhub`.
 
 Expanda **Tabelas**, clique com o botão direito em `indicadores` e
 selecione **Visualizar dados → Todas as linhas**. A aba de propriedades
@@ -276,12 +258,11 @@ python -m pytest -q
 Remove-Item Env:PYTEST_DISABLE_PLUGIN_AUTOLOAD
 ```
 
-A suíte cobre tratamento de CSV, repositório SQLite, rotas e validações
+A suíte cobre tratamento de CSV, repositório PostgreSQL, rotas e validações
 da API, além da tradução e do registro de falhas operacionais no serviço.
 Os testes HTTP usam um serviço simulado para os casos de sucesso e um
 repositório com falha simulada para verificar a resposta 503. Os testes
-do repositório usam bancos temporários. Nenhum deles precisa bloquear
-ou danificar o banco de desenvolvimento. A suíte não substitui a
+do repositório usam conexões simuladas, sem alterar o banco local. A suíte não substitui a
 validação completa da importação e das consultas com os CSVs reais.
 
 Para conferir a integração, importe os dados, inicie a API e teste no
@@ -299,10 +280,10 @@ Para conferir a integração, importe os dados, inicie a API e teste no
 
 | Situação | O que conferir |
 | --- | --- |
-| A API retorna `[]` | Carga executada, filtros e mesmo `DB_PATH` na importação e na API |
+| A API retorna `[]` | Carga executada, filtros e mesma `DATABASE_URL` na importação e na API |
 | Somente renda aparece | Filtro de dimensão na API ou na grade do DBeaver |
 | Banco criado, mas vazio | `init_db()` cria só as tabelas; execute o importador |
-| Carga cancelada por banco preenchido | Consulte o banco existente ou use outro `DB_PATH` |
+| Carga cancelada por banco preenchido | Consulte o banco existente ou use outra instância PostgreSQL |
 | `NoneType` com `await` na inicialização | Chame `init_db()` sem `await`, pois a função é síncrona |
 | `ModuleNotFoundError` | `.venv` ativada, dependências instaladas e execução na raiz |
 | Porta 8000 ocupada | Use `--port 8001` no Uvicorn e ajuste as URLs |
