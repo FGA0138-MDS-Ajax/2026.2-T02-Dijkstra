@@ -13,7 +13,7 @@ graph TD
     Service -->|Valida Hash| Hasher["PasswordHasher (src/auth/security.py)"]
     Service -->|Consulta Admin| Repo["AdminRepository (src/database/admin_repository.py)"]
     Hasher -->|Criptografia| Bcrypt["bcrypt (Blowfish Engine)"]
-    Repo -->|SQL Queries| DB[("SQLite (administradores)")]
+    Repo -->|SQL Queries| DB[("PostgreSQL (administradores)")]
 ```
 
 ---
@@ -35,10 +35,10 @@ Já cobri a camada de domínio, criptografia, persistência e testes unitários 
 * **Arquivo:** `src/database/admin_repository.py`
 * **Tabela utilizada:** `administradores` (definida no schema em `src/database/database.py`).
 * **Design:**
-  * Atributo `_db_path` encapsulado.
-  * Método `buscar_por_usuario(usuario: str)`: Consulta parametrizada (`WHERE usuario = ?`), retornando um `dict` com os campos do registro ou `None`.
-  * Método `salvar(usuario: str, password_hash: str)`: Insere novo administrador e confirma a transação com `commit()`.
-  * Todas as operações utilizam blocos `try ... finally: conn.close()` para evitar vazamento de conexões no SQLite.
+  * Conexão obtida via `get_connection()` (PostgreSQL / `psycopg`).
+  * Método `buscar_por_usuario(usuario: str)`: Consulta parametrizada (`WHERE usuario = %s`), retornando um `dict` com os campos do registro ou `None`.
+  * Método `salvar(usuario: str, password_hash: str)`: Insere novo administrador (`RETURNING id`) e confirma a transação com `commit()`.
+  * Todas as operações utilizam blocos `try ... finally: conn.close()` para evitar vazamento de conexões no banco de dados.
 
 ### 2.3. Serviço de Autenticação (`AuthService`)
 * **Arquivo:** `src/services/auth_service.py`
@@ -103,7 +103,7 @@ Criar a função de injeção de dependência e a rota POST:
 
 #### Tarefa D: Script de Seed do Administrador Inicial (`scripts/seed_admin.py`)
 Criar um script CLI para configurar a conta administrativa inicial sem expor senhas no repositório:
-* Lê as variáveis `ADMIN_USER` e `ADMIN_PASSWORD` do arquivo `.env`.
+* Lê as variáveis `ADMIN_USUARIO` e `ADMIN_SENHA` do arquivo `.env`.
 * Gera o hash da senha através do `PasswordHasher.gerar_hash(...)`.
 * Persiste o administrador via `AdminRepository().salvar(...)`.
 * Documentar a instrução de execução no `.env.example` e no `README.md`.
@@ -125,7 +125,7 @@ Criar testes usando o `TestClient`:
 | Senhas não retornadas pela API nem registradas em logs | Josef | Concluído |
 | Credenciais válidas e inválidas tratadas na regra de negócio | Josef | Concluído |
 | Testes unitários para autenticação válida e inválida | Josef | Concluído |
-| Existe um endpoint para autenticação do administrador | Lucas | Pendente |
-| As rotas administrativas verificam a autenticação no back-end | Lucas | Pendente |
-| Existe uma forma documentada de configurar conta inicial (seed) | Lucas | Pendente |
-| Testes automatizados de integração HTTP (200 / 401) | Lucas | Pendente |
+| Existe um endpoint para autenticação do administrador | Lucas | Concluído |
+| As rotas administrativas verificam a autenticação no back-end | Lucas | Concluído |
+| Existe uma forma documentada de configurar conta inicial (seed) | Lucas | Concluído |
+| Testes automatizados de integração HTTP (200 / 401) | Lucas | Concluído |
