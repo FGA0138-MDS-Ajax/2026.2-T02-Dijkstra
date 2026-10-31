@@ -40,7 +40,7 @@ def tratar_csv(caminho: str | Path) -> pd.DataFrame:
     """Transforma as colunas de anos em registros de indicadores."""
     caminho = Path(caminho)
 
-    if caminho.name not in DIMENSOES:
+    if caminho.name.lower() not in DIMENSOES:
         raise ValueError(f"Arquivo sem dimensão definida: {caminho.name}")
 
     df = ler_csv(caminho)
@@ -80,7 +80,7 @@ def tratar_csv(caminho: str | Path) -> pd.DataFrame:
     )
 
     resultado["ano"] = resultado["ano"].astype("int64")
-    resultado["dimensao"] = DIMENSOES[caminho.name]
+    resultado["dimensao"] = DIMENSOES[caminho.name.lower()]
 
     valores = (
         resultado["valor"]
