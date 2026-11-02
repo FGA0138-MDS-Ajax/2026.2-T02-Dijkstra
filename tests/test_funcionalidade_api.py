@@ -541,8 +541,9 @@ def test_painel_admin_com_credenciais_validas(auth_com_banco_temporario):
     assert data["mensagem"] == f"Bem-vindo, {ADMIN_TESTE}."
     assert "admin_id" in data
 
+#espera erro, se um dia corrigirem só remover o @pytest.mark.xfail
 @pytest.mark.xfail(
-    reason="O FastAPI verifica extensões com string pura na rota. Decidir se iremos suportar .CSV em caixa alta.",
+    reason="O FastAPI verifica extensões com string pura na rota. Decidir se iremos suportar .CSV em maiusculo.",
     strict=False,
 )
 def test_upload_extensao_csv_maiuscula_deveria_ser_aceita(auth_com_banco_temporario, monkeypatch):
@@ -554,7 +555,7 @@ def test_upload_extensao_csv_maiuscula_deveria_ser_aceita(auth_com_banco_tempora
         get_importacao_service,
         lambda: MockImportacaoRapida()
     )
-
+    # vai dar errado, pq envia arquivo com a extensão em maiusculo .CSV.
     arquivos = {"file": ("DADOS.CSV", b"estado,ano\nAC,2010", "text/csv")}
     response = client.post(
         "/api/admin/indicadores/upload",
@@ -562,6 +563,7 @@ def test_upload_extensao_csv_maiuscula_deveria_ser_aceita(auth_com_banco_tempora
         files=arquivos
     )
 
+    #Normalmente espera-se que passe com 200, mas sabemos que retornará 400.
     assert response.status_code == 200
 
 def test_rota_inexistente_retorna_404():
