@@ -26,10 +26,16 @@ SENHA_TESTE = "senha-de-teste"
 AUTH_ADMIN = (ADMIN_TESTE, SENHA_TESTE)
 
 
+
 CSV_VALIDO = """ignored
 Sigla;Código;Estado;2010;2020
 SP;35;São Paulo;0,820;0,850
 RJ;33;Rio de Janeiro;0,761;0,790
+"""
+CSV_LINHA_COM_COLUNAS_A_MAIS = """ignored
+Sigla;Código;Estado;2010
+SP;35;São Paulo;0,820
+RJ;33;Rio de Janeiro;0,761;sobrando
 """
 
 CSV_COM_LINHA_INVALIDA = """ignored
@@ -120,6 +126,12 @@ def test_upload_valido_retorna_sucesso(banco_upload):
     assert corpo["mensagem"] == "Base de indicadores atualizada com sucesso."
     assert corpo["registros_processados"] == 4  
     assert corpo["atualizado_por"] == ADMIN_TESTE
+    
+def test_upload_extensao_csv_maiuscula_e_aceita(banco_upload):
+    response = _upload("IDHM_GERAL_UF.CSV", CSV_VALIDO)
+
+    assert response.status_code == 200
+    assert response.json()["registros_processados"] == 4
 
 
 def test_dados_enviados_podem_ser_consultados_pela_api(banco_upload):
@@ -202,3 +214,25 @@ def test_erros_nao_expoem_detalhes_internos(banco_upload, nome, conteudo):
     assert ".py" not in corpo
     assert "psycopg" not in corpo
     assert "select " not in corpo
+
+def test_csv_latin1_retorna_400_pedindo_utf8(banco_upload):
+    conteudo = CSV_VALIDO.encode("latin-1")
+
+    response = _upload("idhm_geral_uf.csv", conteudo)
+
+    assert response.status_code == 400
+    assert "UTF-8" in response.json()["detail"]
+
+
+def test_csv_com_colunas_a_mais_retorna_400(banco_upload):
+    response = _upload("idhm_geral_uf.csv", CSV_LINHA_COM_COLUNAS_A_MAIS)
+
+    assert response.status_code == 400
+    assert "mais valores" in response.json()["detail"]
+
+
+def test_csv_sem_nenhum_byte_retorna_400_pandas(banco_upload):
+    response = _upload("idhm_geral_uf.csv", b"")
+
+    assert response.status_code == 400
+    assert "vazio" in response.json()["detail"].lower()
