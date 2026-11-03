@@ -69,7 +69,7 @@ class IndicadorRepository:
         linhas = list(dados.itertuples(index=False, name=None))
 
         conn = get_connection()
-        try:
+        try: #simplifiquei aqui pois estava relançando a mesma exceção sem tratar o erro
             with conn.cursor() as cursor:
                 cursor.executemany(
                     """
@@ -84,4 +84,4 @@ class IndicadorRepository:
             conn.commit()
             return len(linhas)
         finally:
-            conn.close()
+            conn.close() 
