@@ -50,6 +50,30 @@ h1, h2, h3, h4, .logo {
     transition: background-color 0.3s ease;
 }
 
+@media (max-width: 40rem) {
+    .floating-header{
+        padding: var(--space-1-5) var(--space-2);
+        margin-bottom: var(--space-2);
+        border-radius: var(--radius-lg);
+        gap: var(--space-2);
+        justify-content: center;
+    }
+    .logo {
+        font-size: 1.35rem;
+    }
+    .links {
+        width: 100%;
+        justify-content: space-between;
+        gap: var(--space-1-5) var(--space-2);
+    }
+    .floating-header .btn {
+        padding: var(--space-1) var(--space-2);
+        font-size: var(--font-size-0);
+        flex: 1;
+        text-align: center;
+    }
+}
+
 .logo {
     font-size: var(--font-size-logo);
     font-weight: 400;
@@ -116,6 +140,20 @@ h1, h2, h3, h4, .logo {
     flex-wrap: wrap;
     gap: var(--space-4);
     margin-bottom: var(--space-4);
+}
+
+@media (max-width: 40rem) {
+    .main-buttons {
+        gap: var(--space-1-5);
+        margin-bottom: var(--space-2);
+    }
+
+    .main-buttons .btn {
+        flex: 1;
+        text-align: center;
+        padding: var(--space-1) var(--space-0);
+        font-size: var(--font-size-0);
+    }
 }
 
 .btn {
