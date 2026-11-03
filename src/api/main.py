@@ -178,7 +178,12 @@ def upload_csv_indicadores(
             "registros_processados": total_processado,
             "atualizado_por": admin["usuario"]
         }
+    
     except ErroProcessamentoCSV as erro:
-        raise HTTPException(status_code=400, detail=str(erro))
+        raise HTTPException(
+            status_code=400,
+            detail="Arquivo CSV inválido ou incompatível com o formato esperado." #mudei essa msg de erro
+        ) from erro
+        
     except ErroPersistenciaIndicadores:
         raise HTTPException(status_code=500, detail="Erro interno ao persistir os dados na base de dados.")
