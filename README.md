@@ -114,8 +114,9 @@ Execute os comandos na raiz do repositório.
 - Git instalado.
 - Python **3.12.x**, com pip e suporte a ambientes virtuais (`venv`).
 - Dependências de `requirements.txt`: **Pandas** (tratamento dos dados),
-  **FastAPI** (API), **Uvicorn** (servidor), **Pytest** (testes) e
-  **httpx** (cliente usado nos testes HTTP) e **bcrypt** (hash das senhas).
+  **FastAPI** (API), **Uvicorn** (servidor), **Pytest** (testes),
+  **httpx** (cliente usado nos testes HTTP), **bcrypt** (hash das senhas) e
+  **python-multipart** (recebimento de arquivos CSV via upload).
 
 O PostgreSQL local pode ser iniciado pelo Docker Compose. O DBeaver é
 opcional para visualizar o banco; sua instalação está no guia detalhado.
@@ -126,17 +127,10 @@ opcional para visualizar o banco; sua instalação está no guia detalhado.
 git clone https://github.com/FGA0138-MDS-Ajax/2026.2-T02-Dijkstra.git
 cd 2026.2-T02-Dijkstra
 git fetch origin
+git switch developer
 ```
 
-Enquanto a API estiver em desenvolvimento e publicada na S3-07, selecione:
-
-```bash
-git switch S3-07-Implementar-API-FastAPI-para-consulta-de-indicadores
-```
-
-Após a integração, utilize a `developer` atualizada. Preserve alterações
-locais antes de trocar de branch. Novas branches de trabalho devem partir
-sempre da **`developer` atualizada**.
+Novas branches de trabalho devem partir sempre da **`developer` atualizada**.
 
 ### 3. Criar o ambiente virtual
 
@@ -175,7 +169,7 @@ Copie o arquivo de exemplo e defina o usuário e a senha do administrador:
 cp .env.example .env
 ```
 
-Edite o `.env` e altere `ADMIN_USER` e `ADMIN_PASSWORD`. Depois execute:
+Edite o `.env` e altere `ADMIN_USUARIO` e `ADMIN_SENHA` (com o banco PostgreSQL em execução via `docker compose up -d db`). Depois execute:
 
 ```bash
 python -m scripts.seed_admin
@@ -184,7 +178,9 @@ python -m scripts.seed_admin
 O script grava apenas o hash bcrypt da senha na tabela `administradores`.
 Se o usuário já existir, nada é alterado. Nunca versione o arquivo `.env`.
 
-### 5. Importar os dados e iniciar a API
+### 5. Importar os dados e iniciar a aplicação
+
+Para iniciar apenas o banco via Docker e rodar a API localmente no terminal:
 
 ```bash
 cp .env.example .env
@@ -192,6 +188,35 @@ docker compose up -d db
 python -m src.data.importar_csv
 python -m uvicorn src.api.main:app --reload
 ```
+
+Para subir todos os serviços (**PostgreSQL + Back-end + Front-end**) via Docker Compose, utilize `--build` para garantir que a imagem do back-end instale todas as dependências atualizadas do `requirements.txt`:
+
+```bash
+docker compose up -d --build
+```
+
+- **Front-end (Mapa e Filtros):** `http://localhost:3000/mapa.html`
+- **Interface Administrativa (Login):** `http://localhost:3000/area-adm.html`
+- **Painel Administrativo (Upload de CSV):** `http://localhost:3000/painel-adm.html`
+- **API e Swagger:** `http://127.0.0.1:8000/docs`
+
+### 6. Executar e testar as funcionalidades administrativas
+
+Com o administrador criado (`python -m scripts.seed_admin`) e os serviços ativos:
+
+1. **Pela Interface Web:**
+   - Acesse `http://localhost:3000/area-adm.html` e informe o usuário e a senha definidos em `ADMIN_USUARIO` e `ADMIN_SENHA` no `.env`.
+   - Após o login, você será redirecionado para `http://localhost:3000/painel-adm.html`.
+   - Selecione um arquivo `.csv` válido com nome correspondente à dimensão (`idhm_geral_uf.csv`, `idhm_educacao_uf.csv`, `idhm_longevidade_uf.csv` ou `idhm_renda_uf.csv`) no padrão IPEA (`Sigla;Código;Estado;<anos>`) e envie para atualizar a base via *upsert* (`ON CONFLICT DO UPDATE`).
+2. **Pela API (via `curl` ou Swagger):**
+   - **Login (`POST /api/auth/login`):**
+     ```bash
+     curl -X POST "http://127.0.0.1:8000/api/auth/login" -H "Content-Type: application/json" -d "{\"usuario\":\"admin\",\"senha\":\"troque-esta-senha\"}"
+     ```
+   - **Upload protegido (`POST /api/admin/indicadores/upload`):**
+     ```bash
+     curl -X POST "http://127.0.0.1:8000/api/admin/indicadores/upload" -u "admin:troque-esta-senha" -F "file=@data/raw/idhm_geral_uf.csv"
+     ```
 
 A carga reúne os quatro CSVs de `data/raw/` na tabela `indicadores`.
 Com os arquivos atuais, são **1.728 registros**. O `.env.example` configura
@@ -236,10 +261,7 @@ ou incompatibilidade com `launch_testing`, use:
 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q
 ```
 
-Os testes cobrem tratamento de CSV, repositório PostgreSQL, rotas da API e
-tratamento de falhas operacionais. Os testes HTTP utilizam dependências
-simuladas; as verificações com os dados reais estão descritas no
-[guia da API](docs/api-indicadores.md#verificacoes-e-testes).
+Os testes cobrem tratamento de CSV, repositório PostgreSQL, rotas de consulta da API (B-05), autenticação de administrador com hash bcrypt (B-09), upload protegido de CSV com atualização transacional da base (B-04) e tratamento de falhas operacionais. As verificações detalhadas estão descritas no [guia da API](docs/api-indicadores.md#verificacoes-e-testes) e no [relatório de validação da Sprint 5](docs/validacao-sprint5.md).
 
 A estratégia de testes contempla diferentes níveis de verificação para aumentar a confiabilidade do sistema.
 

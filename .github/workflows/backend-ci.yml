@@ -10,6 +10,24 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: brasilhub
+          POSTGRES_USER: brasilhub
+          POSTGRES_PASSWORD: Teste123
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+
+    env:
+      TEST_DATABASE_URL: postgresql://brasilhub:Teste123@localhost:5432/brasilhub
+
     steps:
       - name: Checkout do repositório
         uses: actions/checkout@v4

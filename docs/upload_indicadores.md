@@ -21,14 +21,10 @@ O endpoint de upload permite que administradores autenticados atualizem ou insir
 | `file` | Arquivo (`UploadFile`) | **Sim** | Arquivo `.csv` contendo os dados estruturados dos indicadores. |
 
 ### Estrutura Obrigatória do CSV
-O arquivo CSV enviado deve conter obrigatoriamente as seguintes colunas correspondentes no cabeçalho:
-1. `nome_indicador`
-2. `unidade_territorial`
-3. `dimensao`
-4. `valor`
-5. `periodo_referencia`
-6. `unidade_medida`
-7. `fonte`
+O arquivo CSV enviado é processado por `tratar_csv` (`src/data/processamento_csv.py`) e mapeado por `preparar_para_persistencia` (`src/data/mapeamento_indicadores.py`):
+1. **Nome do arquivo (define a dimensão):** `idhm_geral_uf.csv`, `idhm_educacao_uf.csv`, `idhm_longevidade_uf.csv` ou `idhm_renda_uf.csv`.
+2. **Formato de entrada (padrão IPEA):** Separador `;`, primeira linha ignorada (`skiprows=1`), colunas obrigatórias `Sigla`, `Código`, `Estado` e pelo menos uma coluna de ano com 4 dígitos (ex: `2010`, `2020`).
+3. **Colunas mapeadas para persistência no PostgreSQL:** `nome_indicador`, `unidade_territorial`, `dimensao`, `valor`, `periodo_referencia`, `unidade_medida` e `fonte`.
 
 ---
 
