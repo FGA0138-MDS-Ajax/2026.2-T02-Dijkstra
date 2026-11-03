@@ -651,3 +651,48 @@ def test_estrutura_exata_da_resposta_indicadores():
         "valor", "periodo_referencia", "unidade_medida", "fonte"
     }
     assert set(registro.keys()) == campos_esperados
+
+
+class EspiaoIndicadorService:
+    # registra os argumentos recebidos para conferir o que a rota repassa ao serviço
+    def __init__(self):
+        self.chamadas = []
+
+    def consultar(self, estado=None, dimensao=None, periodo=None):
+        self.chamadas.append({"estado": estado, "dimensao": dimensao, "periodo": periodo})
+        return []
+
+@pytest.fixture
+def servico_espiao(monkeypatch):
+    espiao = EspiaoIndicadorService()
+    monkeypatch.setitem(
+        app.dependency_overrides,
+        get_indicador_service,
+        lambda: espiao,
+    )
+    return espiao
+
+@pytest.mark.parametrize("periodo", [1991, 2026])
+def test_periodo_nos_limites_e_aceito(servico_espiao, periodo):
+    # os limites do intervalo (ge=1991, le=2026) são válidos
+    response = client.get(f"/api/indicadores?periodo={periodo}")
+
+    assert response.status_code == 200
+    assert servico_espiao.chamadas == [{"estado": None, "dimensao": None, "periodo": periodo}]
+
+@pytest.mark.parametrize("dimensao", [d.value for d in Dimensao])
+def test_todas_as_dimensoes_validas_sao_aceitas(servico_espiao, dimensao):
+    # cada dimensão do enum é aceita e chega ao serviço como texto, não como Dimensao
+    response = client.get(f"/api/indicadores?dimensao={dimensao}")
+
+    assert response.status_code == 200
+    recebida = servico_espiao.chamadas[0]["dimensao"]
+    assert recebida == dimensao
+    assert type(recebida) is str
+
+def test_filtros_combinados_chegam_ao_servico_com_tipos_corretos(servico_espiao):
+    response = client.get("/api/indicadores?estado=SP&dimensao=renda&periodo=2010")
+
+    assert response.status_code == 200
+    assert servico_espiao.chamadas == [{"estado": "SP", "dimensao": "renda", "periodo": 2010}]
+    assert type(servico_espiao.chamadas[0]["periodo"]) is int
