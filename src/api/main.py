@@ -180,10 +180,7 @@ def upload_csv_indicadores(
         }
     
     except ErroProcessamentoCSV as erro:
-        raise HTTPException(
-            status_code=400,
-            detail="Arquivo CSV inválido ou incompatível com o formato esperado." #mudei essa msg de erro
-        ) from erro
-        
+        raise HTTPException(status_code=400, detail=str(erro)) from erro
+
     except ErroPersistenciaIndicadores:
         raise HTTPException(status_code=500, detail="Erro interno ao persistir os dados na base de dados.")
