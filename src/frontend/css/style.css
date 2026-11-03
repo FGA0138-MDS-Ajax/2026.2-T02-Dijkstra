@@ -338,7 +338,18 @@ h1, h2, h3, h4, .logo {
     background: var(--color-surface);
 }
 
-
+@media (max-width: 48rem) {
+    .info-estado {
+        transform: scale(0.75);
+        transform-origin: bottom right;
+        margin-top: -10px !important;
+        margin-bottom: -10px !important;
+    }
+    .info-legenda:has(#seletor-ano) {
+        transform: scale(0.75);
+        transform-origin: bottom right;
+    }
+}
 
 /*filterss*/
 
