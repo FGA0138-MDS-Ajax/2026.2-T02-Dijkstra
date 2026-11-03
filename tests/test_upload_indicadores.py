@@ -121,7 +121,6 @@ def test_upload_valido_retorna_sucesso(banco_upload):
     response = _upload("idhm_geral_uf.csv", CSV_VALIDO)
     assert response.status_code == 200
 
-    assert response.status_code == 200
     corpo = response.json()
     assert corpo["mensagem"] == "Base de indicadores atualizada com sucesso."
     assert corpo["registros_processados"] == 4  
@@ -176,7 +175,7 @@ def test_csv_sem_coluna_obrigatoria_e_rejeitado(banco_upload):
 def test_csv_vazio_e_rejeitado(banco_upload):
     response = _upload("idhm_geral_uf.csv", "")
 
-    assert response.status_code in (400, 422)
+    assert response.status_code == 400
 
 
 
