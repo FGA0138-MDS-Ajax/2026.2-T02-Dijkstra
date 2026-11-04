@@ -69,22 +69,19 @@ class IndicadorRepository:
         linhas = list(dados.itertuples(index=False, name=None))
 
         conn = get_connection()
-        try:
+        try: #simplifiquei aqui pois estava relançando a mesma exceção sem tratar o erro
             with conn.cursor() as cursor:
                 cursor.executemany(
                     """
-                    INSERT INTO indicadores 
-                    (nome_indicador, unidade_territorial, dimensao, valor, periodo_referencia, unidade_medida, fonte) 
+                    INSERT INTO indicadores
+                    (nome_indicador, unidade_territorial, dimensao, valor, periodo_referencia, unidade_medida, fonte)
                     VALUES (%s, %s, %s, %s, %s, %s, %s)
-                    ON CONFLICT (unidade_territorial, dimensao, periodo_referencia) 
+                    ON CONFLICT (unidade_territorial, dimensao, periodo_referencia)
                     DO UPDATE SET valor = EXCLUDED.valor, fonte = EXCLUDED.fonte;
                     """,
                     linhas,
                 )
             conn.commit()
             return len(linhas)
-        except Exception as e:
-            conn.rollback()
-            raise e
         finally:
-            conn.close()
+            conn.close() 

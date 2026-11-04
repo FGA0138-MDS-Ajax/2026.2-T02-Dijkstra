@@ -165,7 +165,7 @@ def upload_csv_indicadores(
     """
     Endpoint protegido (B-04) para upload e atualização da base de indicadores via CSV.
     """
-    if not file.filename or not file.filename.endswith(".csv"):
+    if not file.filename or not file.filename.lower().endswith(".csv"):
         raise HTTPException(
             status_code=400, detail="Apenas arquivos com extensão .csv são permitidos."
         )
@@ -178,7 +178,9 @@ def upload_csv_indicadores(
             "registros_processados": total_processado,
             "atualizado_por": admin["usuario"]
         }
+    
     except ErroProcessamentoCSV as erro:
-        raise HTTPException(status_code=400, detail=str(erro))
+        raise HTTPException(status_code=400, detail=str(erro)) from erro
+
     except ErroPersistenciaIndicadores:
         raise HTTPException(status_code=500, detail="Erro interno ao persistir os dados na base de dados.")
