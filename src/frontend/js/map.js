@@ -62,7 +62,7 @@ export function inicializarMapa(idContainer) {
         return indicadoresporUf[feature.properties.sigla] || [];
     }
 
-    function atualizarIndicadores(lista, dimensao){
+    function atualizarIndicadores(lista, dimensao, estadoUF){
         indicadoresporUf = {};
         
         
@@ -88,6 +88,21 @@ export function inicializarMapa(idContainer) {
             camadaEstados.setStyle(estiloEstado);
         }
 
+        if (camadaEstados) {
+            if (estadoUF) {
+                const camada = camadaEstados.getLayers().find(
+                camada => camada.feature.properties.sigla === estadoUF
+        );
+
+                estadoSelecionado = camada?.feature ?? null;
+            } else {
+                estadoSelecionado = null;
+            }
+        }
+
+        if (infoEstado._div){
+            infoEstado.update();
+        }
     }
     //escolhe a cor e preenche os estados com base no ano selecionado e idhm_geral
     function estiloEstado(feature){

@@ -114,9 +114,9 @@ try {
 
     if(!dados || dados.length === 0){
         mostrarStatus(Estado.erro, "Sem resultados", "Nenhum indicador encontrado para os filtros selecionados.");
-        atualizarIndicadores([], filtros.dimensao);
+        atualizarIndicadores([], filtros.dimensao, filtros.estado);
     } else {
-        atualizarIndicadores(dados, filtros.dimensao);
+        atualizarIndicadores(dados, filtros.dimensao, filtros.estado);
     }
 } catch (erro) {
     if (idRequisicao !== ultimaRequisicao) return;
