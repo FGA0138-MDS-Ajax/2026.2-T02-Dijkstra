@@ -74,6 +74,6 @@ class ImportacaoService:
         # Persistir os dados de forma atômica no banco (Upsert)
         try:
             return self._repository.salvar_ou_atualizar_indicadores(dados_persistidos)
-        except psycopg.OperationalError as erro:
+        except psycopg.Error as erro:
             logger.exception("Falha operacional ao persistir os indicadores no banco.")
             raise ErroPersistenciaIndicadores("Erro ao conectar ou gravar na base de dados.") from erro
