@@ -61,18 +61,23 @@ async function verificarConexaoApi(){
     try {
         await verificarSaude();
         mostrarStatus(Estado.sucesso, "Conectado", "Servidor online e pronto.");
+        return true;
     } catch (erro) {
         // Os detalhes técnicos vão para o console (para a equipe); o usuário vê só a mensagem simples.
         console.warn("[Brasil Hub] Falha ao consultar a API em " + API_BASE_URL + ":", erro);
         mostrarStatus(Estado.erro, "Servidor indisponível", descreverErro(erro), {
             permitirNovaTentativa: true,
         });
+        return false;
     }
 }
 
-function TentarNovamente(){
-    verificarConexaoApi();
-    aoMudarFiltros(obterFiltros());
+async function TentarNovamente() {
+    const servidorOnline = await verificarConexaoApi();
+    
+    if (servidorOnline) {
+        await aoMudarFiltros(obterFiltros());
+    }
 }
 
 function iniciar(){
