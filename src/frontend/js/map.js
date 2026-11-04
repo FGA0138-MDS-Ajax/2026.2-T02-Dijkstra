@@ -103,7 +103,7 @@ export function inicializarMapa(idContainer) {
     );
 
     let html = `<div class="popup-card">`;
-    html += `<div class="popup-header"><h4>${feature.properties.name} (${anoSelecionado ?? "—"})</h4></div>`;
+    html += `<div class="popup-header"><h2>${feature.properties.name} (${anoSelecionado ?? "—"})</h2></div>`;
     if (doAno.length > 0) {
         html += `<div class="popup-body">`;
         doAno.forEach(ind => {
@@ -152,7 +152,7 @@ export function inicializarMapa(idContainer) {
     infoEstado.update = function () {
         this._div.innerHTML = estadoSelecionado
             ? montarPopup(estadoSelecionado)
-            : '<h4>Estado</h4><p class="popup-vazio">Clique em um estado para ver os dados.</p>';
+            : '<h2>Estado</h2><p class="popup-vazio">Clique em um estado para ver os dados.</p>';
     };
 
     Promise.all([
@@ -200,7 +200,7 @@ export function inicializarMapa(idContainer) {
                     <span>${f.rotulo}</span>
                 </div>`)
             .join('');
-        div.innerHTML = `<h4>IDHM</h4>${itens}`;
+        div.innerHTML = `<h2>IDHM</h2>${itens}`;
         return div;
     };
     legenda.addTo(mapa);
