@@ -403,7 +403,7 @@ h1, h2, h3, h4, .logo {
 .footer-brand p { margin: 0; max-width: 40ch; }
 .footer-brand .logo { margin: 0 0 var(--space-1); }
 
-.footer-col h3 {
+.footer-col h2 {
     margin: 0 0 var(--space-1);
     font-size: var(--font-size-1);
     color: var(--color-primary);
