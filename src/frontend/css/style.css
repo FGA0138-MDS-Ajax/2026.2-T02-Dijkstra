@@ -446,6 +446,7 @@ h1, h2, h3, h4, .logo {
     background-color: transparent;
     border: none;
 }
+.theme-toggle[hidden] { display: none; }
 
 .theme-toggle:hover {
     color: var(--color-link-hover);
