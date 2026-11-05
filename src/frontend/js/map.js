@@ -37,9 +37,13 @@ function formatarValor(valor) {
 
 //Inicializador do mapa
 export function inicializarMapa(idContainer) {
-    const mapa=L.map(idContainer).setView([-14,-54],4);
-    mapa.setMaxBounds([[-35,-75],[8,-34]]);
-    mapa.setMinZoom(4);
+    const isMobile = window.innerWidth < 768;
+    const zoomInicial = isMobile ? 3 : 4;
+    const zoomMin = isMobile ? 3 : 4;
+
+    const mapa = L.map(idContainer).setView([-14,-54],zoomInicial);
+    mapa.setMaxBounds([[-45,-90],[15,-25]]);
+    mapa.setMinZoom(zoomMin);
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 6 ,
@@ -197,14 +201,15 @@ export function inicializarMapa(idContainer) {
             }
         }).addTo(mapa);
 
+        infoEstado.addTo(mapa);
         if (anosDisponiveis.length > 0) {
             seletorAno.addTo(mapa);
         }
-        infoEstado.addTo(mapa);
     })
     .catch(error => console.error('Erro ao carregar o GeoJSON:', error));
 
     //legenda no canto, com as faixas de IDHM
+    /*
     const legenda = L.control({ position: 'bottomright' });
     legenda.onAdd = function () {
         const div = L.DomUtil.create('div', 'info-legenda');
@@ -219,6 +224,28 @@ export function inicializarMapa(idContainer) {
         return div;
     };
     legenda.addTo(mapa);
+    */
+
+    // Legenda fora do div do mapa
+    function renderLegendaExterna(ContainerID){
+        const divLegenda = document.getElementById(ContainerID);
+        if (!divLegenda) return;
+
+        const itens = [...FAIXAS_IDHM, { cor: COR_SEM_DADOS, rotulo: "Sem dados" }]
+            .map(f => `
+                <div class="legenda-item" style="display: flex; align-items: center; gap: 8px;">
+                    <span class="cor-amostra" style="background:${f.cor}; opacity:0.7; width: 20px; height: 20px; display: inline-block; border: 1px solid #333; border-radius: 3px;"></span>
+                    <span>${f.rotulo}</span>
+                </div>`)
+            .join('');
+        divLegenda.innerHTML = `
+            <h4 style="margin-bottom: 10px; font-family: sans-serif;">IDHM</h4>
+            <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+                ${itens}
+            </div>
+        `;
+    }
+    renderLegendaExterna('legenda-externa-mapa');
 
     return {mapa, atualizarIndicadores};
 }
