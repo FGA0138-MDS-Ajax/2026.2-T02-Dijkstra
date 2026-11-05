@@ -50,6 +50,30 @@ h1, h2, h3, h4, .logo {
     transition: background-color 0.3s ease;
 }
 
+@media (max-width: 40rem) {
+    .floating-header{
+        padding: var(--space-1-5) var(--space-2);
+        margin-bottom: var(--space-2);
+        border-radius: var(--radius-lg);
+        gap: var(--space-2);
+        justify-content: center;
+    }
+    .logo {
+        font-size: 1.35rem;
+    }
+    .links {
+        width: 100%;
+        justify-content: space-between;
+        gap: var(--space-1-5) var(--space-2);
+    }
+    .floating-header .btn {
+        padding: var(--space-1) var(--space-2);
+        font-size: var(--font-size-0);
+        flex: 1;
+        text-align: center;
+    }
+}
+
 .logo {
     font-size: var(--font-size-logo);
     font-weight: 400;
@@ -116,6 +140,20 @@ h1, h2, h3, h4, .logo {
     flex-wrap: wrap;
     gap: var(--space-4);
     margin-bottom: var(--space-4);
+}
+
+@media (max-width: 40rem) {
+    .main-buttons {
+        gap: var(--space-1-5);
+        margin-bottom: var(--space-2);
+    }
+
+    .main-buttons .btn {
+        flex: 1;
+        text-align: center;
+        padding: var(--space-1) var(--space-0);
+        font-size: var(--font-size-0);
+    }
 }
 
 .btn {
@@ -186,8 +224,10 @@ h1, h2, h3, h4, .logo {
 .map-call{
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
+    gap: var(--space-2);
 }
 
 
@@ -336,7 +376,18 @@ h1, h2, h3, h4, .logo {
     background: var(--color-surface);
 }
 
-
+@media (max-width: 48rem) {
+    .info-estado {
+        transform: scale(0.75);
+        transform-origin: bottom right;
+        margin-top: -10px !important;
+        margin-bottom: -10px !important;
+    }
+    .info-legenda:has(#seletor-ano) {
+        transform: scale(0.75);
+        transform-origin: bottom right;
+    }
+}
 
 /*filterss*/
 
@@ -561,7 +612,8 @@ padding: var(--space-4) 0;
 
 .login-section .card {
 width: 100%;
-max-width: 26rem;
+max-width: 32rem;
+padding: var(--space-4) var(--space-3);
 text-align: center;
 }
 
@@ -619,6 +671,7 @@ font-weight: 400;
 
 .admin-boasvindas {
 display: flex;
+flex-wrap: wrap;
 justify-content: space-between;
 align-items: center;
 gap: var(--space-2);
@@ -636,7 +689,7 @@ grid-template-columns: repeat(2, minmax(0, 1fr));
 gap: var(--space-3);
 }
 
-@media (max-width: 48rem) {
+@media (max-width: 56rem) {
 .admin-layout,
 .admin-grid {
     grid-template-columns: 1fr;
@@ -644,5 +697,61 @@ gap: var(--space-3);
 
 .admin-sidebar {
     position: static;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-1) var(--space-3);
+    padding: var(--space-2) var(--space-3);
+}
+
+.admin-sidebar .links {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: 0;
+    gap: var(--space-2) var(--space-3);
+}
+
+.main-section {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+    padding: var(--space-2) 0;
+}
+}
+
+@media (max-width: 40rem) {
+.floating-header,
+.admin-sidebar {
+    padding: var(--space-1-5) var(--space-2);
+    margin-bottom: var(--space-2);
+    border-radius: var(--radius-lg);
+    gap: var(--space-1) var(--space-2);
+}
+
+.logo {
+    font-size: 1.35rem;
+}
+
+.links {
+    gap: var(--space-1-5) var(--space-2);
+}
+
+.floating-header .btn {
+    padding: var(--space-1) var(--space-2);
+    font-size: var(--font-size-0);
+}
+
+.main-text h1 {
+    font-size: 1.6rem;
+}
+
+.main-text p {
+    font-size: var(--font-size-1);
+}
+
+.main-buttons {
+    gap: var(--space-2);
+    margin-bottom: var(--space-2);
 }
 }
