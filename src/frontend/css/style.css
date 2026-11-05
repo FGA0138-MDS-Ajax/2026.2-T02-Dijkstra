@@ -492,6 +492,39 @@ h1, h2, h3, h4, .logo {
     .footer-grid { grid-template-columns: 1fr; gap: var(--space-3); }
 }
 
+#btAumentar,
+#btDiminuir {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-0);
+    padding: var(--space-1) var(--space-1-5);
+    color: var(--color-action);
+    background-color: var(--color-action-soft);
+    border: var(--border-width) solid var(--color-action);
+    border-radius: var(--radius);
+    box-shadow: none;
+    font: inherit;
+    font-size: var(--font-size-0);
+    font-weight: 600;
+    line-height: 1.4;
+    cursor: pointer;
+    transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+#btAumentar:hover:not(:disabled),
+#btDiminuir:hover:not(:disabled) {
+    color: var(--color-on-action);
+    background-color: var(--color-action);
+    border-color: var(--color-action);
+}
+
+#btAumentar:disabled,
+#btDiminuir:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
 .theme-toggle{
     color: var(--color-link);
     background-color: transparent;
