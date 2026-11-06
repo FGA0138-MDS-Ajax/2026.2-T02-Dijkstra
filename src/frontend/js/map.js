@@ -62,7 +62,7 @@ export function inicializarMapa(idContainer) {
         return indicadoresporUf[feature.properties.sigla] || [];
     }
 
-    function atualizarIndicadores(lista, dimensao){
+    function atualizarIndicadores(lista, dimensao, estadoUF){
         indicadoresporUf = {};
         
         
@@ -88,6 +88,21 @@ export function inicializarMapa(idContainer) {
             camadaEstados.setStyle(estiloEstado);
         }
 
+        if (camadaEstados) {
+            if (estadoUF) {
+                const camada = camadaEstados.getLayers().find(
+                camada => camada.feature.properties.sigla === estadoUF
+        );
+
+                estadoSelecionado = camada?.feature ?? null;
+            } else {
+                estadoSelecionado = null;
+            }
+        }
+
+        if (infoEstado._div){
+            infoEstado.update();
+        }
     }
     //escolhe a cor e preenche os estados com base no ano selecionado e idhm_geral
     function estiloEstado(feature){
@@ -107,7 +122,7 @@ export function inicializarMapa(idContainer) {
     );
 
     let html = `<div class="popup-card">`;
-    html += `<div class="popup-header"><h4>${feature.properties.name} (${anoSelecionado ?? "—"})</h4></div>`;
+    html += `<div class="popup-header"><h2>${feature.properties.name} (${anoSelecionado ?? "—"})</h2></div>`;
     if (doAno.length > 0) {
         html += `<div class="popup-body">`;
         doAno.forEach(ind => {
@@ -156,7 +171,7 @@ export function inicializarMapa(idContainer) {
     infoEstado.update = function () {
         this._div.innerHTML = estadoSelecionado
             ? montarPopup(estadoSelecionado)
-            : '<h4>Estado</h4><p class="popup-vazio">Clique em um estado para ver os dados.</p>';
+            : '<h2>Estado</h2><p class="popup-vazio">Clique em um estado para ver os dados.</p>';
     };
 
     Promise.all([
@@ -205,7 +220,7 @@ export function inicializarMapa(idContainer) {
                     <span>${f.rotulo}</span>
                 </div>`)
             .join('');
-        div.innerHTML = `<h4>IDHM</h4>${itens}`;
+        div.innerHTML = `<h2>IDHM</h2>${itens}`;
         return div;
     };
     legenda.addTo(mapa);
