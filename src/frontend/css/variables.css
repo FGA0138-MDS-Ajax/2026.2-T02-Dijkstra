@@ -203,8 +203,8 @@ html[data-theme="high-contrast"] {
     --color-info-text: #ffffff;
     --color-info-border: #ffffff;
     --color-success-bg: #000000;
-    --color-success-text: #ffffff;
-    --color-success-border: #ffffff;
+    --color-success-text: #ffd400;      
+    --color-success-border: #ffd400;
     --color-error-bg: #000000;
     --color-error-text: #ffffff;
     --color-error-border: #ffd400;
@@ -224,3 +224,5 @@ html[data-theme="high-contrast"] a:not(.btn) { text-decoration: underline; }
 
 html[data-font-scale="large"]  { --font-scale: 1.25; }
 html[data-font-scale="xlarge"] { --font-scale: 1.5; }
+html[data-theme="high-contrast"] .logo { color: var(--color-primary); }
+html[data-theme="high-contrast"] .main-image img { filter: invert(1); }
