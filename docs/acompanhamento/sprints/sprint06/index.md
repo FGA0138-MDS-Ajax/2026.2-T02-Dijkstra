@@ -4,120 +4,107 @@
 
 | Informação | Descrição |
 |---|---|
-| Período | Início em 28/10/2026 a 03/11/2026. |
-| Objetivo | Aprimorar a acessibilidade e a compatibilidade do Brasil Hub, ampliar a cobertura dos testes automatizados da API, revisar os mecanismos de validação e tratamento de erros e dar continuidade às pendências técnicas da Sprint 5. |
-| Resultado | Em andamento. Os resultados serão consolidados ao final da Sprint. |
-| 4 Issues novas planejadas + 2 pendentes | 6 |
-| Débitos técnicos herdados | Pendências da Sprint 5 que permanecerem abertas após a verificação do backlog. |
+| Período | 28/10/2026 a 03/11/2026 |
+| Objetivo | Aprimorar a acessibilidade e a compatibilidade do Brasil Hub, ampliar a cobertura dos testes automatizados da API, revisar os mecanismos de validação e tratamento de erros e concluir as pendências técnicas herdadas da Sprint 5. |
+| Resultado | Sprint encerrada com 5 das 6 atividades concluídas (3 das 4 novas issues da Sprint 6 + as 2 pendências herdadas da Sprint 5) e 1 issue (S6-01) transferida como continuidade para a Sprint 7. |
+| Issues consideradas no ciclo | 6 (4 novas da Sprint 6 + 2 herdadas da Sprint 5) |
+| Percentual de conclusão das issues | 83,3% no escopo total do ciclo (75% considerando apenas as 4 novas issues da Sprint 6) |
 | Foco principal | Acessibilidade, responsividade, qualidade dos testes, confiabilidade da API e conclusão das pendências priorizadas. |
 
-## 2. Planejamento e objetivos
+## 2. Planejamento e resultados
 
-A Sprint 6 dá continuidade ao desenvolvimento do Brasil Hub, buscando aprimorar a experiência de uso, a qualidade técnica e a confiabilidade da aplicação. Após a Sprint 5, que concentrou esforços na segurança e na área administrativa, esta etapa amplia o foco para a acessibilidade da interface, a compatibilidade com diferentes dispositivos e a melhoria dos mecanismos de validação e testes do back-end.
+A Sprint 6 deu continuidade ao desenvolvimento do Brasil Hub, buscando aprimorar a experiência de uso, a qualidade técnica e a confiabilidade da aplicação. Após a Sprint 5, que concentrou esforços na segurança e na área administrativa, esta etapa ampliou o foco para a acessibilidade da interface, a compatibilidade com diferentes dispositivos e a melhoria dos mecanismos de validação e testes do back-end.
 
-No front-end, as atividades estão direcionadas à acessibilidade da plataforma e à adaptação da interface a diferentes tamanhos de tela e ambientes de navegação. O objetivo é tornar o sistema mais acessível e garantir que seus principais recursos, como mapa, filtros e navegação, continuem utilizáveis em diferentes dispositivos.
+No front-end, as atividades foram direcionadas à acessibilidade da plataforma e à adaptação da interface a diferentes tamanhos de tela e ambientes de navegação. O objetivo foi tornar o sistema mais acessível e garantir que seus principais recursos, como mapa, filtros, navegação e área administrativa, continuassem utilizáveis em diferentes dispositivos (responsividade).
 
-No back-end, a Sprint busca ampliar a cobertura dos testes automatizados da API e revisar a validação dos parâmetros e o tratamento de erros. Essas atividades devem contribuir para identificar comportamentos inesperados, reduzir falhas e facilitar a manutenção da aplicação.
+No back-end, a Sprint buscou ampliar a cobertura dos testes automatizados da API e revisar a validação dos parâmetros e o tratamento de erros. Essas atividades contribuíram para identificar comportamentos inesperados, padronizar respostas de erro e aumentar a confiabilidade da manutenção da aplicação.
 
-Além das novas funcionalidades e melhorias, a equipe deverá acompanhar as pendências herdadas da Sprint 5 que permanecerem abertas, especialmente as relacionadas à interface administrativa e à validação do fluxo de gerenciamento de dados. A continuidade dessas atividades deverá respeitar os responsáveis já definidos no backlog, evitando a perda de rastreabilidade entre as sprints.
+Além das novas funcionalidades e melhorias, a equipe concluiu integralmente as duas pendências herdadas da Sprint 5 relacionadas à interface administrativa (`S5-04`) e à validação integrada do fluxo de gerenciamento de dados (`S5-05`), respeitando os responsáveis originalmente definidos no backlog.
 
-Como a Sprint está em andamento, o planejamento poderá ser ajustado de acordo com a evolução das issues, os resultados das revisões de código e os impedimentos identificados durante a execução.
-
-## 3. Issues planejadas
+## 3. Issues da Sprint 6 e situação final
 
 ### 3.1. Novas issues da Sprint 6
 
-| Issue | Entrega planejada | Área | Responsáveis | Revisores | Situação inicial |
+| Issue | Entrega planejada | Área | Responsáveis | Revisores | Situação ao final da Sprint |
 |---|---|---|---|---|---|
-| S6-01 | Aprimorar a acessibilidade da interface (B-03). | Front-end | Paulo Eduardo e Ágatha Natasha | Josef e Eduardo Brito | Planejada |
-| S6-02 | Melhorar a responsividade e a compatibilidade da plataforma (B-08). | Front-end | Josef e Eduardo Brito | Paulo Eduardo e Ágatha Natasha | Planejada |
-| S6-03 | Ampliar os testes automatizados e a cobertura funcional da API. | Back-end | Lucas e César Augusto | Felipe George e Fabiana Reis | Planejada |
-| S6-04 | Revisar a validação de parâmetros e o tratamento de erros da API. | Back-end | Felipe George e Fabiana Reis | Lucas e César Augusto | Planejada |
+| S6-01 (#50) | Aprimorar a acessibilidade da interface (B-03). | Front-end | Paulo Eduardo e Ágatha Natasha | Josef e Eduardo Brito | Não finalizada integralmente no prazo. Avanços parciais na branch `feature/B-03-acessibilidade` (PR #61); transferida como continuidade priorizada para a Sprint 7. |
+| S6-02 (#51) | Melhorar a responsividade e a compatibilidade da plataforma (B-08). | Front-end | Josef e Eduardo Brito | Paulo Eduardo e Ágatha Natasha | Finalizada e integrada à `developer` (PR #63). |
+| S6-03 | Ampliar os testes automatizados e a cobertura funcional da API. | Back-end | Lucas e César Augusto | Felipe George e Fabiana Reis | Finalizada e integrada à `developer` (PR #60). |
+| S6-04 (#53) | Revisar a validação de parâmetros e o tratamento de erros da API. | Back-end | Felipe George e Fabiana Reis | Lucas e César Augusto | Finalizada e integrada à `developer` (PR #64). |
 
-**Observação:** as situações deverão ser atualizadas de acordo com o estado real das issues no GitHub. As atribuições de responsáveis e revisores devem permanecer alinhadas ao backlog oficial.
+**Observação:** as situações apresentadas refletem o estado real das issues e dos Pull Requests no GitHub ao término do ciclo.
 
 ## 4. Pendências herdadas da Sprint 5
 
-Além das quatro novas issues, a Sprint 6 deverá acompanhar as atividades que permaneceram pendentes ao final da Sprint 5.
+Além das quatro novas issues, a Sprint 6 acompanhou e concluiu as duas atividades que haviam permanecido pendentes ao final da Sprint 5.
 
-| Issue de origem | Entrega | Situação registrada ao final da Sprint 5 | Encaminhamento |
+| Issue de origem | Entrega | Situação ao final da Sprint 5 | Situação ao final da Sprint 6 |
 |---|---|---|---|
-| S5-04 | Implementar a interface administrativa para login e upload de CSV (B-04). | Não finalizada no prazo previsto. | Confirmar o estado atual da issue e, caso continue aberta, manter a atividade como débito técnico da Sprint 6. |
-| S5-05 | Validar o fluxo administrativo e atualizar a documentação da Sprint 5. | Não finalizada integralmente no período. | Verificar quais atividades permanecem pendentes e transferir apenas o trabalho não concluído. |
+| S5-04 | Implementar a interface administrativa para login e upload de CSV (B-04). | Não finalizada no prazo previsto. | Finalizada e integrada à `developer` (PR #58), entregando as telas `area-adm.html`, `painel-adm.html` e integração com a API. |
+| S5-05 (#44) | Validar o fluxo administrativo e atualizar a documentação da Sprint 5. | Não finalizada integralmente no período. | Finalizada e integrada à `developer` (PR #59), registrando a validação de login/upload, regressão do mapa, atualização do `README.md` e serviço PostgreSQL no GitHub Actions. |
 
-**Importante:** a transferência das pendências deverá ser confirmada no GitHub. Caso alguma issue tenha sido concluída ou integrada após o encerramento da Sprint 5, sua situação deverá ser atualizada, sem mantê-la artificialmente como débito técnico.
-
-As issues herdadas deverão preservar seus responsáveis originais e seus critérios de aceitação. A mudança de sprint não significa que a responsabilidade pela entrega foi transferida para uma nova dupla.
+As issues herdadas preservaram seus responsáveis originais e seus critérios de aceitação, encerrando integralmente os débitos técnicos provenientes da Sprint 5.
 
 ## 5. Organização do trabalho
 
-A distribuição das novas atividades considera a participação de todos os pares e a alternância entre as áreas de desenvolvimento.
+A distribuição das atividades considerou a participação de todos os pares e a alternância entre as áreas de desenvolvimento:
 
 | Par | Área na Sprint 6 | Atividade principal |
 |---|---|---|
-| Paulo Eduardo e Ágatha Natasha | Front-end | Acessibilidade da interface — S6-01 |
-| Josef e Eduardo Brito | Front-end | Responsividade e compatibilidade — S6-02 |
+| Paulo Eduardo e Ágatha Natasha | Front-end | Acessibilidade da interface — S6-01 (#50) |
+| Josef e Eduardo Brito | Front-end | Responsividade e compatibilidade — S6-02 (#51) + Validação S5-05 (#44) |
 | Lucas e César Augusto | Back-end | Cobertura dos testes automatizados da API — S6-03 |
-| Felipe George e Fabiana Reis | Back-end | Validação de parâmetros e tratamento de erros — S6-04 |
+| Felipe George e Fabiana Reis | Back-end | Validação de parâmetros e tratamento de erros — S6-04 (#53) |
 
-Os responsáveis pelas novas issues deverão conduzir a implementação e os testes correspondentes, enquanto os revisores deverão avaliar as alterações submetidas por meio dos Pull Requests.
+Os responsáveis pelas issues conduziram a implementação e os testes correspondentes, enquanto os revisores avaliaram as alterações submetidas por meio dos Pull Requests antes da integração na branch `developer`.
 
-A equipe também deverá manter o acompanhamento das dependências entre as tarefas. Quando uma issue bloquear o avanço de outra, o impedimento deverá ser comunicado e encaminhado para resolução, evitando que uma atividade permaneça parada sem uma definição clara de prioridade.
+## 6. Resultados e métricas de acompanhamento
 
-As pendências da Sprint 5 deverão continuar sob responsabilidade das duplas originalmente atribuídas, mesmo quando houver novas distribuições de trabalho na Sprint 6.
+O acompanhamento da Sprint foi realizado por meio das issues do GitHub, dos Pull Requests, das revisões de código, dos testes automatizados e dos registros diários da equipe.
 
-## 6. Critérios de acompanhamento
-
-O acompanhamento da Sprint será realizado por meio das issues do GitHub, dos Pull Requests, das revisões de código, dos testes automatizados e dos registros diários da equipe.
-
-| Aspecto | Como será acompanhado | Resultado |
+| Aspecto / Métrica | Como foi acompanhado | Resultado final na Sprint 6 |
 |---|---|---|
-| Conclusão das issues | Comparação entre as issues planejadas e as efetivamente concluídas. | A preencher ao final da Sprint. |
-| Acessibilidade (B-03) | Verificação dos critérios de aceitação da S6-01 e registro dos testes realizados. | A preencher durante a execução. |
-| Responsividade e compatibilidade (B-08) | Verificação do comportamento da interface em diferentes dispositivos e ambientes de navegação. | A preencher durante a execução. |
-| Cobertura de testes da API | Registro dos cenários implementados e dos resultados de execução da suíte automatizada. | A preencher durante a execução. |
-| Validação e tratamento de erros | Registro dos problemas identificados, das correções realizadas e dos testes correspondentes. | A preencher durante a execução. |
-| Débitos técnicos da Sprint 5 | Verificação das pendências herdadas, dos responsáveis e do andamento das correções. | A preencher durante a execução. |
-| Revisões e integração | Acompanhamento da abertura, revisão, correção e integração dos Pull Requests. | A preencher durante a execução. |
+| Conclusão das issues | Comparação entre as issues planejadas/herdadas e as efetivamente concluídas. | 5 de 6 atividades concluídas (**83,3%** do total do ciclo; **75%** das novas issues da Sprint 6 e **100%** dos débitos da Sprint 5). |
+| Acessibilidade (B-03) | Verificação dos critérios de aceitação da S6-01 (#50) e revisão de código. | Entrega parcial: implementados modo noturno (`theme.js`), ajustes de reconexão (PR #61) e landmarks semânticos. Controles de fonte, alto contraste e teste TC-04 permanecem pendentes e foram transferidos para a Sprint 7. |
+| Responsividade e compatibilidade (B-08) | Verificação em diferentes resoluções (`1280x950`, `800x1280`, `712x1138` e `414x846`) no Firefox e Chrome/Edge. | Concluída (PR #63): navbar responsiva nas páginas públicas e no painel administrativo, textos adaptados para mobile, zoom inicial adaptativo e limites `maxBounds` ajustados no mapa com legenda externa. |
+| Cobertura de testes da API | Execução da suíte automatizada (`pytest`) localmente e no GitHub Actions com PostgreSQL 17. | Concluída (PR #60 e PR #64): suíte ampliada de 63 para **116 testes automatizados** (`115 passed, 1 xpassed`), cobrindo consultas, autenticação, upload e falhas operacionais. |
+| Validação e tratamento de erros | Inspeção dos endpoints e testes de casos de borda na S6-04 (#53). | Concluída (PR #64): normalização da extensão `.csv` (maiúsculas/minúsculas), captura de `UnicodeDecodeError`, `ParserError` e `EmptyDataError` com retorno HTTP `400` controlado e captura de `psycopg.Error` na persistência. |
+| Débitos técnicos da Sprint 5 | Acompanhamento da conclusão e integração das issues S5-04 e S5-05. | **100% quitados** (PR #58 e PR #59 integrados à `developer`). |
+| Revisões e integração | Acompanhamento da abertura, revisão, correção e integração dos Pull Requests. | PRs #58, #59, #60, #63 e #64 revisados e integrados à `developer`. Na S6-01, a revisão identificou impacto visual no seletor `.footer-col h3` e pendências de escopo, mantendo a branch em desenvolvimento para a Sprint 7. |
 
-As metas quantitativas definitivas deverão ser confirmadas no planejamento da Sprint. Durante a execução, os resultados deverão ser atualizados de acordo com as evidências disponíveis, sem registrar como concluídas atividades que ainda estejam em implementação, teste ou revisão.
+## 7. Riscos e pontos de atenção observados
 
-## 7. Riscos e pontos de atenção
+Ao longo da Sprint 6, os pontos de atenção monitorados produziram os seguintes desdobramentos:
 
-A experiência da Sprint 5 demonstrou que as dependências entre issues podem comprometer o andamento das atividades quando não são identificadas e acompanhadas antecipadamente.
-
-Por esse motivo, a Sprint 6 deverá dar atenção especial aos seguintes pontos:
-
-- **Dependências entre tarefas:** identificar antecipadamente as atividades que precisam ser concluídas para permitir o avanço de outras issues.
-- **Disponibilidade da equipe:** distribuir o trabalho considerando as demais demandas acadêmicas e os prazos do projeto.
-- **Execução contínua de testes:** desenvolver e executar os testes durante a implementação, evitando concentrar toda a validação no encerramento da sprint.
-- **Revisões antecipadas:** abrir Pull Requests assim que as alterações estiverem prontas e reservar tempo para os ajustes solicitados.
-- **Controle dos débitos técnicos:** acompanhar as pendências herdadas e evitar que sua transferência para a Sprint 6 prejudique as novas entregas.
-- **Comunicação dos impedimentos:** registrar e comunicar rapidamente os bloqueios que comprometam o andamento de uma issue ou de outra atividade dependente.
-
-Esses pontos deverão orientar as decisões de priorização e os ajustes necessários durante a execução do ciclo.
+- **Quitação dos débitos técnicos da Sprint 5:** a priorização das entregas `S5-04` e `S5-05` logo no início do ciclo permitiu destravar e validar o fluxo administrativo completo sem comprometer as entregas de responsividade e back-end da Sprint 6.
+- **Execução contínua de testes e CI:** a configuração do serviço PostgreSQL no workflow `.github/workflows/backend-ci.yml` garantiu que todos os testes de integração fossem executados automaticamente a cada Pull Request.
+- **Rigor no Code Review e controle do DoD:** na revisão da issue `S6-01 (#50)`, os revisores identificaram que a alteração de tags no rodapé afetava o estilo CSS e que requisitos essenciais do `B-03` (ajuste de tamanho de fonte, alto contraste e execução do `TC-04`) ainda não haviam sido atendidos, evitando a integração prematura na `developer`.
 
 ## 8. Acompanhamento e documentação
 
-Os registros diários da Sprint 6 serão organizados na seção de dailies:
+Os registros diários da Sprint 6 estão organizados na seção de dailies:
 
 - [Acessar as dailies da Sprint 6](dailies/dailies.md)
 
-As issues e os Pull Requests deverão ser utilizados como fontes de referência para acompanhar o andamento das atividades, as decisões técnicas, as discussões de Code Review e as evidências de validação.
+As issues (#44, #50, #51, #53) e os Pull Requests (#58, #59, #60, #61, #63, #64) do GitHub documentam o histórico detalhado das decisões técnicas, das discussões de *Code Review* e das evidências de validação produzidas na sprint.
 
-A documentação da sprint será atualizada ao longo do ciclo, registrando as atividades concluídas, as alterações no planejamento, os impedimentos encontrados e as pendências transferidas.
+## 9. Retrospectiva, pendências e conclusão
 
-Ao final da Sprint, deverão ser consolidados os resultados efetivamente obtidos, as métricas disponíveis e os aprendizados que possam contribuir para a melhoria do processo de desenvolvimento.
+A Sprint 6 apresentou uma evolução expressiva na maturidade técnica e no ritmo de entrega da equipe em comparação ao ciclo anterior. Enquanto a Sprint 5 havia encerrado com 60% de conclusão e duas pendências críticas no fluxo administrativo, a Sprint 6 concluiu **100% dos débitos herdados** (`S5-04` e `S5-05`) e **3 das 4 novas issues planejadas** (`S6-02`, `S6-03` e `S6-04`), atingindo **83,3% de conclusão global**.
 
-## 9. Conclusão e atualização dos resultados
+Entre os principais avanços consolidados na branch `developer`, destacam-se:
 
-A Sprint 6 tem como foco inicial aprimorar a acessibilidade e a compatibilidade do Brasil Hub, fortalecer a qualidade dos testes automatizados e melhorar a robustez da API. Paralelamente, deverá dar continuidade às pendências da Sprint 5 que permanecerem abertas, especialmente as relacionadas à interface administrativa e à validação do fluxo de gerenciamento de dados.
+- **Fluxo administrativo completo e validado (`S5-04` e `S5-05`):** telas de login e painel administrativo integradas aos endpoints protegidos de autenticação e upload de CSV.
+- **Compatibilidade e responsividade (`S6-02` / B-08):** adaptação da interface para desktops, tablets e smartphones, incluindo melhorias de usabilidade no mapa interativo em telas móveis e reposicionamento da legenda de IDHM.
+- **Confiabilidade e cobertura de testes no back-end (`S6-03` e `S6-04`):** tratamento controlado de exceções de leitura de CSV e de banco de dados, acompanhado da ampliação da suíte para **116 testes automatizados**.
 
-A definição inicial do escopo contempla quatro novas issues, distribuídas entre os pares de front-end e back-end. Entretanto, o cumprimento das entregas dependerá da evolução das implementações, da resolução de dependências e da conclusão dos testes e das revisões de código.
+### 9.1. Encaminhamento para a Sprint 7
 
-Como a sprint está em andamento, não é possível determinar antecipadamente seu percentual final de conclusão nem confirmar quais atividades serão integralmente entregues. Esses resultados deverão ser registrados ao final do ciclo, com base nas situações verificadas no GitHub e nas evidências produzidas pela equipe.
+| Pendência transferida | Responsáveis mantidos | Encaminhamento para a Sprint 7 |
+|---|---|---|
+| S6-01 (#50) — Implementar melhorias de acessibilidade na plataforma (B-03) | Paulo Eduardo e Ágatha Natasha | Concluir os controles de ajuste de tamanho de fonte e alto contraste, corrigir o seletor CSS do rodapé, executar e registrar o caso de teste **TC-04** do Documento de Visão e integrar a branch `feature/B-03-acessibilidade` à `developer`. |
 
-O principal objetivo do acompanhamento é assegurar que o planejamento permaneça alinhado ao trabalho efetivamente executado, permitindo identificar desvios, reorganizar prioridades e registrar de forma transparente os resultados da Sprint 6.
+Com esses resultados, o Brasil Hub chega ao ponto de controle da primeira release com sua arquitetura em camadas consolidada, persistência em PostgreSQL via Docker, fluxo público (mapa e filtros) e administrativo (login e upload de CSV) integrados e testados, restando a finalização dos recursos de acessibilidade (`B-03`) como prioridade imediata para a Sprint 7.
 
 ---
 
