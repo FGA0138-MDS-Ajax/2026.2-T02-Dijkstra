@@ -12,18 +12,25 @@ COLUNAS_OBRIGATORIAS = { "Sigla", "Código", "Estado"}
 
 def ler_csv(caminho: str | Path) -> pd.DataFrame:
     """Lê o formato dos CSVs de entrada do projeto."""
-    df = pd.read_csv(
-        caminho,
-        sep=";",
-        encoding="utf-8-sig",
-        skiprows=1,
-        dtype="string",
-        na_values=["", "-", "...", "NA", "N/A", "null"],
-        keep_default_na=True,
-        on_bad_lines="error",
-    )
+    try:
+        df = pd.read_csv(
+            caminho,
+            sep=";",
+            encoding="utf-8-sig",
+            skiprows=1,
+            dtype="string",
+            na_values=["", "-", "...", "NA", "N/A", "null"],
+            keep_default_na=True,
+            on_bad_lines="error",
+        )
+    except UnicodeDecodeError as erro:
+        raise ValueError("O arquivo deve estar codificado em UTF-8.") from erro
+    except pd.errors.ParserError as erro:
+        raise ValueError("Há linhas com mais valores do que colunas no cabeçalho (linha de títulos das colunas)") from erro
+    except pd.errors.EmptyDataError as erro:
+        raise ValueError("O arquivo está vazio ou só contém a linha de título.") from erro
 
-# O separador no final das linhas cria uma coluna sem nome.
+
     for coluna in df.columns:
         if coluna.startswith("Unnamed:") and df[coluna].isna().all():
             df = df.drop(columns=coluna)
@@ -40,7 +47,7 @@ def tratar_csv(caminho: str | Path) -> pd.DataFrame:
     """Transforma as colunas de anos em registros de indicadores."""
     caminho = Path(caminho)
 
-    if caminho.name not in DIMENSOES:
+    if caminho.name.lower() not in DIMENSOES:
         raise ValueError(f"Arquivo sem dimensão definida: {caminho.name}")
 
     df = ler_csv(caminho)
@@ -80,7 +87,7 @@ def tratar_csv(caminho: str | Path) -> pd.DataFrame:
     )
 
     resultado["ano"] = resultado["ano"].astype("int64")
-    resultado["dimensao"] = DIMENSOES[caminho.name]
+    resultado["dimensao"] = DIMENSOES[caminho.name.lower()]
 
     valores = (
         resultado["valor"]

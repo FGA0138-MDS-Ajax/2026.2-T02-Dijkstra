@@ -86,3 +86,51 @@ export async function buscarIndicadores(filtros = {}) {
         throw new ErroApi("resposta_invalida", "A reposta da Api não é um JSON válido",{status: resposta.status , causa: erro});
     }
 }
+
+export async function fazerLogin(usuario, senha) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), TEMPO_LIMITE_MS);
+    let resposta;
+    try{
+        resposta = await fetch(API_BASE_URL + "/api/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ usuario, senha }),
+            signal: controller.signal,
+        });
+    } catch(erro){
+        if(erro.name == "AbortError"){
+            throw new ErroApi("tempo_esgotado", "A Api demorou muito para responder");
+        }
+        throw new ErroApi("rede", "Não foi possivel se concetar a API", {causa : erro});
+    }
+    finally{
+        clearTimeout(timer);
+    }
+
+    if(!resposta.ok){
+        throw new ErroApi("http", resposta.status === 401 ? "Credenciais inválidas." : "Erro na resposta do servidor", {status: resposta.status});
+    }
+    // guarda o cabeçalho Basic para as próximas rotas administrativas
+    sessionStorage.setItem("auth", "Basic " + btoa(`${usuario}:${senha}`));
+    return await resposta.json();
+}
+
+export async function buscarPainelAdmin() {
+    const auth = sessionStorage.getItem("auth");
+    let resposta;
+    try{
+        resposta = await fetch(API_BASE_URL + "/api/admin/painel", {
+            headers: auth ? { Authorization: auth } : {},
+        });
+    } catch(erro){
+        throw new ErroApi("rede", "Não foi possivel se concetar a API", {causa : erro});
+    }
+    if(resposta.status === 401){
+        sessionStorage.removeItem("auth");
+    }
+    if(!resposta.ok){
+        throw new ErroApi("http", "Acesso não autorizado", {status: resposta.status});
+    }
+    return await resposta.json();
+}

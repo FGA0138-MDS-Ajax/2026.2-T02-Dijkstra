@@ -1,8 +1,8 @@
 """Gera dados FICTÍCIOS de IDHM para testar o mapa.
 
-Uso (na raiz do projeto, com a venv ativa):
-    python -m src.data.gerar_dados_teste            # insere os dados
-    python -m src.data.gerar_dados_teste --limpar   # remove só os dados de teste
+Uso (na raiz do projeto, com a venv ativa e DATABASE_URL configurada):
+    python -m tests.fixtures.gerar_dados_teste            # insere os dados
+    python -m tests.fixtures.gerar_dados_teste --limpar   # remove só os dados de teste
 
 Todos os registros usam fonte="TESTE". Os valores são aproximados e
 servem apenas para desenvolvimento, não representam dados oficiais.
@@ -12,7 +12,7 @@ import random
 
 import pandas as pd
 
-from src.database.database import get_connection, get_db_path, init_db
+from src.database.database import get_connection, init_db
 from src.database.indicador_repository import IndicadorRepository
 
 FONTE = "TESTE"
@@ -68,7 +68,7 @@ def limpar() -> int:
     init_db()
     conn = get_connection()
     try:
-        cur = conn.execute("DELETE FROM indicadores WHERE fonte = ?", (FONTE,))
+        cur = conn.execute("DELETE FROM indicadores WHERE fonte = %s", (FONTE,))
         conn.commit()
         return cur.rowcount
     finally:
@@ -88,6 +88,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.limpar:
-        print(f"{limpar()} registros de teste removidos de {get_db_path()}.")
+        print(f"{limpar()} registros de teste removidos do PostgreSQL.")
     else:
-        print(f"{inserir()} registros de teste inseridos em {get_db_path()}.")
+        print(f"{inserir()} registros de teste inseridos no PostgreSQL.")

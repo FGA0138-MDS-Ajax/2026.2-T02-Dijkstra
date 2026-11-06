@@ -1,4 +1,9 @@
-import sqlite3
+import os
+import uuid
+
+import psycopg
+from psycopg import sql
+from psycopg.rows import dict_row
 
 from fastapi.testclient import TestClient
 import pytest
@@ -6,10 +11,17 @@ import platform
 import statistics
 import subprocess
 import time
-from src.api.main import app, get_indicador_service, consultar_indicadores
+from src.api.main import app, get_indicador_service, consultar_indicadores, get_auth_service, get_importacao_service
 from src.api.schemas import Dimensao
+from src.auth.security import PasswordHasher
+from src.database.admin_repository import AdminRepository
+from src.database import admin_repository as admin_repository_module
+from src.database import database as database_module
+from src.database.database import init_db
 from src.database.indicador_repository import IndicadorRepository
+from src.services.auth_service import AuthService
 from src.services.indicador_service import IndicadorService
+from src.services.indicador_service import ErroProcessamentoCSV
 
 client = TestClient(app)
 
@@ -132,7 +144,7 @@ def test_sucesso_busca_indicadores_via_http():
 
 def test_falha_operacional_do_banco_retorna_503(monkeypatch):
     def falhar(self, **filtros):
-        raise sqlite3.OperationalError("unable to open database file: /caminho/interno.db")
+        raise psycopg.OperationalError("connection refused")
 
     monkeypatch.setattr(IndicadorRepository, "listar", falhar)
     monkeypatch.setitem(
@@ -348,3 +360,339 @@ def test_b05_parametros_invalidos_retornam_422_sem_consultar(servico_b05, query)
 
     assert response.status_code == 422
     assert servico_b05.chamadas == 0  # parâmetro inválido nem chega ao serviço
+
+
+ADMIN_TESTE = "admin"
+SENHA_TESTE = "senha-de-teste"
+
+@pytest.fixture
+def auth_com_banco_temporario(monkeypatch):
+    # Cada teste recebe um schema isolado no PostgreSQL de teste.
+    database_url = os.getenv("TEST_DATABASE_URL")
+    if not database_url:
+        pytest.skip("Configure TEST_DATABASE_URL para executar os testes de autenticação.")
+
+    schema = f"test_auth_{uuid.uuid4().hex}"
+    with psycopg.connect(database_url) as conn:
+        conn.execute(sql.SQL("CREATE SCHEMA {}").format(sql.Identifier(schema)))
+
+    def get_test_connection():
+        return psycopg.connect(
+            database_url,
+            options=f"-c search_path={schema}",
+            row_factory=dict_row,
+        )
+
+    monkeypatch.setattr(database_module, "get_connection", get_test_connection)
+    monkeypatch.setattr(admin_repository_module, "get_connection", get_test_connection)
+    init_db()
+    repository = AdminRepository()
+    repository.salvar(ADMIN_TESTE, PasswordHasher.gerar_hash(SENHA_TESTE))
+
+    monkeypatch.setitem(
+        app.dependency_overrides,
+        get_auth_service,
+        lambda: AuthService(repository, PasswordHasher()),
+    )
+    yield
+
+    with psycopg.connect(database_url) as conn:
+        conn.execute(sql.SQL("DROP SCHEMA {} CASCADE").format(sql.Identifier(schema)))
+
+def test_login_com_credenciais_validas(auth_com_banco_temporario):
+    # Simulando: curl -X POST "/api/auth/login" -H "Content-Type: application/json" -d '{"usuario": "admin", "senha": "senha-de-teste"}'
+    response = client.post(
+        "/api/auth/login",
+        json={"usuario": ADMIN_TESTE, "senha": SENHA_TESTE}
+    )
+
+    assert response.status_code == 200
+    data = response.json()
+    assert data["usuario"] == ADMIN_TESTE
+    assert data["mensagem"] == "Autenticação foi realizada com sucesso."
+    # dados seguros: a resposta não expõe senha nem hash
+    assert set(data) == {"id", "usuario", "mensagem"}
+    assert "password_hash" not in data
+    assert "senha" not in data
+
+@pytest.mark.parametrize(
+    "usuario, senha",
+    [
+        (ADMIN_TESTE, "senha_incorreta"),         # senha errada
+        ("usuario_inexistente", SENHA_TESTE),     # usuário incorreto
+    ],
+)
+def test_login_com_credenciais_invalidas(auth_com_banco_temporario, usuario, senha):
+    # Simulando: curl -X POST "/api/auth/login" -H "Content-Type: application/json" -d '{"usuario": "admin", "senha": "senha_incorreta"}'
+    response = client.post(
+        "/api/auth/login",
+        json={"usuario": usuario, "senha": senha}
+    )
+
+    assert response.status_code == 401
+    data = response.json()
+    assert data["detail"] == "Credenciais inválidas."
+
+def test_rota_protegida_sem_autenticacao(auth_com_banco_temporario):
+    # Simulando: curl "/api/admin/painel"
+    response = client.get("/api/admin/painel")
+
+    assert response.status_code == 401
+    data = response.json()
+    assert data["detail"] == "Autenticação necessária"
+    assert response.headers["WWW-Authenticate"] == "Basic"
+
+
+def test_raiz_retorna_status_200():
+    response = client.get("/")
+
+    assert response.status_code == 200
+    assert response.json() == {"message": "Brasil Hub API"}
+
+@pytest.mark.parametrize(
+    "metodo, url",
+    [
+        ("post", "/health"),
+        ("post", "/api/indicadores"),
+        ("get", "/api/auth/login"),
+        ("post", "/api/admin/painel"),
+        ("get", "/api/admin/indicadores/upload"),
+    ],
+)
+def test_metodo_http_nao_permitido(metodo, url):
+    response = getattr(client, metodo)(url)
+
+    assert response.status_code == 405
+
+def test_cors_permitido_para_get():
+    response = client.options(
+        "/api/indicadores",
+        headers={"Origin": "http://localhost:3000", "Access-Control-Request-Method": "GET"},
+    )
+
+    assert response.status_code == 200
+    assert response.headers["access-control-allow-origin"] == "*"
+
+def test_cors_metodo_fora_da_lista_e_rejeitado():
+    response = client.options(
+        "/api/indicadores",
+        headers={"Origin": "http://localhost:3000", "Access-Control-Request-Method": "DELETE"},
+    )
+
+    assert response.status_code == 400
+
+@pytest.mark.parametrize(
+    "estado",
+    ["A", "ACX", "XX", "ac", "Ac", " AC", "AC ", "12", "A C", "BR"],
+)
+def test_validacao_estado_formatos_invalidos(estado):
+    response = client.get(f"/api/indicadores?estado={estado}")
+
+    assert response.status_code == 422
+    erro = response.json()["detail"][0]
+    assert erro["type"] == "string_pattern_mismatch"
+    assert erro["loc"] == ["query", "estado"]
+
+@pytest.mark.parametrize(
+    "periodo, tipo_erro",
+    [
+        (1990, "greater_than_equal"),
+        (2027, "less_than_equal"),
+        (0, "greater_than_equal"),
+        (-1991, "greater_than_equal"),
+        ("1991.5", "int_parsing"),
+        ("abc", "int_parsing"),
+    ],
+)
+def test_validacao_periodo_limites_e_tipos_invalidos(periodo, tipo_erro):
+    response = client.get(f"/api/indicadores?periodo={periodo}")
+
+    assert response.status_code == 422
+    erro = response.json()["detail"][0]
+    assert erro["type"] == tipo_erro
+    assert erro["loc"] == ["query", "periodo"]
+
+@pytest.mark.parametrize(
+    "corpo",
+    [
+        {},
+        {"usuario": ADMIN_TESTE},
+        {"senha": SENHA_TESTE},
+        {"usuario": None, "senha": None},
+        {"usuario": 123, "senha": ["lista"]},
+    ],
+)
+
+def test_login_com_corpo_json_malformado_retorna_422(auth_com_banco_temporario, corpo):
+    # simulando falta de campos/injeção maluca
+    response = client.post("/api/auth/login", json=corpo)
+
+    assert response.status_code == 422
+
+def test_painel_admin_com_credenciais_validas(auth_com_banco_temporario):
+    # simulando requisição autorizada
+    response = client.get(
+        "/api/admin/painel", 
+        auth=(ADMIN_TESTE, SENHA_TESTE)
+    )
+
+    assert response.status_code == 200
+    data = response.json()
+    assert data["mensagem"] == f"Bem-vindo, {ADMIN_TESTE}."
+    assert "admin_id" in data
+
+#espera erro, se um dia corrigirem só remover o @pytest.mark.xfail
+@pytest.mark.xfail(
+    reason="O FastAPI verifica extensões com string pura na rota. Decidir se iremos suportar .CSV em maiusculo.",
+    strict=False,
+)
+def test_upload_extensao_csv_maiuscula_deveria_ser_aceita(auth_com_banco_temporario, monkeypatch):
+    class MockImportacaoRapida:
+        def processar_upload(self, file): return 1
+            
+    monkeypatch.setitem(
+        app.dependency_overrides,
+        get_importacao_service,
+        lambda: MockImportacaoRapida()
+    )
+    # vai dar errado, pq envia arquivo com a extensão em maiusculo .CSV.
+    arquivos = {"file": ("DADOS.CSV", b"estado,ano\nAC,2010", "text/csv")}
+    response = client.post(
+        "/api/admin/indicadores/upload",
+        auth=(ADMIN_TESTE, SENHA_TESTE),
+        files=arquivos
+    )
+
+    #Normalmente espera-se que passe com 200, mas sabemos que retornará 400.
+    assert response.status_code == 200
+
+def test_rota_inexistente_retorna_404():
+    # Verifica se rotas fora do contrato retornam o erro HTTP adequado
+    response = client.get("/api/rota-que-nao-existe")
+    
+    assert response.status_code == 404
+
+def test_indicadores_parametro_desconhecido_e_ignorado():
+    #parametro não reconhecido sendo enviado para a API
+    response = client.get("/api/indicadores?estado=AC&foo=bar")
+    
+    assert response.status_code == 200
+    assert isinstance(response.json(), list)
+
+@pytest.mark.parametrize(
+    "query",
+    [
+        "estado=RR",  #estado valido
+        "estado=AC&dimensao=educacao&periodo=2026", #combinação que não tem dados no banco
+    ],
+)
+def test_indicadores_sem_resultados_retorna_lista_vazia(query):
+    response = client.get(f"/api/indicadores?{query}")
+    
+    assert response.status_code == 200
+    assert response.json() == []
+
+@pytest.mark.parametrize(
+    "usuario, senha",
+    [
+        ("", SENHA_TESTE), 
+        (ADMIN_TESTE, ""), 
+        ("   ", "   ")
+    ],
+)
+def test_login_com_campos_vazios_retorna_401(auth_com_banco_temporario, usuario, senha):
+    response = client.post("/api/auth/login", json={"usuario": usuario, "senha": senha})
+    
+    assert response.status_code == 401
+    assert response.json()["detail"] == "Credenciais inválidas."
+
+def test_upload_sem_arquivo_anexado_retorna_422(auth_com_banco_temporario):
+    response = client.post(
+        "/api/admin/indicadores/upload",
+        auth=(ADMIN_TESTE, SENHA_TESTE)
+    )
+    
+    assert response.status_code == 422
+    assert response.json()["detail"][0]["loc"] == ["body", "file"]
+
+def test_upload_csv_malformado_retorna_400(auth_com_banco_temporario, monkeypatch):
+    # simula serviço encontrando erro ao processar o CSV
+    class MockImportacaoErroProcessamento:
+        def processar_upload(self, file):
+            raise ErroProcessamentoCSV("Coluna obrigatória ausente: valor")
+            
+    monkeypatch.setitem(
+        app.dependency_overrides,
+        get_importacao_service,
+        lambda: MockImportacaoErroProcessamento()
+    )
+
+    arquivos = {"file": ("invalido.csv", b"estado,ano\nAC,2010", "text/csv")}
+    response = client.post(
+        "/api/admin/indicadores/upload",
+        auth=(ADMIN_TESTE, SENHA_TESTE),
+        files=arquivos
+    )
+
+    assert response.status_code == 400
+    assert response.json()["detail"] == "Coluna obrigatória ausente: valor"
+
+def test_estrutura_exata_da_resposta_indicadores():
+    #São verificados os codigos http e a estrutura da resposta
+    response = client.get("/api/indicadores?estado=AC&dimensao=educacao&periodo=1991")
+    
+    assert response.status_code == 200
+    dados = response.json()
+    assert len(dados) > 0
+    
+    registro = dados[0]
+    campos_esperados = {
+        "id", "nome_indicador", "unidade_territorial", "dimensao", 
+        "valor", "periodo_referencia", "unidade_medida", "fonte"
+    }
+    assert set(registro.keys()) == campos_esperados
+
+
+class EspiaoIndicadorService:
+    # registra os argumentos recebidos para conferir o que a rota repassa ao serviço
+    def __init__(self):
+        self.chamadas = []
+
+    def consultar(self, estado=None, dimensao=None, periodo=None):
+        self.chamadas.append({"estado": estado, "dimensao": dimensao, "periodo": periodo})
+        return []
+
+@pytest.fixture
+def servico_espiao(monkeypatch):
+    espiao = EspiaoIndicadorService()
+    monkeypatch.setitem(
+        app.dependency_overrides,
+        get_indicador_service,
+        lambda: espiao,
+    )
+    return espiao
+
+@pytest.mark.parametrize("periodo", [1991, 2026])
+def test_periodo_nos_limites_e_aceito(servico_espiao, periodo):
+    # os limites do intervalo (ge=1991, le=2026) são válidos
+    response = client.get(f"/api/indicadores?periodo={periodo}")
+
+    assert response.status_code == 200
+    assert servico_espiao.chamadas == [{"estado": None, "dimensao": None, "periodo": periodo}]
+
+@pytest.mark.parametrize("dimensao", [d.value for d in Dimensao])
+def test_todas_as_dimensoes_validas_sao_aceitas(servico_espiao, dimensao):
+    # cada dimensão do enum é aceita e chega ao serviço como texto, não como Dimensao
+    response = client.get(f"/api/indicadores?dimensao={dimensao}")
+
+    assert response.status_code == 200
+    recebida = servico_espiao.chamadas[0]["dimensao"]
+    assert recebida == dimensao
+    assert type(recebida) is str
+
+def test_filtros_combinados_chegam_ao_servico_com_tipos_corretos(servico_espiao):
+    response = client.get("/api/indicadores?estado=SP&dimensao=renda&periodo=2010")
+
+    assert response.status_code == 200
+    assert servico_espiao.chamadas == [{"estado": "SP", "dimensao": "renda", "periodo": 2010}]
+    assert type(servico_espiao.chamadas[0]["periodo"]) is int

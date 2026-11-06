@@ -1,9 +1,12 @@
-# Backend
+﻿# Backend
 pandas
 fastapi
+psycopg[binary]
+python-dotenv
 uvicorn #-para o vercel não precisa, mas para testar localmente é necessário-
-#sqlite3 -já vem embutido no python aparentemente-
+bcrypt
+python-multipart
 
 # Testes
 pytest
-httpx2 # testclient do fastAPI precisa dessa dependecia
+httpx # dependência usada pelo TestClient do FastAPI

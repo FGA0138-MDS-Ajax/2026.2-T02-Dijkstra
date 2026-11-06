@@ -61,7 +61,7 @@ A arquitetura proposta utiliza uma organização em camadas, separando a interfa
 | Visualização geográfica | Leaflet | Exibição e interação com o mapa. |
 | Back-end e API | Python e FastAPI | Exposição dos endpoints e processamento das requisições. |
 | Tratamento de dados | Pandas | Leitura, validação e transformação dos arquivos de indicadores. |
-| Banco de dados | SQLite | Persistência dos indicadores e dos dados administrativos necessários. |
+| Banco de dados | PostgreSQL | Persistência dos indicadores e dos dados administrativos necessários. |
 | Testes do back-end | Pytest | Automatização de testes das funcionalidades implementadas em Python. |
 | Testes do front-end | Jest | Automatização de testes das funcionalidades JavaScript. |
 | Documentação | MkDocs e Material for MkDocs | Organização e publicação da documentação do projeto. |
@@ -114,11 +114,12 @@ Execute os comandos na raiz do repositório.
 - Git instalado.
 - Python **3.12.x**, com pip e suporte a ambientes virtuais (`venv`).
 - Dependências de `requirements.txt`: **Pandas** (tratamento dos dados),
-  **FastAPI** (API), **Uvicorn** (servidor), **Pytest** (testes) e
-  **httpx2** (cliente usado nos testes HTTP).
+  **FastAPI** (API), **Uvicorn** (servidor), **Pytest** (testes),
+  **httpx** (cliente usado nos testes HTTP), **bcrypt** (hash das senhas) e
+  **python-multipart** (recebimento de arquivos CSV via upload).
 
-O SQLite é acessado pelo módulo `sqlite3`, incluído no Python. O DBeaver
-é opcional para visualizar o banco; sua instalação está no guia detalhado.
+O PostgreSQL local pode ser iniciado pelo Docker Compose. O DBeaver é
+opcional para visualizar o banco; sua instalação está no guia detalhado.
 
 ### 2. Obter o projeto
 
@@ -126,17 +127,10 @@ O SQLite é acessado pelo módulo `sqlite3`, incluído no Python. O DBeaver
 git clone https://github.com/FGA0138-MDS-Ajax/2026.2-T02-Dijkstra.git
 cd 2026.2-T02-Dijkstra
 git fetch origin
+git switch developer
 ```
 
-Enquanto a API estiver em desenvolvimento e publicada na S3-07, selecione:
-
-```bash
-git switch S3-07-Implementar-API-FastAPI-para-consulta-de-indicadores
-```
-
-Após a integração, utilize a `developer` atualizada. Preserve alterações
-locais antes de trocar de branch. Novas branches de trabalho devem partir
-sempre da **`developer` atualizada**.
+Novas branches de trabalho devem partir sempre da **`developer` atualizada**.
 
 ### 3. Criar o ambiente virtual
 
@@ -165,28 +159,78 @@ Reative a `.venv` em cada novo terminal. Para conferir o ambiente:
 ```bash
 python --version
 python -m pip --version
-python -c "import pandas, fastapi, uvicorn, pytest, sqlite3; print('Importações OK')"
+python -c "import pandas, fastapi, uvicorn, pytest, psycopg, dotenv, bcrypt, httpx; print('Importações OK')"
 ```
+### 4. Criar o administrador inicial
 
-### 4. Importar os dados e iniciar a API
+Copie o arquivo de exemplo e defina o usuário e a senha do administrador:
 
 ```bash
+cp .env.example .env
+```
+
+Edite o `.env` e altere `ADMIN_USUARIO` e `ADMIN_SENHA` (com o banco PostgreSQL em execução via `docker compose up -d db`). Depois execute:
+
+```bash
+python -m scripts.seed_admin
+```
+
+O script grava apenas o hash bcrypt da senha na tabela `administradores`.
+Se o usuário já existir, nada é alterado. Nunca versione o arquivo `.env`.
+
+### 5. Importar os dados e iniciar a aplicação
+
+Para iniciar apenas o banco via Docker e rodar a API localmente no terminal:
+
+```bash
+cp .env.example .env
+docker compose up -d db
 python -m src.data.importar_csv
 python -m uvicorn src.api.main:app --reload
 ```
 
+Para subir todos os serviços (**PostgreSQL + Back-end + Front-end**) via Docker Compose, utilize `--build` para garantir que a imagem do back-end instale todas as dependências atualizadas do `requirements.txt`:
+
+```bash
+docker compose up -d --build
+```
+
+- **Front-end (Mapa e Filtros):** `http://localhost:3000/mapa.html`
+- **Interface Administrativa (Login):** `http://localhost:3000/area-adm.html`
+- **Painel Administrativo (Upload de CSV):** `http://localhost:3000/painel-adm.html`
+- **API e Swagger:** `http://127.0.0.1:8000/docs`
+
+### 6. Executar e testar as funcionalidades administrativas
+
+Com o administrador criado (`python -m scripts.seed_admin`) e os serviços ativos:
+
+1. **Pela Interface Web:**
+   - Acesse `http://localhost:3000/area-adm.html` e informe o usuário e a senha definidos em `ADMIN_USUARIO` e `ADMIN_SENHA` no `.env`.
+   - Após o login, você será redirecionado para `http://localhost:3000/painel-adm.html`.
+   - Selecione um arquivo `.csv` válido com nome correspondente à dimensão (`idhm_geral_uf.csv`, `idhm_educacao_uf.csv`, `idhm_longevidade_uf.csv` ou `idhm_renda_uf.csv`) no padrão IPEA (`Sigla;Código;Estado;<anos>`) e envie para atualizar a base via *upsert* (`ON CONFLICT DO UPDATE`).
+2. **Pela API (via `curl` ou Swagger):**
+   - **Login (`POST /api/auth/login`):**
+     ```bash
+     curl -X POST "http://127.0.0.1:8000/api/auth/login" -H "Content-Type: application/json" -d "{\"usuario\":\"admin\",\"senha\":\"troque-esta-senha\"}"
+     ```
+   - **Upload protegido (`POST /api/admin/indicadores/upload`):**
+     ```bash
+     curl -X POST "http://127.0.0.1:8000/api/admin/indicadores/upload" -u "admin:troque-esta-senha" -F "file=@data/raw/idhm_geral_uf.csv"
+     ```
+
 A carga reúne os quatro CSVs de `data/raw/` na tabela `indicadores`.
-Com os arquivos atuais, são **1.728 registros**. O banco padrão é
-`data/indicadores.db`; se ele já contiver indicadores, o importador
-cancela a carga para evitar duplicações. Nesse caso, inicie apenas a API.
+Com os arquivos atuais, são **1.728 registros**. O `.env.example` configura
+o PostgreSQL de teste local na porta `5434`. Se a tabela já contiver
+indicadores, o importador cancela a carga para evitar duplicações. Nesse
+caso, inicie apenas a API.
 
 Acesse a documentação interativa em **http://127.0.0.1:8000/docs**.
 Para encerrar o servidor, pressione `Ctrl+C`; para sair da `.venv`,
 execute `deactivate`.
 
-O banco pode ser configurado pela variável de ambiente `DB_PATH`.
-O código atual não carrega `.env` automaticamente. O banco `.db` é local
-e ignorado pelo Git; cada integrante pode recriá-lo a partir dos CSVs.
+O banco é configurado pela variável `DATABASE_URL`, carregada do `.env`.
+Esse arquivo é local e ignorado pelo Git. Cada integrante pode iniciar
+seu próprio PostgreSQL pelo Compose e importar os CSVs.
 
 Consulte o [guia da API e dos indicadores](docs/api-indicadores.md) para
 entender as dimensões, o tratamento dos CSVs, os filtros, a configuração
@@ -195,6 +239,14 @@ do banco e a instalação e conexão pelo DBeaver.
 ---
 
 ## 🧪 Testes e qualidade
+
+Os testes de autenticação usam um schema temporário no PostgreSQL. Inicie o
+banco local configurado em `TEST_DATABASE_URL` antes de executar a suíte:
+
+```bash
+cp .env.example .env
+docker compose up -d db
+```
 
 Com a `.venv` ativada, execute:
 
@@ -209,10 +261,7 @@ ou incompatibilidade com `launch_testing`, use:
 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q
 ```
 
-Os testes cobrem tratamento de CSV, repositório SQLite, rotas da API e
-tratamento de falhas operacionais. Os testes HTTP utilizam dependências
-simuladas; as verificações com os dados reais estão descritas no
-[guia da API](docs/api-indicadores.md#verificacoes-e-testes).
+Os testes cobrem tratamento de CSV, repositório PostgreSQL, rotas de consulta da API (B-05), autenticação de administrador com hash bcrypt (B-09), upload protegido de CSV com atualização transacional da base (B-04) e tratamento de falhas operacionais. As verificações detalhadas estão descritas no [guia da API](docs/api-indicadores.md#verificacoes-e-testes) e no [relatório de validação da Sprint 5](docs/validacao-sprint5.md).
 
 A estratégia de testes contempla diferentes níveis de verificação para aumentar a confiabilidade do sistema.
 

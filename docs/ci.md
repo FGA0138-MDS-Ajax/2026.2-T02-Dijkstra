@@ -8,7 +8,7 @@ o workflow criado está no caminho: `.github/workflows/backend-ci.yml`
 - `PR` direcionado para developer e main
 
 # Dependencias no ambiente
-a pipeline utiliza Python (3.12) e instala os pacotes do `requirements.txt`
+a pipeline utiliza Python (3.12), um serviço PostgreSQL 17 (`TEST_DATABASE_URL`) para os testes de integração de autenticação e upload, e instala os pacotes do `requirements.txt`
 
 # Comando de testes
 - `python -m pytest`: rodar com o python -m garante o carregamento do módulo

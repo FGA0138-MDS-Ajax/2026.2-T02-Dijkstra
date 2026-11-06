@@ -16,3 +16,12 @@ class IndicadorResponse(BaseModel):
     periodo_referencia: str
     unidade_medida: str | None = None
     fonte: str | None = None
+
+class LoginRequest(BaseModel):
+    usuario: str
+    senha: str
+
+class LoginResponse (BaseModel):
+    id: int
+    usuario: str
+    mensagem: str = "Autenticação foi realizada com sucesso."
