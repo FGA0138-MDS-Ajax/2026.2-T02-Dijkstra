@@ -179,7 +179,7 @@ Isso sinaliza uma consulta indisponível, não ausência de dados. Não há
 tentativa automática de recuperação ou repetição. Outros tipos de erro
 continuam sendo propagados para diagnóstico.
 
-### Comparação de Estados (`api/indicadores/comparar`)
+### Comparação de Estados (`/api/indicadores/comparar`)
 
 Esta rota permite comparar indicadores de duas UFs lado a lado.
 
@@ -197,7 +197,7 @@ Para facilitar o uso, o indicador-service deduz os anos.
 
 #### Exemplo de requisição:
 ```bash
-curl "[http://127.0.0.1:8000/api/indicadores/comparar?estado_a=SP&estado_b=RJ&periodo_a=2010&periodo_b=2021](http://127.0.0.1:8000/api/indicadores/comparar?estado_a=SP&estado_b=RJ&periodo_a=2010&periodo_b=2021)"
+curl "http://127.0.0.1:8000/api/indicadores/comparar?estado_a=SP&estado_b=RJ&periodo_a=2010&periodo_b=2021"
 ```
 #### Exemplo de Resposta 
 ```json
