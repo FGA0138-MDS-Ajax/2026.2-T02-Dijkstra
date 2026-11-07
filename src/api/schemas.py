@@ -24,10 +24,10 @@ class ValorIndicador(BaseModel):
 
 class EstadoComparado(BaseModel):
     estado: str
+    periodo_referencia: int
     indicadores: dict[str, ValorIndicador]
 
 class ComparacaoResponse(BaseModel):
-    periodo_referencia: str
     estados: list[EstadoComparado]
 
 class LoginRequest(BaseModel):
