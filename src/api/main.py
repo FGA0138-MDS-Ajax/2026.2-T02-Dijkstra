@@ -21,7 +21,8 @@ from src.services.indicador_service import (
     ErroProcessamentoCSV, 
     ErroPersistenciaIndicadores,
     ConsultaIndicadoresIndisponivel,
-    ComparacaoEstadosIguais,
+    ComparacaoSemAnoInformado,
+    ComparacaoEstadosIguaisMesmoAno,
     ComparacaoSemDados,
     EstadoInvalido,
     UFS_VALIDAS,
@@ -105,24 +106,37 @@ PADRAO_UF = "^(" + "|".join(sorted(UFS_VALIDAS)) + ")$"
     "/api/indicadores/comparar",
     response_model=ComparacaoResponse,
     responses={
-        400: {"description": "Os dois estados são iguais"},
-        404: {"description": "Sem dados de um mesmo período para os dois estados"},
+        400: {"description": "Estados iguais no mesmo período ou ano não informado."},
+        404: {"description": "Sem dados para o(s) estado(s) no(s) período(s) solicitado(s)."},
+        422: {"description": "Estado inválido."},
         503: {"description": "Consulta de indicadores indisponível"},
     },
 )
 def comparar_estados(
     estado_a: str = Query(...,pattern=PADRAO_UF),
     estado_b: str = Query(...,pattern=PADRAO_UF),
-    periodo: int | None = Query(
+    periodo_a: int | None = Query(
         default=None,
         ge=1991,
         le=2026,
     ),
+    periodo_b: int | None = Query(
+            default=None,
+            ge=1991,
+            le=2026,
+        ),
     service: IndicadorService = Depends(get_indicador_service),
 ):
     try:
-        return service.comparar(estado_a=estado_a,estado_b=estado_b,ano=periodo)
-    except ComparacaoEstadosIguais as erro:
+        return service.comparar(
+            estado_a=estado_a,
+            estado_b=estado_b,
+            ano_a=periodo_a,
+            ano_b=periodo_b
+        )
+    except ComparacaoSemAnoInformado as erro:
+        raise HTTPException(status_code=400, detail=str(erro)) from erro
+    except ComparacaoEstadosIguaisMesmoAno as erro:
         raise HTTPException(status_code=400,detail=str(erro)) from erro
     except EstadoInvalido as erro:
         raise HTTPException(status_code=422, detail=str(erro)) from erro

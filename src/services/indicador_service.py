@@ -29,11 +29,18 @@ class ErroProcessamentoCSV(Exception):
 class ErroPersistenciaIndicadores(Exception):
     """Falha ao gravar os dados no banco."""
 
+class ComparacaoSemAnoInformado(ValueError):
+    """Não é possível fazer a comparação sem informar o ano."""
+
 class EstadoInvalido(ValueError):
     """Sigla que não corresponde a uma UF válida."""
 
 class ComparacaoEstadosIguais(ValueError):
-    """Sigla que não corresponde a uma UF válida."""
+    """Não é possível comparar o mesmo estado."""
+
+class ComparacaoEstadosIguaisMesmoAno(ValueError):
+    """Não é possível comparar o mesmo estado no mesmo ano."""
+
 class ComparacaoSemDados(ValueError):
     """Não tem dados das UFS para o periodo selecionado."""
 
@@ -59,21 +66,34 @@ class IndicadorService:
         
     def comparar(
         self,
-        estado_a : str,
-        estado_b : str,
-        ano: int | None = None,
+        estado_a    : str,
+        estado_b    : str,
+        ano_a       : int | None = None,
+        ano_b       : int | None = None
     ) -> dict:
+        if ano_a is None:
+            raise ComparacaoSemAnoInformado("Selecione um ano válido para comparar o(s) estado(s).")
+        if ano_b is None:
+            ano_b = ano_a
+
         for estado in (estado_a, estado_b):
             if estado not in UFS_VALIDAS: #estado não existe
                 raise EstadoInvalido(f"Estado Inválido: {estado}")
-        if estado_a == estado_b: #ambos são o mesmo estado
-            raise ComparacaoEstadosIguais(
-                "Selecione dois estados diferentes para comparar."
+        if estado_a == estado_b and ano_a == ano_b: # ambos são o mesmo estado, no mesmo ano
+            raise ComparacaoEstadosIguaisMesmoAno(
+                "Selecione dois anos diferentes para comparar."
             )
-        #consulta registros do estado no ano especifico
-        registros_a = self.consultar(estado=estado_a,periodo=ano)
-        registros_b = self.consultar(estado=estado_b,periodo=ano)
 
+        #consulta registros do estado no ano especifico
+        registros_a = self.consultar(estado=estado_a,periodo=ano_a)
+        if not registros_a:
+            raise ComparacaoSemDados(f"Não há dados para {estado_a} em {ano_a}.")
+
+        registros_b = self.consultar(estado=estado_b,periodo=ano_b)
+        if not registros_b:
+            raise ComparacaoSemDados(f"Não há dados para {estado_b} em {ano_b}.")
+
+        """
         #pega o ano em comum dos estados no ano especifico 
         periodo_comum = (
             {r["periodo_referencia"] for r in registros_a}
@@ -87,22 +107,25 @@ class IndicadorService:
         #periodo selecionado é o maximo do conjunto em comum.
         #Se tiver selecioando um ano na função, o conjunto em comum só vai conter o ano especifico no periodo_comum
         periodo_referencia = max(periodo_comum,key=int)
+        """
 
         #Formatação
         return{
-            "periodo_referencia": periodo_referencia,
             "estados":[
                 {
-                    "estado": estado,
+                    "estado"                : estado_a,
+                    "periodo_referencia"    : ano_a,
+                    "indicadores"           : self._indicadores_do_periodo(
+                        registros_a, str(ano_a)
+                    )
+                },
+                {
+                    "estado": estado_b,
+                    "periodo_referencia": ano_b,
                     "indicadores": self._indicadores_do_periodo(
-                        registros,periodo_referencia
-                    ),
+                        registros_b, str(ano_b)
+                    )
                 }
-                #faz um loop para cada estado+registro, no caso duas vezes
-                for estado,registros in(
-                    (estado_a,registros_a),
-                    (estado_b,registros_b),
-                )
             ],
         }
     
