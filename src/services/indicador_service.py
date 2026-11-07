@@ -71,18 +71,39 @@ class IndicadorService:
         ano_a       : int | None = None,
         ano_b       : int | None = None
     ) -> dict:
-        if ano_a is None:
-            raise ComparacaoSemAnoInformado("Selecione um ano válido para comparar o(s) estado(s).")
-        if ano_b is None:
-            ano_b = ano_a
-
         for estado in (estado_a, estado_b):
             if estado not in UFS_VALIDAS: #estado não existe
                 raise EstadoInvalido(f"Estado Inválido: {estado}")
+
         if estado_a == estado_b and ano_a == ano_b: # ambos são o mesmo estado, no mesmo ano
             raise ComparacaoEstadosIguaisMesmoAno(
                 "Selecione dois anos diferentes para comparar."
             )
+
+        #se não tiver nenhum ano selecionado ele vai pegar o recente mais comum usando o periodo comum
+        if ano_a is None and ano_b is None:
+            registros_a_todos = self.consultar(estado=estado_a)
+            registros_b_todos = self.consultar(estado=estado_b)
+
+            periodo_comum = (
+                {r["periodo_referencia"] for r in registros_a_todos}
+                & {r["periodo_referencia"] for r in registros_b_todos}
+            )
+
+            if not periodo_comum:
+                raise ComparacaoSemDados(
+                    "Não há dados do mesmo periodo"
+                )
+            ano_mais_recente = int(max(periodo_comum,key=int))
+            ano_a = ano_b = ano_mais_recente
+
+        #se um ano for selecionado
+        elif ano_b is None:
+            ano_b = ano_a
+        elif ano_a is None:
+            ano_a = ano_b
+
+        #continua igual
 
         #consulta registros do estado no ano especifico
         registros_a = self.consultar(estado=estado_a,periodo=ano_a)

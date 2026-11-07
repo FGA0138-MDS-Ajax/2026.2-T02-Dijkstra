@@ -134,8 +134,8 @@ def comparar_estados(
             ano_a=periodo_a,
             ano_b=periodo_b
         )
-    except ComparacaoSemAnoInformado as erro:
-        raise HTTPException(status_code=400, detail=str(erro)) from erro
+    #except ComparacaoSemAnoInformado as erro:
+    #    raise HTTPException(status_code=400, detail=str(erro)) from erro
     except ComparacaoEstadosIguaisMesmoAno as erro:
         raise HTTPException(status_code=400,detail=str(erro)) from erro
     except EstadoInvalido as erro:

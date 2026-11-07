@@ -47,9 +47,10 @@ class MockIndicadorService:
         return []
 
     def comparar(self, estado_a: str, estado_b: str, ano_a: int | None = None, ano_b: int | None = None) -> dict:
+        if ano_a is None and ano_b is None:
+            ano_a = ano_b = 2022
         if ano_a is None:
-            raise ComparacaoSemAnoInformado("Selecione um ano válido para comparar o(s) estado(s).")
-
+            ano_a = ano_b
         if ano_b is None:
             ano_b = ano_a
 
@@ -789,14 +790,21 @@ def test_integracao_comparar_sem_dados_no_banco():
 
     assert response.status_code == 404
     assert "Não há dados para" in response.json()["detail"]
+   
 
 def test_integracao_comparar_sem_ano_informado():
     response = client.get(
         "/api/indicadores/comparar?estado_a=DF&estado_b=GO"
     )
 
-    assert response.status_code == 400
-    assert "Selecione um ano válido" in response.json()["detail"]
+    assert response.status_code == 200
+    #assert "Selecione um ano válido" in response.json()["detail"]
+    dados = response.json()
+    # vai pegar o ano mais recente que no mundo teorico dos testes ta sendo 2022
+    assert len(dados["estados"]) == 2
+    assert dados["estados"][0]["periodo_referencia"] == 2022
+    assert dados["estados"][1]["periodo_referencia"] == 2022
+    
 
 def test_integracao_comparar_estado_invalido_url():
     response = client.get(
