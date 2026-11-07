@@ -17,6 +17,19 @@ class IndicadorResponse(BaseModel):
     unidade_medida: str | None = None
     fonte: str | None = None
 
+class ValorIndicador(BaseModel):
+    valor: float | None
+    unidade_medida: str | None = None
+    fonte: str | None = None
+
+class EstadoComparado(BaseModel):
+    estado: str
+    indicadores: dict[str, ValorIndicador]
+
+class ComparacaoResponse(BaseModel):
+    periodo_referencia: str
+    estados: list[EstadoComparado]
+
 class LoginRequest(BaseModel):
     usuario: str
     senha: str
