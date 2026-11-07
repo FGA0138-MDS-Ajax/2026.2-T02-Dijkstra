@@ -187,8 +187,8 @@ Esta rota permite comparar indicadores de duas UFs lado a lado.
 | --- | --- |
 | `estado_a` | Sigla da 1° UF |
 | `estado_b` | Sigla da 2° UF |
-| `ano_a` | (Opcional) Ano da 1° UF |
-| `ano_a` | (Opcional) Ano da 1° UF |
+| `periodo_a` | (Opcional) Ano da 1° UF |
+| `periodo_b` | (Opcional) Ano da 2° UF |
 
 **Periodos**
 Para facilitar o uso, o indicador-service deduz os anos.
