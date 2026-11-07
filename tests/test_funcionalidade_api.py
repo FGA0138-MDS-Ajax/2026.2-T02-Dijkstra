@@ -22,6 +22,10 @@ from src.database.indicador_repository import IndicadorRepository
 from src.services.auth_service import AuthService
 from src.services.indicador_service import IndicadorService
 from src.services.indicador_service import ErroProcessamentoCSV
+from src.services.indicador_service import (ComparacaoSemAnoInformado,
+                                            ComparacaoEstadosIguaisMesmoAno,
+                                            ComparacaoSemDados,
+                                            ConsultaIndicadoresIndisponivel)
 
 client = TestClient(app)
 
@@ -41,6 +45,43 @@ class MockIndicadorService:
         if estado == 'AC' and dimensao == 'educacao' and periodo == 1991:
             return test_json
         return []
+
+    def comparar(self, estado_a: str, estado_b: str, ano_a: int | None = None, ano_b: int | None = None) -> dict:
+        if ano_a is None:
+            raise ComparacaoSemAnoInformado("Selecione um ano válido para comparar o(s) estado(s).")
+
+        if ano_b is None:
+            ano_b = ano_a
+
+        if estado_a == estado_b and ano_a == ano_b:
+            raise ComparacaoEstadosIguaisMesmoAno("Selecione dois anos diferentes para comparar.")
+
+            # 4. Gatilho do Vazio Absoluto (Erro 404) - Se o teste mandar 1995, finge que não achou nada
+        if ano_a == 1995 or ano_b == 1995:
+            raise ComparacaoSemDados("Não há dados para o(s) estado(s) no ano de 1995.")
+
+            # 5. Gatilho da Tela Azul (Erro 503) - Se o teste mandar 1999, finge que o banco explodiu
+        if ano_a == 1999 or ano_b == 1999:
+            raise ConsultaIndicadoresIndisponivel("Não foi possível consultar os indicadores no momento.")
+
+        return {
+            "estados": [
+                {
+                    "estado": estado_a,
+                    "periodo_referencia": ano_a,
+                    "indicadores": {
+                        "idhm": {"valor": 0.800, "unidade_medida": "índice", "fonte": "IBGE fake"}
+                    }
+                },
+                {
+                    "estado": estado_b,
+                    "periodo_referencia": ano_b,
+                    "indicadores": {
+                        "idhm": {"valor": 0.850, "unidade_medida": "índice", "fonte": "IBGE fake"}
+                    }
+                }
+            ]
+        }
 
 @pytest.fixture(autouse=True)
 def servico_simulado(monkeypatch):
@@ -696,3 +737,77 @@ def test_filtros_combinados_chegam_ao_servico_com_tipos_corretos(servico_espiao)
     assert response.status_code == 200
     assert servico_espiao.chamadas == [{"estado": "SP", "dimensao": "renda", "periodo": 2010}]
     assert type(servico_espiao.chamadas[0]["periodo"]) is int
+
+"""Teste Integração S7-01"""
+
+def teste_integracao_comparar_estados_com_sucesso():
+    response = client.get(
+        "/api/indicadores/comparar?estado_a=DF&estado_b=GO&periodo_a=2015&periodo_b=2020"
+    )
+
+    assert response.status_code == 200
+    dados = response.json()
+
+    assert "estados" in dados
+    assert len(dados["estados"]) == 2
+
+    estado_df = dados["estados"][0]
+    assert estado_df["estado"] == "DF"
+    assert estado_df["periodo_referencia"] == 2015
+
+def test_integracao_comparar_estados_iguais_mesmo_ano():
+    response = client.get(
+        "/api/indicadores/comparar?estado_a=DF&estado_b=DF&periodo_a=2020&periodo_b=2020"
+    )
+
+    assert response.status_code == 400
+    assert "Selecione dois anos diferentes" in response.json()["detail"]
+
+def teste_integracao_comparar_sem_periodo_b():
+    response = client.get(
+        "/api/indicadores/comparar?estado_a=DF&estado_b=GO&periodo_a=2022"
+    )
+
+    assert response.status_code == 200
+    dados = response.json()
+
+    estado_go = dados["estados"][1]
+    assert estado_go["estado"] == "GO"
+    assert estado_go["periodo_referencia"] == 2022
+
+def test_integracao_comparar_ano_fora_do_limite_inferior():
+    response = client.get(
+        "/api/indicadores/comparar?estado_a=DF&estado_b=GO&periodo_a=1500"
+    )
+
+    assert response.status_code == 422
+
+def test_integracao_comparar_sem_dados_no_banco():
+    response = client.get(
+        "/api/indicadores/comparar?estado_a=DF&estado_b=GO&periodo_a=1995"
+    )
+
+    assert response.status_code == 404
+    assert "Não há dados para" in response.json()["detail"]
+
+def test_integracao_comparar_sem_ano_informado():
+    response = client.get(
+        "/api/indicadores/comparar?estado_a=DF&estado_b=GO"
+    )
+
+    assert response.status_code == 400
+    assert "Selecione um ano válido" in response.json()["detail"]
+
+def test_integracao_comparar_estado_invalido_url():
+    response = client.get(
+        "/api/indicadores/comparar?estado_a=DFG&estado_b=GO&periodo_a=2020"
+    )
+
+    assert response.status_code == 422
+
+def test_integracao_comparar_servico_indisponivel():
+    response = client.get(
+        "/api/indicadores/comparar?estado_a=DF&estado_b=GO&periodo_a=1999"
+    )
+    assert response.status_code == 503
+    assert "Não foi possível consultar os indicadores" in response.json()["detail"]
