@@ -4,7 +4,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi import File, UploadFile, status
 
-from src.api.schemas import Dimensao, IndicadorResponse, LoginRequest, LoginResponse
+from src.api.schemas import (
+    ComparacaoResponse,
+    Dimensao,
+    IndicadorResponse,
+    LoginRequest,
+    LoginResponse,
+)
 from src.auth.security import PasswordHasher
 from src.database.admin_repository import AdminRepository
 from src.database.indicador_repository import IndicadorRepository
@@ -14,7 +20,12 @@ from src.services.indicador_service import (
     ImportacaoService, 
     ErroProcessamentoCSV, 
     ErroPersistenciaIndicadores,
-    ConsultaIndicadoresIndisponivel
+    ConsultaIndicadoresIndisponivel,
+    ComparacaoSemAnoInformado,
+    ComparacaoEstadosIguaisMesmoAno,
+    ComparacaoSemDados,
+    EstadoInvalido,
+    UFS_VALIDAS,
 )
 from contextlib import asynccontextmanager
 
@@ -83,6 +94,54 @@ def consultar_indicadores(
             dimensao=dimensao.value if dimensao is not None else None,
             periodo=periodo,
         )
+    except ConsultaIndicadoresIndisponivel as erro:
+        raise HTTPException(
+            status_code=503,
+            detail="Não foi possível consultar os indicadores no momento.",
+        ) from erro
+
+PADRAO_UF = "^(" + "|".join(sorted(UFS_VALIDAS)) + ")$"
+
+@app.get(
+    "/api/indicadores/comparar",
+    response_model=ComparacaoResponse,
+    responses={
+        400: {"description": "Estados iguais no mesmo período ou ano não informado."},
+        404: {"description": "Sem dados para o(s) estado(s) no(s) período(s) solicitado(s)."},
+        422: {"description": "Estado inválido."},
+        503: {"description": "Consulta de indicadores indisponível"},
+    },
+)
+def comparar_estados(
+    estado_a: str = Query(...,pattern=PADRAO_UF),
+    estado_b: str = Query(...,pattern=PADRAO_UF),
+    periodo_a: int | None = Query(
+        default=None,
+        ge=1991,
+        le=2026,
+    ),
+    periodo_b: int | None = Query(
+            default=None,
+            ge=1991,
+            le=2026,
+        ),
+    service: IndicadorService = Depends(get_indicador_service),
+):
+    try:
+        return service.comparar(
+            estado_a=estado_a,
+            estado_b=estado_b,
+            ano_a=periodo_a,
+            ano_b=periodo_b
+        )
+    #except ComparacaoSemAnoInformado as erro:
+    #    raise HTTPException(status_code=400, detail=str(erro)) from erro
+    except ComparacaoEstadosIguaisMesmoAno as erro:
+        raise HTTPException(status_code=400,detail=str(erro)) from erro
+    except EstadoInvalido as erro:
+        raise HTTPException(status_code=422, detail=str(erro)) from erro
+    except ComparacaoSemDados as erro:
+        raise HTTPException(status_code=404, detail=str(erro)) from erro
     except ConsultaIndicadoresIndisponivel as erro:
         raise HTTPException(
             status_code=503,

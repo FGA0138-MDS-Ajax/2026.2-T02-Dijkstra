@@ -117,6 +117,7 @@ em <http://127.0.0.1:8000/openapi.json>.
 | `/` | `{"message":"Brasil Hub API"}` |
 | `/health` | `{"status":"ok"}` |
 | `/api/indicadores` | Lista JSON dos indicadores encontrados |
+| `/api/indicadores/comparar` | Objeto JSON comparando todas as dimensões de dois estados |
 
 O `/health` confirma que a aplicação responde; não faz um diagnóstico
 do banco.
@@ -177,6 +178,54 @@ com **503** e este JSON, sem expor caminhos ou detalhes internos:
 Isso sinaliza uma consulta indisponível, não ausência de dados. Não há
 tentativa automática de recuperação ou repetição. Outros tipos de erro
 continuam sendo propagados para diagnóstico.
+
+### Comparação de Estados (`/api/indicadores/comparar`)
+
+Esta rota permite comparar indicadores de duas UFs lado a lado.
+
+| Parâmetro de Entrada | Regra |
+| --- | --- |
+| `estado_a` | Sigla da 1° UF |
+| `estado_b` | Sigla da 2° UF |
+| `periodo_a` | (Opcional) Ano da 1° UF |
+| `periodo_b` | (Opcional) Ano da 2° UF |
+
+**Periodos**
+Para facilitar o uso, o indicador-service deduz os anos.
+- Se receber apenas **um ano**, ele vai pegar os dados do outro estado do mesmo ano.
+- Se não receber **nenhum ano**, ele vai pegar o ano mais recente que ambos os estados tem em conjunto.
+
+#### Exemplo de requisição:
+```bash
+curl "http://127.0.0.1:8000/api/indicadores/comparar?estado_a=SP&estado_b=RJ&periodo_a=2010&periodo_b=2021"
+```
+#### Exemplo de Resposta 
+```json
+{
+  "estados":[
+    {
+      "estado":"SP",
+      "periodo_referencia":2010,
+      "indicadores":{
+        "idhm_geral":{"valor":0.783,"unidade_medida":"índice","fonte":"IPEA"},
+        "renda":{"valor":0.789,"unidade_medida":"índice","fonte":"IPEA"},
+        "educacao":{"valor":0.719,"unidade_medida":"índice","fonte":"IPEA"},
+        "longevidade":{"valor":0.845,"unidade_medida":"índice","fonte":"IPEA"}
+      }
+    },
+    {
+      "estado":"RJ",
+      "periodo_referencia":2021,
+      "indicadores":{
+        "idhm_geral":{"valor":0.763,"unidade_medida":"índice","fonte":"IPEA"},
+        "renda":{"valor":0.759,"unidade_medida":"índice","fonte":"IPEA"},
+        "educacao":{"valor":0.754,"unidade_medida":"índice","fonte":"IPEA"},
+        "longevidade":{"valor":0.775,"unidade_medida":"índice","fonte":"IPEA"}
+      }
+    }
+  ]
+}
+```
 
 ## Visualizar pelo DBeaver
 
@@ -275,6 +324,9 @@ Para conferir a integração, importe os dados, inicie a API e teste no
 | Indicadores: AC, `educacao`, 1991 | Um registro com valor `0.176` |
 | Indicadores: período 2025 | 200, `[]` com os CSVs atuais |
 | Indicadores: estado `XX` | 422 |
+| Comparar: `estado_a=SP`, `estado_b=RJ` (sem ano) | 200, encontra o ano mais recente comum |
+| Comparar: `estado_a=SP`, `estado_b=SP`, `periodo_a=2020`, `periodo_b=2020` | 400, rejeita mesmo estado e mesmo ano |
+| Comparar: `estado_a=SP`, `estado_b=RJ`, `periodo_a=1995` | 404, sem dados para o ano |
 
 ## Problemas frequentes
 
