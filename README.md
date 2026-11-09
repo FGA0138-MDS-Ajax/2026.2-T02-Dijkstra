@@ -330,13 +330,84 @@ Para mais informações sobre as ferramentas utilizadas:
 
 O Brasil Hub é desenvolvido colaborativamente pela equipe da disciplina Métodos de Desenvolvimento de Software.
 
-A equipe organiza as atividades por meio de issues, planejamento de Sprint, revisão de código e testes, buscando manter a rastreabilidade das entregas e a qualidade do software.
+<div align="center">
+  <table>
+    <tr>
+      <td align="center">
+        <a href="https://github.com/Nataxshaa">
+          <img src="https://github.com/Nataxshaa.png" width="115px;" style="border-radius: 50%;" alt="Foto de Ágatha Natasha"/><br>
+          <sub><b>Ágatha Natasha</b></sub>
+        </a><br>
+        <sub><code>251034885</code></sub><br>
+        <sub>Back-end & Infra</sub>
+      </td>
+      <td align="center">
+        <a href="https://github.com/CesarL3gal">
+          <img src="https://github.com/CesarL3gal.png" width="115px;" style="border-radius: 50%;" alt="Foto de César Augusto"/><br>
+          <sub><b>César Augusto</b></sub>
+        </a><br>
+        <sub><code>251035031</code></sub><br>
+        <sub>Front-end</sub>
+      </td>
+      <td align="center">
+        <a href="https://github.com/EduardoSauber">
+          <img src="https://github.com/EduardoSauber.png" width="115px;" style="border-radius: 50%;" alt="Foto de Eduardo Brito"/><br>
+          <sub><b>Eduardo Brito</b></sub>
+        </a><br>
+        <sub><code>251020226</code></sub><br>
+        <sub>Back-end & Infra</sub>
+      </td>
+      <td align="center">
+        <a href="https://github.com/fabysoouza">
+          <img src="https://github.com/fabysoouza.png" width="115px;" style="border-radius: 50%;" alt="Foto de Fabiana Reis"/><br>
+          <sub><b>Fabiana Reis</b></sub>
+        </a><br>
+        <sub><code>251008526</code></sub><br>
+        <sub>PO / Front-end</sub>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <a href="https://github.com/fgeorge07">
+          <img src="https://github.com/fgeorge07.png" width="115px;" style="border-radius: 50%;" alt="Foto de Felipe George"/><br>
+          <sub><b>Felipe George</b></sub>
+        </a><br>
+        <sub><code>251008535</code></sub><br>
+        <sub>Front-end</sub>
+      </td>
+      <td align="center">
+        <a href="https://github.com/JosefWojtyla">
+          <img src="https://github.com/JosefWojtyla.png" width="115px;" style="border-radius: 50%;" alt="Foto de Josef Wojtyla"/><br>
+          <sub><b>Josef Wojtyla</b></sub>
+        </a><br>
+        <sub><code>251023282</code></sub><br>
+        <sub>SM / Back-end & Infra</sub>
+      </td>
+      <td align="center">
+        <a href="https://github.com/nerylucas">
+          <img src="https://github.com/nerylucas.png" width="115px;" style="border-radius: 50%;" alt="Foto de Lucas Abdalla"/><br>
+          <sub><b>Lucas Abdalla</b></sub>
+        </a><br>
+        <sub><code>251012304</code></sub><br>
+        <sub>Front-end</sub>
+      </td>
+      <td align="center">
+        <a href="https://github.com/pefidelis">
+          <img src="https://github.com/pefidelis.png" width="115px;" style="border-radius: 50%;" alt="Foto de Paulo Eduardo"/><br>
+          <sub><b>Paulo Eduardo</b></sub>
+        </a><br>
+        <sub><code>242015325</code></sub><br>
+        <sub>Back-end & Infra</sub>
+      </td>
+    </tr>
+  </table>
+</div>
 
 ---
 
 ## 📌 Estado atual do projeto
 
-O Brasil Hub encontra-se em desenvolvimento. A implementação das funcionalidades, a validação dos requisitos e a evolução da documentação acontecem de forma incremental ao longo das Sprints.
+O Brasil Hub encontra-se em desenvolvimento. A implementação das funcionalidades acontecem de forma incremental ao longo das Sprints.
 
 Para acompanhar o andamento do trabalho, consulte as issues, os Pull Requests e o histórico de alterações do repositório.
 
