@@ -63,6 +63,29 @@
             <div class="map-container" id="mapa-brasil"></div>
             <div id="legenda-externa-mapa"></div>
         </section>
+        <section class="comparacao-section map-section" aria-labelledby="comparacao-titulo">
+            <h2 id="comparacao-titulo" class="map-titulo">Comparar Estados Lado a Lado</h2>
+            <div class="filtros">
+                <div class="filtros__campo">
+
+                    <label for="comparacao-estado-a">1º Estado</label>
+                    <select name="estado_a" id="comparacao-estado-a"></select>
+
+                </div>
+                <div class="filtros__campo">
+
+                    <label for="comparacao-estado-b">2º Estado</label>
+                    <select name="estado_b" id="comparacao-estado-b"></select>
+
+                </div>
+            </div>
+                <button type="button" id="comparacao-limpar" class="filtros__limpar">Limpar Comparação</button>
+                <p id="comparacao-status" class="filtros__resumo" role="status" aria-live="polite">
+                Selecione dois estados diferentes para comparar seus indicadores lado a lado.
+            </p>
+            <div id="comparacao-resultado" class="comparacao__resultado" hidden></div>
+
+        </section>
         </main>
 
 
