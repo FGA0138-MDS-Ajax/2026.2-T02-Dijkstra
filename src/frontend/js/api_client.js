@@ -134,3 +134,44 @@ export async function buscarPainelAdmin() {
     }
     return await resposta.json();
 }
+
+export async function buscarComparacao(estadoA, estadoB, { periodoA = null, periodoB = null } = {}) {
+    
+    const url = montarURL("/api/indicadores/comparar", {
+        estado_a: estadoA,
+        estado_b: estadoB,
+        periodo_a: periodoA,
+        periodo_b: periodoB,
+    });
+
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), TEMPO_LIMITE_MS);
+    let resposta;
+
+    try{
+        resposta = await fetch(url, {signal:controller.signal});
+    } catch(erro){
+        if(erro.name == "AbortError"){
+            throw new ErroApi("tempo_esgotado", "A Api demorou muito para responder");
+        }
+        throw new ErroApi("rede", "Não foi possivel se concetar a API", {causa : erro});
+    }
+    finally{
+        //reseta o timer
+        clearTimeout(timer);
+        
+    }
+    if(!resposta.ok){
+        const corpoErro = await resposta.json().catch(() => null);
+        const detalhe = corpoErro?.detail || "erro na resposta do servidor";
+
+        throw new ErroApi("http", detalhe, { status: resposta.status });
+    }
+
+    try{
+        return await resposta.json();
+    }
+    catch(erro){
+        throw new ErroApi("resposta_invalida", "A reposta da Api não é um JSON válido",{status: resposta.status , causa: erro});
+    }
+}
