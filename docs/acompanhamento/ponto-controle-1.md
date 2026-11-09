@@ -23,6 +23,7 @@
     1. **Sprints de 7 dias** com tarefas divididas em **4 duplas** (rotação entre Front-end, Back-end).
     2. **Proibido commit direto na `main` ou `developer`:** toda tarefa nasce em uma *branch* própria.
     3. **Revisão Cruzada (PR):** uma dupla faz o código -> outra dupla baixa, testa e aprova + **116 testes automatizados** rodam no GitHub Actions.
+    4. **Rotação de Responsabilidades:** todos passam pelo front, back e banco de dados. Em cada Sprint ocorre essa alternancia. 
 
 !!! warning "Adaptação Real: Por que trocamos reuniões longas por Dailies assíncronas?"
     - **O que acontecia nas reuniões:** só **~4 integrantes** conseguiam ficar do início ao fim. Vários chegavam depois ou saíam antes por **morarem longe (horário de ônibus/volta para casa), trabalho, outras matérias e questões pessoais**.
