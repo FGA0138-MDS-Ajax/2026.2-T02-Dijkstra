@@ -9,6 +9,8 @@ A equipe adotará uma integração da metodologia do Scrum com as práticas téc
 - **Adaptação (Sprint Retrospective):** Sessão interna da equipe para inspecionar os processos e ferramentas, identificando e implementando melhorias para a próxima Sprint.
 - **Rotação de Duplas e Propriedade Coletiva:** A equipe trabalhará sob a dinâmica de Programação em Pares (XP). Para equilibrar a curva de aprendizado com a necessidade de entregas contínuas, adotou-se o modelo de "Âncoras e Rotativos" para as Sprints iniciais (Sprint 3 e 4). Os âncoras permanecerão em suas áreas primárias de foco, enquanto os membros rotativos alternarão de frente (Back-end para Front-end, por exemplo). A partir da Sprint 5, os próprios âncoras iniciarão a rotação para outras áreas. Essa estratégia garante que, ao final do projeto, todos os membros tenham atuado em todas as camadas da aplicação, assegurando a real propriedade coletiva do código.
 
-As responsabilidades seguem a Tabela 4, a comunicação segue a Tabela 6, e as métricas da Seção 5 são coletadas na Sprint Review.
+As responsabilidades seguem a Tabela 4, a comunicação segue a Tabela 6, e as métricas da Seção 5 são coletadas na Sprint Review. 
+
+Ao final de cada Sprint, após a Review e a Retrospective, a branch `develop` é integrada à `main`, gerando uma release do incremento (Seção 6.1); a última, na Sprint 9, é a versão apresentada. 
 
 *Fonte: Elaborado por Josef Wojtyla (2026).*
