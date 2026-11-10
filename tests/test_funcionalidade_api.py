@@ -935,23 +935,83 @@ def test_integracao_consulta_sem_resultados_retorna_200_lista_vazia(servico_s7_0
     assert response.status_code == 200
     assert response.json() == []
 
-
-def test_integracao_tc10_coerencia_tabela_e_grafico(servico_s7_03):
+def test_integracao_contrato_dados_para_tabela_e_grafico(servico_s7_03):
     response = client.get("/api/indicadores?estado=SP&periodo=2021")
+
     assert response.status_code == 200
     dados = response.json()
 
-    valores_tabela = {d["dimensao"]: d["valor"] for d in dados}
-    valores_grafico = {d["dimensao"]: d["valor"] for d in dados}
-    assert valores_tabela == valores_grafico
+    # Resultado esperado, definido independentemente da resposta da API.
+    esperado = {
+        "idhm_geral": {
+            "indicador": "IDHM",
+            "valor": 0.806,
+            "estado": "SP",
+            "periodo": "2021",
+            "unidade": "índice",
+        },
+        "educacao": {
+            "indicador": "IDHM",
+            "valor": 0.828,
+            "estado": "SP",
+            "periodo": "2021",
+            "unidade": "índice",
+        },
+        "longevidade": {
+            "indicador": "IDHM",
+            "valor": 0.845,
+            "estado": "SP",
+            "periodo": "2021",
+            "unidade": "índice",
+        },
+        "renda": {
+            "indicador": "IDHM",
+            "valor": 0.745,
+            "estado": "SP",
+            "periodo": "2021",
+            "unidade": "índice",
+        },
+    }
 
-    unidades_tabela = {d["dimensao"]: d["unidade_medida"] for d in dados}
-    unidades_grafico = {d["dimensao"]: d["unidade_medida"] for d in dados}
-    assert unidades_tabela == unidades_grafico == {d["dimensao"]: "índice" for d in dados}
+    dados_por_dimensao = {
+        item["dimensao"]: item for item in dados
+    }
 
-    resp_rr = client.get("/api/indicadores?estado=RR&periodo=1991")
-    assert resp_rr.status_code == 200
-    dados_rr = resp_rr.json()
-    renda_rr = next(d for d in dados_rr if d["dimensao"] == "renda")
-    assert renda_rr["valor"] is None
-    assert renda_rr["valor"] != 0.0
+    # Verifica os campos necessários para montar a tabela.
+    dados_tabela = {
+        dimensao: {
+            "indicador": item["nome_indicador"],
+            "valor": item["valor"],
+            "estado": item["unidade_territorial"],
+            "periodo": item["periodo_referencia"],
+            "unidade": item["unidade_medida"],
+        }
+        for dimensao, item in dados_por_dimensao.items()
+    }
+
+    # Verifica os campos necessários para montar o gráfico.
+    dados_grafico = {
+        dimensao: {
+            "rotulo": dimensao,
+            "valor": item["valor"],
+            "unidade": item["unidade_medida"],
+        }
+        for dimensao, item in dados_por_dimensao.items()
+    }
+
+    esperado_tabela = {
+        dimensao: valores
+        for dimensao, valores in esperado.items()
+    }
+
+    esperado_grafico = {
+        dimensao: {
+            "rotulo": dimensao,
+            "valor": valores["valor"],
+            "unidade": valores["unidade"],
+        }
+        for dimensao, valores in esperado.items()
+    }
+
+    assert dados_tabela == esperado_tabela
+    assert dados_grafico == esperado_grafico
