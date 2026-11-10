@@ -6,329 +6,210 @@ O **Brasil Hub** é uma aplicação web desenvolvida para facilitar a consulta, 
 
 A plataforma busca tornar esses dados mais acessíveis por meio de uma interface intuitiva, recursos de visualização geográfica e filtros que permitem explorar diferentes dimensões do desenvolvimento humano, como **renda, educação e longevidade**.
 
-![Status do projeto](https://img.shields.io/badge/Status-Em%20desenvolvimento-orange)
-
 ---
 
-## 📌 Sobre o projeto
+## Sobre o projeto
 
 O acesso a informações socioeconômicas é importante para compreender as diferenças entre as regiões brasileiras e apoiar análises sobre as condições de vida da população.
 
 O Brasil Hub propõe reunir esses indicadores em uma plataforma que facilite sua exploração e comparação entre estados, contribuindo para uma compreensão mais clara das desigualdades regionais.
 
-O projeto está sendo desenvolvido como parte da disciplina **Métodos de Desenvolvimento de Software (MDS)**, pela equipe Dijkstra, com foco na aplicação de práticas de engenharia de software, desenvolvimento colaborativo, testes e documentação.
+O projeto é desenvolvido na disciplina de **Métodos de Desenvolvimento de Software (MDS)** da **Universidade de Brasília (UnB)**, sob orientação do **Prof. Ricardo Ajax**, no semestre **2026.2**, pela **Equipe Dijkstra**.
 
-### 🎯 Objetivos
+### Objetivos
 
 - Facilitar o acesso a indicadores socioeconômicos das unidades da Federação.
-- Permitir a exploração dos dados por meio de mapas interativos e filtros.
+- Permitir a exploração dos dados por meio de mapas interativos e filtros dinâmicos.
 - Favorecer a comparação de indicadores entre estados e períodos.
-- Apresentar informações de forma organizada e acessível.
-- Permitir a atualização dos dados por meio do envio de arquivos CSV por administradores autorizados.
+- Apresentar informações de forma organizada, responsiva e acessível.
+- Permitir a atualização dos dados por meio de upload de arquivos CSV por administradores autenticados.
 
 ---
 
-## Funcionalidades previstas
+## Funcionalidades do sistema
 
-O escopo do Brasil Hub contempla as seguintes funcionalidades:
+### Visitantes (Acesso público)
 
-### 👥 Para os visitantes
+- **Mapa interativo do Brasil:** exploração visual dos indicadores por unidade da Federação via Leaflet.
+- **Filtros dinâmicos:** seleção por Estado e Dimensão do IDH (Renda, Educação, Longevidade e Geral).
+- **Painel informativo:** consulta dos valores detalhados, período de referência e fonte do dado ao selecionar uma UF.
+- **Acessibilidade completa:** controles de ajuste de tamanho de fonte (`A+`/`A-`), modo escuro e alto contraste integrados à barra de navegação.
+- **Responsividade:** interface adaptada para navegação em computadores, tablets e smartphones.
 
-- **Mapa interativo do Brasil:** exploração visual dos indicadores por unidade da Federação.
-- **Filtros dinâmicos:** seleção de estados, dimensões e períodos disponíveis.
-- **Visualização de indicadores:** consulta de informações relacionadas à renda, educação e longevidade.
-- **Comparação entre estados:** análise das diferenças entre unidades da Federação.
-- **Tabelas e gráficos:** apresentação dos indicadores em formatos complementares.
-- **Acessibilidade e responsividade:** interface adaptável a diferentes dispositivos e necessidades de utilização.
+### Administradores (Área restrita)
 
-### 🔐 Para os administradores
-
-- **Autenticação:** acesso restrito às funcionalidades administrativas.
-- **Atualização de dados:** envio de arquivos CSV para atualização dos indicadores.
-- **Validação dos arquivos:** verificação e tratamento dos dados antes de sua utilização pela aplicação.
-
-> **Observação:** o Brasil Hub está em desenvolvimento. A disponibilidade de cada funcionalidade depende do andamento das implementações e das respectivas validações.
+- **Autenticação segura:** controle de acesso mediante usuário e senha criptografada com algoritmo de hash `bcrypt`.
+- **Upload de dados:** envio de novos arquivos CSV para atualização transacional da base de dados via *upsert*.
+- **Validação e sanitização:** verificação de formato, colunas e consistência com Pandas antes da persistência no banco.
 
 ---
 
-## 🏗️ Arquitetura e tecnologias
+## Arquitetura e tecnologias
 
-A arquitetura proposta utiliza uma organização em camadas, separando a interface do usuário, o processamento das requisições e a persistência dos dados.
+A aplicação utiliza arquitetura em camadas desacopladas para separar interface, regras de negócio e persistência.
 
-| Camada ou componente | Tecnologia | Responsabilidade |
-|:--|:--|:--|
-| Front-end | HTML, CSS e JavaScript | Construção da interface e interação com o usuário. |
-| Visualização geográfica | Leaflet | Exibição e interação com o mapa. |
-| Back-end e API | Python e FastAPI | Exposição dos endpoints e processamento das requisições. |
-| Tratamento de dados | Pandas | Leitura, validação e transformação dos arquivos de indicadores. |
-| Banco de dados | PostgreSQL | Persistência dos indicadores e dos dados administrativos necessários. |
-| Testes do back-end | Pytest | Automatização de testes das funcionalidades implementadas em Python. |
-| Testes do front-end | Jest | Automatização de testes das funcionalidades JavaScript. |
-| Documentação | MkDocs e Material for MkDocs | Organização e publicação da documentação do projeto. |
-
-### 🔄 Fluxo simplificado da aplicação
-
-O front-end realiza requisições à API, que encaminha as operações aos componentes responsáveis pelo processamento e acesso aos dados. Os resultados são retornados ao cliente para apresentação na interface.
-
-O fluxo administrativo permite que arquivos CSV sejam recebidos e processados para atualização dos indicadores, respeitando as validações e as permissões definidas pela aplicação.
+| Camada / Componente | Tecnologia | Responsabilidade no projeto |
+| :--- | :--- | :--- |
+| **Front-end** | HTML5, CSS3 e JavaScript modular | Interface do usuário, controles de acessibilidade e filtros |
+| **Visualização geográfica** | Leaflet | Renderização vetorial e interação com o mapa coroplético |
+| **Back-end / API** | Python 3.12 e FastAPI | Endpoints RESTful, validação de contratos e regras de negócio |
+| **Tratamento de dados** | Pandas | Leitura, padronização, limpeza e ingestão de planilhas CSV |
+| **Banco de dados** | PostgreSQL 17 | Persistência relacional de indicadores e credenciais |
+| **Conteinerização** | Docker e Docker Compose | Padronização e isolamento do ambiente de execução local e de CI |
+| **Testes automatizados** | Pytest | Testes unitários, de integração e de desempenho da API |
+| **Documentação** | MkDocs Material | Centralização dos documentos de visão, arquitetura e acompanhamento |
 
 ---
 
-## 📂 Organização do repositório
+## Como executar o projeto em qualquer computador
 
-A organização do código e da documentação segue a arquitetura definida para o projeto.
+O projeto foi totalmente configurado para rodar de forma padronizada via **Docker Compose**, tanto no **Linux/macOS** quanto no **Windows**, sem necessidade de instalar Python ou PostgreSQL diretamente no sistema operacional do host.
 
-A estrutura de referência é:
+### Pré-requisitos
 
-```text
-brasil-hub/
-├── src/
-│   ├── frontend/       # Interface da aplicação
-│   ├── api/            # Endpoints e configuração da API
-│   ├── services/       # Regras de negócio e processamento
-│   ├── auth/           # Autenticação e autorização
-│   ├── data/           # Leitura e tratamento dos dados
-│   └── database/       # Acesso e persistência dos dados
-├── tests/              # Testes automatizados
-│   └── fixtures/       # Dados e arquivos de apoio aos testes
-├── data/               # Dados de entrada, conforme configuração do projeto
-├── docs/               # Documentação
-├── requirements.txt
-├── python-version      # Dependência python
-├── mkdocs.yml          # Configuração do MkDocs
-└── README.md           # Apresentação do projeto
-```
-
-> A estrutura acima representa a organização prevista para o projeto e poderá ser atualizada conforme a implementação evoluir.
-
-Arquivos de configuração locais, credenciais, senhas e bancos de dados com informações não destinadas ao versionamento não devem ser enviados ao Git.
+- **Git**
+- **Docker** e **Docker Compose** instalados e em execução (Docker Engine ou Docker Desktop)
 
 ---
 
-## 🚀 Instalação e execução local
-
-Execute os comandos na raiz do repositório.
-
-### 1. Pré-requisitos e dependências
-
-- Git instalado.
-- Python **3.12.x**, com pip e suporte a ambientes virtuais (`venv`).
-- Dependências de `requirements.txt`: **Pandas** (tratamento dos dados),
-  **FastAPI** (API), **Uvicorn** (servidor), **Pytest** (testes),
-  **httpx** (cliente usado nos testes HTTP), **bcrypt** (hash das senhas) e
-  **python-multipart** (recebimento de arquivos CSV via upload).
-
-O PostgreSQL local pode ser iniciado pelo Docker Compose. O DBeaver é
-opcional para visualizar o banco; sua instalação está no guia detalhado.
-
-### 2. Obter o projeto
+### Passo 1: Obter o repositório
 
 ```bash
 git clone https://github.com/FGA0138-MDS-Ajax/2026.2-T02-Dijkstra.git
 cd 2026.2-T02-Dijkstra
-git fetch origin
-git switch developer
 ```
 
-Novas branches de trabalho devem partir sempre da **`developer` atualizada**.
-
-### 3. Criar o ambiente virtual
-
-**Linux ou macOS:**
-
+Se desejar executar a versão de produção estável:
 ```bash
-python3.12 -m venv .venv
-source .venv/bin/activate
+git checkout main
 ```
 
-**Windows — PowerShell:**
+---
 
-```powershell
-py -3.12 -m venv .venv
-.\.venv\Scripts\Activate.ps1
-```
+### Passo 2: Configurar variáveis de ambiente
 
-Com a `.venv` ativada, instale as dependências:
+Crie o arquivo `.env` a partir do modelo de exemplo:
 
-```bash
-python -m pip install -r requirements.txt
-```
+- **Linux / macOS:**
+  ```bash
+  cp .env.example .env
+  ```
 
-Reative a `.venv` em cada novo terminal. Para conferir o ambiente:
+- **Windows (PowerShell):**
+  ```powershell
+  Copy-Item .env.example .env
+  ```
 
-```bash
-python --version
-python -m pip --version
-python -c "import pandas, fastapi, uvicorn, pytest, psycopg, dotenv, bcrypt, httpx; print('Importações OK')"
-```
-### 4. Criar o administrador inicial
+> Caso queira personalizar credenciais administrativas ou portas, edite os campos `ADMIN_USUARIO`, `ADMIN_SENHA` e `POSTGRES_PASSWORD` dentro do `.env`.
 
-Copie o arquivo de exemplo e defina o usuário e a senha do administrador:
+---
 
-```bash
-cp .env.example .env
-```
+### Passo 3: Iniciar a aplicação
 
-Edite o `.env` e altere `ADMIN_USUARIO` e `ADMIN_SENHA` (com o banco PostgreSQL em execução via `docker compose up -d db`). Depois execute:
-
-```bash
-python -m scripts.seed_admin
-```
-
-O script grava apenas o hash bcrypt da senha na tabela `administradores`.
-Se o usuário já existir, nada é alterado. Nunca versione o arquivo `.env`.
-
-### 5. Importar os dados e iniciar a aplicação
-
-Para iniciar apenas o banco via Docker e rodar a API localmente no terminal:
-
-```bash
-cp .env.example .env
-docker compose up -d db
-python -m src.data.importar_csv
-python -m uvicorn src.api.main:app --reload
-```
-
-Para subir todos os serviços (**PostgreSQL + Back-end + Front-end**) via Docker Compose, utilize `--build` para garantir que a imagem do back-end instale todas as dependências atualizadas do `requirements.txt`:
+Execute o comando a seguir na raiz do projeto para construir as imagens e subir os três containers (**Banco PostgreSQL + Back-end FastAPI + Front-end Nginx**):
 
 ```bash
 docker compose up -d --build
 ```
 
-- **Front-end (Mapa e Filtros):** `http://localhost:3000/mapa.html`
-- **Interface Administrativa (Login):** `http://localhost:3000/area-adm.html`
-- **Painel Administrativo (Upload de CSV):** `http://localhost:3000/painel-adm.html`
-- **API e Swagger:** `http://127.0.0.1:8000/docs`
+---
 
-### 6. Executar e testar as funcionalidades administrativas
+### Passo 4: Carregar a base de dados e criar o administrador
 
-Com o administrador criado (`python -m scripts.seed_admin`) e os serviços ativos:
+Com os containers em execução, popule os dados iniciais do IBGE/IPEA e crie a conta administrativa inicial:
 
-1. **Pela Interface Web:**
-   - Acesse `http://localhost:3000/area-adm.html` e informe o usuário e a senha definidos em `ADMIN_USUARIO` e `ADMIN_SENHA` no `.env`.
-   - Após o login, você será redirecionado para `http://localhost:3000/painel-adm.html`.
-   - Selecione um arquivo `.csv` válido com nome correspondente à dimensão (`idhm_geral_uf.csv`, `idhm_educacao_uf.csv`, `idhm_longevidade_uf.csv` ou `idhm_renda_uf.csv`) no padrão IPEA (`Sigla;Código;Estado;<anos>`) e envie para atualizar a base via *upsert* (`ON CONFLICT DO UPDATE`).
-2. **Pela API (via `curl` ou Swagger):**
-   - **Login (`POST /api/auth/login`):**
-     ```bash
-     curl -X POST "http://127.0.0.1:8000/api/auth/login" -H "Content-Type: application/json" -d "{\"usuario\":\"admin\",\"senha\":\"troque-esta-senha\"}"
-     ```
-   - **Upload protegido (`POST /api/admin/indicadores/upload`):**
-     ```bash
-     curl -X POST "http://127.0.0.1:8000/api/admin/indicadores/upload" -u "admin:troque-esta-senha" -F "file=@data/raw/idhm_geral_uf.csv"
-     ```
+```bash
+# 1. Importa os 1.728 registros dos CSVs oficiais para o banco de dados
+docker compose exec backend python -m src.data.importar_csv
 
-A carga reúne os quatro CSVs de `data/raw/` na tabela `indicadores`.
-Com os arquivos atuais, são **1.728 registros**. O `.env.example` configura
-o PostgreSQL de teste local na porta `5434`. Se a tabela já contiver
-indicadores, o importador cancela a carga para evitar duplicações. Nesse
-caso, inicie apenas a API.
-
-Acesse a documentação interativa em **http://127.0.0.1:8000/docs**.
-Para encerrar o servidor, pressione `Ctrl+C`; para sair da `.venv`,
-execute `deactivate`.
-
-O banco é configurado pela variável `DATABASE_URL`, carregada do `.env`.
-Esse arquivo é local e ignorado pelo Git. Cada integrante pode iniciar
-seu próprio PostgreSQL pelo Compose e importar os CSVs.
-
-Consulte o [guia da API e dos indicadores](docs/api-indicadores.md) para
-entender as dimensões, o tratamento dos CSVs, os filtros, a configuração
-do banco e a instalação e conexão pelo DBeaver.
+# 2. Cria o usuário administrador com senha em hash bcrypt no PostgreSQL
+docker compose exec backend python -m scripts.seed_admin
+```
 
 ---
 
-## 🧪 Testes e qualidade
+### Passo 5: Acessar a aplicação no navegador
 
-Os testes de autenticação usam um schema temporário no PostgreSQL. Inicie o
-banco local configurado em `TEST_DATABASE_URL` antes de executar a suíte:
+| Interface / Serviço | Endereço | Descrição |
+| :--- | :--- | :--- |
+| **Página Inicial** | [http://localhost:3000/index.html](http://localhost:3000/index.html) | Visão geral da plataforma |
+| **Mapa Interativo** | [http://localhost:3000/mapa.html](http://localhost:3000/mapa.html) | Mapa com filtros e dados socioeconômicos |
+| **Área do Administrador** | [http://localhost:3000/area-adm.html](http://localhost:3000/area-adm.html) | Tela de login restrito |
+| **Painel de Upload** | [http://localhost:3000/painel-adm.html](http://localhost:3000/painel-adm.html) | Envio de novas planilhas CSV pelo admin |
+| **Documentação da API (Swagger)** | [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) | Especificação interativa OpenAPI/Swagger |
+
+> **Credenciais padrão do administrador:**
+> - **Usuário:** `admin`
+> - **Senha:** `troque-esta-senha` *(ou a senha customizada no seu arquivo `.env`)*
+
+---
+
+### Comandos úteis de gerenciamento
 
 ```bash
-cp .env.example .env
-docker compose up -d db
+# Opcional
+# Verificar status dos containers
+docker compose ps
+
+# Visualizar logs em tempo real
+docker compose logs -f
+
+# Parar os serviços sem remover os dados salvos no banco
+docker compose stop
+
+# Encerrar e remover containers
+docker compose down
 ```
 
-Com a `.venv` ativada, execute:
+---
+
+## Testes e qualidade de software
+
+A suíte conta com **116 testes automatizados** no Pytest, cobrindo processamento de CSV, integridade relacional, autenticação segura, validações da API e verificação de tempo de resposta.
+
+Os testes de integração são executados automaticamente a cada Pull Request no **GitHub Actions**, subindo uma instância isolada de PostgreSQL 17 em ambiente de CI.
+
+### Execução local dos testes
+
+Para rodar a suíte no terminal da sua máquina (com o container do banco ativo via `docker compose up -d db` e a `.venv` ativada):
 
 ```bash
+# Linux / macOS
 python -m pytest -q
+
+# Windows (PowerShell)
+.\.venv\Scripts\python.exe -m pytest -q
 ```
 
-Se plugins externos do ambiente causarem erros, como importação de `lark`
-ou incompatibilidade com `launch_testing`, use:
+---
 
-```bash
-PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q
+## Organização do repositório
+
+```text
+brasil-hub/
+├── src/
+│   ├── frontend/       # Interface web (HTML5, CSS3, JavaScript modular)
+│   ├── api/            # Endpoints FastAPI e schemas de validação
+│   ├── services/       # Regras de negócio e casos de uso
+│   ├── auth/           # Autenticação e hash de senhas (bcrypt)
+│   ├── data/           # Scripts de tratamento e ingestão de CSV (Pandas)
+│   └── database/       # Conexão e repositórios relacionais (PostgreSQL)
+├── tests/              # Suíte de testes automatizados com Pytest
+├── data/raw/           # Planilhas CSV brutas de indicadores socioeconômicos
+├── docs/               # Documentação técnica e acompanhamento (MkDocs)
+├── scripts/            # Scripts utilitários de suporte e carga
+├── compose.yaml        # Orquestração de containers com Docker Compose
+├── Dockerfile          # Imagem de produção do serviço de back-end
+├── requirements.txt    # Dependências de bibliotecas Python
+├── mkdocs.yml          # Configuração do gerador de documentação
+└── README.md           # Apresentação do projeto
 ```
 
-Os testes cobrem tratamento de CSV, repositório PostgreSQL, rotas de consulta da API (B-05), autenticação de administrador com hash bcrypt (B-09), upload protegido de CSV com atualização transacional da base (B-04) e tratamento de falhas operacionais. As verificações detalhadas estão descritas no [guia da API](docs/api-indicadores.md#verificacoes-e-testes) e no [relatório de validação da Sprint 5](docs/validacao-sprint5.md).
-
-A estratégia de testes contempla diferentes níveis de verificação para aumentar a confiabilidade do sistema.
-
-| Tipo de teste | Finalidade |
-|:--|:--|
-| Testes unitários | Verificar o comportamento de funções e componentes isoladamente. |
-| Testes de integração | Verificar a interação entre API, serviços, processamento e banco de dados. |
-| Testes de sistema | Validar o funcionamento integrado da aplicação. |
-| Testes de desempenho | Verificar o tempo de resposta das consultas. |
-| Revisão de código | Avaliar alterações antes de sua integração ao código compartilhado. |
-
-Entre os objetivos de qualidade definidos para o projeto está a resposta dos filtros em até **3 segundos**, conforme o requisito de desempenho estabelecido no documento de visão.
-
-Os resultados dos testes e as evidências de validação devem ser registrados de acordo com o processo de desenvolvimento da equipe.
-
 ---
 
-## 🌿 Organização das branches
+## Equipe
 
-O repositório utiliza branches com responsabilidades distintas para organizar o desenvolvimento, a documentação e a publicação.
-
-| Branch | Finalidade |
-|:--|:--|
-| `main` | Versão de produção do software, contendo alterações aprovadas para esse ambiente. |
-| `developer` | Integração das funcionalidades e validações antes da promoção para produção. |
-| `docs` | Organização e manutenção da documentação do projeto. |
-| `gh-pages` | Arquivos estáticos utilizados na publicação da documentação pelo GitHub Pages. |
-
-### Fluxo de desenvolvimento
-
-1. A implementação é realizada conforme as issues e as responsabilidades definidas pela equipe.
-2. As alterações são submetidas à revisão de código.
-3. As funcionalidades são integradas e testadas no ambiente de desenvolvimento.
-4. As alterações aprovadas podem ser promovidas para a versão de produção.
-
-A equipe deve seguir as regras de criação de branches, revisão de Pull Requests e integração estabelecidas para o repositório.
-
----
-
-## 📚 Documentação
-
-A documentação do Brasil Hub utiliza **MkDocs** e o tema **Material for MkDocs**.
-
-Os documentos descrevem aspectos relevantes do projeto, incluindo:
-
-- Documento de visão;
-- Documento de arquitetura;
-- Requisitos funcionais e não funcionais;
-- Diagramas e modelos do sistema;
-- Decisões arquiteturais;
-- Estratégia e evidências de testes.
-
-A publicação da documentação utiliza o GitHub Pages, com os arquivos estáticos disponibilizados pela branch `gh-pages`, conforme a configuração do repositório.
-
-Para mais informações sobre as ferramentas utilizadas:
-
-- [MkDocs](https://www.mkdocs.org/)
-- [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/)
-- [FastAPI](https://fastapi.tiangolo.com/)
-- [Pandas](https://pandas.pydata.org/)
-- [Leaflet](https://leafletjs.com/)
-
----
-
-## 👨‍💻 Equipe
-
-O Brasil Hub é desenvolvido colaborativamente pela equipe da disciplina Métodos de Desenvolvimento de Software.
+O Brasil Hub é desenvolvido pela equipe Dijkstra da disciplina Métodos de Desenvolvimento de Software (UnB/FGA):
 
 <div align="center">
   <table>
@@ -405,10 +286,8 @@ O Brasil Hub é desenvolvido colaborativamente pela equipe da disciplina Método
 
 ---
 
-## 📌 Estado atual do projeto
+## Documentação do projeto
 
-O Brasil Hub encontra-se em desenvolvimento. A implementação das funcionalidades acontecem de forma incremental ao longo das Sprints.
+A documentação completa com Documento de Visão, Documento de Arquitetura, Casos de Teste, atas de reunião e acompanhamento semanal de cada Sprint está disponível no GitHub Pages:
 
-Para acompanhar o andamento do trabalho, consulte as issues, os Pull Requests e o histórico de alterações do repositório.
-
----
+🔗 **[Acessar a documentação no GitHub Pages](https://fga0138-mds-ajax.github.io/2026.2-T02-Dijkstra/)**
