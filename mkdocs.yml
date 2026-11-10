@@ -43,7 +43,13 @@ markdown_extensions:
       permalink: true
   - admonition
   - pymdownx.details
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
   - pymdownx.highlight
   - pymdownx.inlinehilite
   - pymdownx.tasklist:       
@@ -82,6 +88,7 @@ nav:
     - Especificações: gestao/especificacoes.md
   - Acompanhamento:
     - Ponto de Controle 1: acompanhamento/ponto-controle-1.md
+    - Testes Realizados: acompanhamento/testes.md
     - Sprints:
       - Sprint 1: acompanhamento/sprints/sprint01/sprint01.md
       - Sprint 2: acompanhamento/sprints/sprint02/sprint02.md

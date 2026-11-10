@@ -15,6 +15,19 @@
 | **Visitante (Público)** | • Explora o **mapa interativo** por cores (Leaflet)<br>• Filtra por **Estado** e **Dimensão do IDH**<br>• Usa **Acessibilidade** (`A+`, `A-`, Modo Escuro e Alto Contraste)<br>• Acessa pelo **Computador ou Celular** (Responsivo) |
 | **Administrador (Restrito)** | • Faz **login seguro** (senhas em hash `bcrypt`)<br>• Envia novas **planilhas `.csv`** pelo painel web<br>• Atualiza o banco **PostgreSQL 17** automaticamente |
 
+### O que já entregamos até a Sprint 6
+
+| Requisito | Prioridade | Sprint | Entrega | Situação |
+| :--- | :---: | :---: | :--- | :---: |
+| **B-05** Desempenho da consulta | MUST | 3 | API FastAPI de indicadores respondendo em até 3 s | ✅ |
+| **B-01** Mapa interativo | MUST | 4 | Mapa do Brasil (Leaflet) colorido por faixa de IDHM + legenda + painel da UF | ✅ |
+| **B-02** Filtro dinâmico | MUST | 4 | Filtros por Estado e Dimensão (Renda, Educação, Longevidade) integrados à API | ✅ |
+| **B-09** Segurança de dados | MUST | 5 | Login do administrador com senha em hash `bcrypt` | ✅ |
+| **B-04** Gestão de dados (admin) | MUST | 5 | Painel admin com upload de CSV e atualização do PostgreSQL | ✅ |
+| **B-08** Compatibilidade | MUST | 6 | Layout responsivo (celular, tablet e desktop) no Chrome, Firefox e Edge | ✅ |
+| **B-03** Acessibilidade | MUST | 6 → 7 | Fonte `A+`/`A-`, modo noturno e alto contraste | ✅ |
+| Qualidade e infraestrutura | — | 3 a 6 | Docker Compose, PostgreSQL 17, CI no GitHub Actions e 116 testes automatizados | ✅ |
+
 ---
 
 ## 2. Como estamos desenvolvendo
