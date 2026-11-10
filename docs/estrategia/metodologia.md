@@ -11,9 +11,9 @@ A equipe atua sob a premissa de propriedade coletiva do código, com os seguinte
 
 Papeis esses que são frequentemente trocados de sprint para sprint. Pessoes saem do Back-end para o Front-End e do Front-end para Back-end. Garantindo que todos os membros do grupo consigam trabalhar em todas as áreas do projeto.
 
-## Dinâmica de Trabalho: Âncoras e Rotativos
+## Dinâmica de Trabalho: Rotativo
 
-Para equilibrar a curva de aprendizado com a necessidade de entregas contínuas, a equipe utiliza a Programação em Pares (Pair Programming) associada ao modelo de **Rotatividade**. Os integrantes trocam suas frentes principais (Back-end ou Front-end) por duas Sprints para garantir
+Para equilibrar a curva de aprendizado com a necessidade de entregas contínuas, a equipe utiliza a Programação em Pares (Pair Programming) associada ao modelo de **Rotatividade**. Os integrantes trocam suas frentes principais (Back-end ou Front-end) por duas Sprints.
 
 ## Processos e Ritos
 
