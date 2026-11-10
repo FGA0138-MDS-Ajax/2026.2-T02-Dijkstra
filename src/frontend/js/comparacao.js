@@ -88,7 +88,11 @@ export function inicializarComparacao() {
     preencherSelectEstado(selectA, "Selecione o 1º estado");
     preencherSelectEstado(selectB, "Selecione o 2º estado");
 
+
+    let requisicaoAtual = 0;
+
     async function atualizarComparacao() {
+        const id = ++requisicaoAtual;
         bloquearEstadoRepetido(selectA, selectB);
 
         const estadoA = selectA.value;
@@ -105,10 +109,12 @@ export function inicializarComparacao() {
 
         try {
             const dados = await buscarComparacao(estadoA, estadoB);
+            if (id !== requisicaoAtual) return;
             const periodo = dados.estados?.[0]?.periodo_referencia ?? "—";
             textoStatus.textContent = `Comparando ${estadoA} e ${estadoB} (Período de referência: ${periodo}).`;
             renderizarComparacao(dados, containerResultado);
         } catch (erro) {
+            if (id !== requisicaoAtual) return;
             containerResultado.hidden = true;
             textoStatus.textContent = erro instanceof ErroApi
                 ? erro.message
