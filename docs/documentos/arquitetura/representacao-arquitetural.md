@@ -2,39 +2,36 @@
 
 ## 2.1 Definições
 
-O Brasil Hub seguirá uma arquitetura Cliente-Servidor em Camadas (*Three-Tier*), composta por três níveis lógicos principais: apresentação, aplicação e persistência.
+O Brasil Hub adota o estilo arquitetural Cliente-Servidor em Camadas (*Three-Tier Architecture*), estruturado em três níveis lógicos fundamentais: apresentação, aplicação e persistência.
 
-A camada de apresentação corresponde ao Front-end executado no navegador do usuário; a camada de aplicação corresponde ao Back-end desenvolvido em Python e à API RESTful implementada com FastAPI; e a camada de persistência corresponde ao banco de dados.
+A camada de apresentação corresponde ao Front-end executado no navegador do usuário; a camada de aplicação corresponde ao Back-end desenvolvido em Python utilizando a API RESTful implementada com o framework FastAPI; e a camada de persistência corresponde ao sistema gerenciador de banco de dados relacional.
 
-A separação entre essas camadas tem como objetivo reduzir o acoplamento entre interface, regras de negócio, processamento dos dados e armazenamento.
+A separação estrita entre essas camadas tem como objetivo principal reduzir o acoplamento entre a interface de usuário, as regras de negócio, a validação de dados e os mecanismos de armazenamento físico, promovendo modularidade, manutenibilidade e testabilidade independente dos componentes (BASS; CLEMENTS; KAZMAN, 2021; SOMMERVILLE, 2018).
 
-A comunicação entre o Front-end e o Back-end ocorrerá por meio da API REST, utilizando HTTP. Respostas e requisições estruturadas utilizarão JSON, enquanto o envio de arquivos CSV utilizará o formato `multipart/form-data`.
+A comunicação entre a camada de apresentação (cliente) e a camada de aplicação (servidor) é estabelecida pelo protocolo HTTP/HTTPS, aderindo aos princípios arquiteturais do modelo REST (FIELDING, 2000). As requisições e respostas estruturadas utilizam a notação JSON (*JavaScript Object Notation*), enquanto o envio de lotes de dados brutos por administradores é realizado por meio do padrão de codificação `multipart/form-data`.
 
-A camada de apresentação não possuirá acesso direto ao banco de dados. Todas as consultas e alterações deverão passar pela camada de aplicação, permitindo centralizar regras de validação, autenticação, autorização e tratamento dos dados.
+Por definição arquitetural, a camada de apresentação não possui qualquer canal de comunicação direto com o banco de dados. Qualquer operação de leitura ou escrita deve ser obrigatoriamente intermediada pela camada de aplicação, permitindo que a integridade transacional, a validação de parâmetros, as políticas de segurança e a autorização de acessos sejam aplicadas de forma centralizada (SOMMERVILLE, 2018).
 
 ## 2.2 Justificativa da escolha
 
-A escolha da arquitetura Cliente-Servidor em Camadas foi motivada principalmente pela necessidade de separar responsabilidades distintas do sistema e permitir o desenvolvimento independente das partes da aplicação.
+A seleção da arquitetura Cliente-Servidor em Camadas decorre diretamente dos requisitos e restrições estabelecidos no Documento de Visão e Projeto (GRUPO DIJKSTRA, 2026):
 
-No Brasil Hub, o Front-end é responsável pela interação com o usuário, renderização do mapa interativo, aplicação dos filtros e apresentação das informações. Essas atividades utilizam JavaScript e Leaflet e possuem características predominantemente relacionadas à interface e à experiência do usuário.
+1. **Atendimento ao Desempenho (Requisito B-05):** O requisito B-05 estipula que as respostas às consultas de indicadores socioeconômicos devem ocorrer em até 3 segundos. A dissociação entre cliente e servidor viabiliza o emprego de Python e Pandas na camada de aplicação para execução de operações vetorizadas em memória e agregação de dados tabulares com alta performance, enquanto o FastAPI gerencia requisições assíncronas concorrentes de baixa latência, retornando exclusivamente cargas úteis JSON otimizadas para o cliente.
+2. **Segurança e Validação no Servidor (Requisitos B-04 e B-09):** O requisito B-04 exige a ingestão de arquivos CSV governamentais com garantia estrita de integridade estrutural, e o requisito B-09 impõe que credenciais administrativas nunca circulem ou residam desprotegidas. Manter a lógica de validação, parsing com Pandas e hashing de senhas isoladas na camada de aplicação impede que código malicioso ou arquivos corrompidos afetem diretamente o armazenamento, assegurando que o Front-end permaneça como uma casca de visualização sem privilégios de persistência.
+3. **Compatibilidade Multiplataforma e Responsividade (Requisito B-08):** O requisito B-08 estabelece suporte pleno a dispositivos a partir de 360 pixels de largura e navegadores modernos (Chrome, Firefox, Edge). O desacoplamento permite que a interface cliente seja construída com tecnologias web puras (HTML5, CSS3, JavaScript e Leaflet), operando de maneira leve e nativa no motor de renderização do cliente sem a sobrecarga de renderização server-side, garantindo fluidez e rápida resposta visual em telas reduzidas.
+4. **Alinhamento com a Estrutura da Equipe:** A segregação em camadas viabiliza o desenvolvimento paralelo entre as duplas de trabalho da equipe Dijkstra (frente de interface e frente de dados/API), minimizando dependências de código e conflitos de integração durante as Sprints de desenvolvimento.
 
-O Back-end, por sua vez, é responsável pelo recebimento das requisições, aplicação das regras da aplicação, autenticação do administrador e tratamento dos dados socioeconômicos.
-
-O uso de Python e Pandas permite concentrar as operações de leitura, validação, limpeza, padronização e transformação dos arquivos provenientes das fontes oficiais. A utilização do FastAPI permite disponibilizar essas funcionalidades por meio de uma API estruturada.
-
-A separação entre Front-end e Back-end também reduz o acoplamento entre as equipes responsáveis pelas diferentes frentes de desenvolvimento, permitindo que alterações na interface sejam realizadas sem a necessidade de modificar diretamente o processamento dos dados e vice-versa.
-
-Essa característica está alinhada à organização da equipe definida no Documento de Visão, que distribui responsabilidades entre desenvolvimento Front-end e Back-end.
+A camada de persistência centraliza o armazenamento estruturado dos indicadores socioeconômicos e das credenciais administrativas com controle de concorrência e integridade transacional (ver nota de atualização na Seção 2.6 quanto à especificação técnica do PostgreSQL).
 
 ## 2.3 Detalhamento
 
-A arquitetura é dividida em três camadas fundamentais:
+A arquitetura do Brasil Hub divide-se formalmente em três camadas:
 
-1. **Interface do Usuário (Front-end):** camada responsável pela interação com o usuário final, exibição gráfica dos mapas e interface do administrador para modificação de dados. Captura interações dos usuários e as envia para a API.
+1. **Camada de Apresentação (Front-end):** Responsável pela interface gráfica com o usuário, renderização vetorial do mapa temático do Brasil, aplicação de filtros visuais, controle dos temas de acessibilidade e disponibilização do formulário seguro de autenticação e upload de arquivos para administradores.
+2. **Camada de Aplicação (Back-end):** Centralizada no framework FastAPI, orquestra o roteamento HTTP, valida contratos de dados via schemas, executa a autenticação e autorização e aciona os serviços de processamento analítico com Pandas.
+3. **Camada de Persistência (Banco de Dados):** Responsável pela integridade e persistência de dados das tabelas de indicadores socioeconômicos tratados e de usuários administradores com credenciais armazenadas com hash.
 
-2. **Servidor de API (Back-end):** construído em FastAPI para tratar requisições, manipular dados com Pandas, executar validações e processar as consultas feitas pelos usuários.
-
-3. **Camada de Persistência de Dados (Banco de Dados):** responsável por armazenar dados e credenciais do administrador protegidas por hash.
+A disposição estrutural desses níveis e o fluxo de dados entre os componentes do sistema estão representados no diagrama arquitetural da Figura 1.
 
 ### Diagrama arquitetural
 
@@ -42,34 +39,17 @@ A arquitetura é dividida em três camadas fundamentais:
 
 ![alt text](assets/diagrama-arquitetural.png)
 
-*Fonte: elaborado por Lucas Nery.*
+*Fonte: Elaborado por Lucas Nery (2026).*
 
 ### 2.3.1 Descrição do Diagrama Arquitetural
 
-O sistema adota o estilo arquitetural em camadas, com comunicação cliente-servidor, dividido em três camadas: apresentação, aplicação e persistência.
+Conforme ilustrado na Figura 1, o sistema organiza-se em camadas lineares e adjacentes. Cada camada possui limites funcionais rigorosamente delimitados e comunica-se exclusivamente com a camada contígua por meio de interfaces explícitas e contratos de dados formalizados. Esse arranjo assegura a separação de responsabilidades, eleva a segurança no acesso aos dados e simplifica a manutenibilidade e a evolução do código-fonte (BASS; CLEMENTS; KAZMAN, 2021; SOMMERVILLE, 2018).
 
-Cada camada tem responsabilidades bem definidas e se comunica apenas com a camada adjacente, por meio de interfaces explícitas. Isso garante separação de responsabilidades, segurança no acesso aos dados e facilidade de manutenção.
+Os atores do sistema interagem exclusivamente com a Camada de Apresentação:
+- **Visitante:** consome as rotas públicas de consulta de indicadores e controle visual;
+- **Administrador:** autentica-se para obter permissões de gerenciamento e envio de dados brutos.
 
-A camada de apresentação (Front-end) é uma aplicação web executada no navegador e é o ponto de interação dos dois atores do sistema: o visitante, que consulta os indicadores, e o administrador, que também mantém os dados.
-
-Ela reúne três componentes:
-
-- **Mapa e filtros:** implementados com Leaflet, exibem os indicadores de forma georreferenciada e interativa;
-- **Acessibilidade:** permite ajustar contraste e tamanho de fonte;
-- **Painel de administração:** permite ao administrador, após autenticação, enviar arquivos CSV para atualizar a base.
-
-A camada de aplicação (Back-end) é um servidor em Python que concentra as regras do sistema.
-
-O controlador da API REST, implementado com FastAPI, expõe as rotas, valida as requisições e autentica o administrador. O motor de dados, implementado com Pandas, realiza a limpeza, a padronização e a consolidação dos dados dos arquivos CSV, garantindo a qualidade da informação antes de seu armazenamento.
-
-A camada de persistência armazena os indicadores consolidados e as credenciais do administrador, estas em formato hash. Esse banco só é acessado pela camada de aplicação.
-
-A comunicação entre as camadas ocorre por dois conectores:
-
-- **Interface REST:** liga a apresentação à aplicação, usando HTTP com requisições GET (consulta de indicadores e filtros) e POST (login e envio de CSV), e respostas em JSON ou mensagens de erro.
-- **Interface de Dados:** liga a camada de aplicação à persistência por meio dos módulos responsáveis pelo acesso ao banco de dados.
-
-Dessa forma, o controlador da API não acessa diretamente o banco de dados, e a apresentação nunca realiza acesso direto à persistência.
+Os módulos e componentes que constituem a arquitetura do Brasil Hub, bem como suas respectivas tecnologias e contratos de entrada e saída, estão detalhados na Tabela 3.
 
 #### Componentes da arquitetura
 
@@ -77,64 +57,132 @@ Dessa forma, o controlador da API não acessa diretamente o banco de dados, e a 
 
 | Componente | Tecnologia | Responsabilidade | Entrada | Saída |
 |---|---|---|---|---|
-| Interface Web | JavaScript/Leaflet | Interação com usuários, mapas, filtros e acessibilidade | Ações do usuário | Requisições HTTP e apresentação dos resultados |
-| Controlador da API | FastAPI | Receber requisições, validar dados e encaminhar operações | HTTP/JSON ou CSV | JSON, mensagens de erro ou resultado da operação |
-| Serviço de Indicadores | Python | Coordenar consultas e filtros | Estado, dimensão e período | Registros filtrados |
-| Serviço de Atualização | Python/Pandas | Coordenar atualização da base | Arquivo CSV | Resultado da validação e atualização |
-| Módulo de Autenticação | Python | Validar credenciais e autorização | Usuário e senha/token | Autorização ou rejeição |
-| Processador de Dados | Pandas | Ler, validar, limpar e padronizar dados | CSV/DataFrame | DataFrame padronizado |
-| Banco de Dados | PostgreSQL | Persistir credenciais e indicadores | Consultas e alterações SQL | Registros persistidos |
+| Interface Web | JavaScript / Leaflet | Interação com usuários, mapa interativo, filtros e acessibilidade | Ações do usuário | Requisições HTTP e apresentação dos resultados |
+| Controlador da API | FastAPI | Roteamento, validação de requisições e exposição de contratos REST | Requisições HTTP (JSON / multipart) | Respostas JSON e códigos de status HTTP |
+| Serviço de Indicadores | Python | Coordenação de consultas analíticas e filtros territoriais | Parâmetros de estado, dimensão e período | Registros e agregações de indicadores |
+| Serviço de Atualização | Python / Pandas | Orquestração do fluxo de ingestão e atualização da base | Arquivo CSV do administrador | Relatório de validação e confirmação de persistência |
+| Módulo de Autenticação | Python / bcrypt | Verificação de credenciais e emissão de tokens de autorização | Usuário e senha em texto simples | Token de sessão ou recusa de acesso |
+| Processador de Dados | Pandas | Leitura, validação estrutural, limpeza e padronização | Arquivo CSV bruto / DataFrame | DataFrame sanitizado e validado |
+| Banco de Dados | PostgreSQL | Persistência transacional de indicadores e credenciais | Comandos e consultas SQL estruturadas | Conjuntos de registros persistidos |
 
-*Fonte: elaborado por Josef Wojtyla (2026).*
+*Fonte: Elaborado por Josef Wojtyla (2026).*
 
-A arquitetura apresenta três camadas principais e módulos especializados distribuídos entre elas. A camada de apresentação concentra os componentes responsáveis pela interação com os usuários. A camada de aplicação concentra a API, a autenticação, os serviços de aplicação e o processamento dos dados. A camada de persistência concentra o armazenamento das informações.
+#### Exemplos concretos de comunicação da API REST
 
-A comunicação entre as camadas ocorre por interfaces explícitas. A interface REST utiliza HTTP para transportar requisições e respostas entre o navegador e a API.
+Para exemplificar a troca de mensagens entre a camada de apresentação e a camada de aplicação por meio da interface REST, apresentam-se a seguir os contratos de dados de uma consulta de indicadores com filtro e de um upload administrativo de arquivo CSV.
 
-Requisições de consulta utilizam principalmente o método GET, enquanto operações que produzem alterações no sistema, como login e upload de arquivos, utilizam POST. As respostas estruturadas são representadas em JSON. O upload de arquivos CSV utiliza `multipart/form-data`, devido à necessidade de transportar o arquivo propriamente dito.
+##### Exemplo 1: Consulta de indicadores com filtro dinâmico (Requisitos B-01, B-02 e B-05)
 
-No interior do Back-end não existe uma comunicação de rede entre os módulos. A comunicação ocorre por chamadas de funções e importações entre módulos Python, seguindo a direção definida na arquitetura lógica.
+Um visitante seleciona a Unidade Federativa "São Paulo" (SP) e a dimensão "renda" na interface web. O cliente dispara uma requisição HTTP via método `GET`:
 
-O Front-end depende exclusivamente da API, a API utiliza os serviços e os módulos de autenticação, os serviços de dados utilizam o processamento e o acesso à persistência, e o módulo de autenticação consulta as credenciais armazenadas no banco.
+```http
+GET /api/indicadores?estado=SP&dimensao=renda HTTP/1.1
+Host: brasilhub.vercel.app
+Accept: application/json
+```
 
-O banco de dados armazena dois grupos principais de informações: credenciais administrativas protegidas por hash e os indicadores socioeconômicos tratados.
+O controlador da API valida os parâmetros de consulta e aciona o Serviço de Indicadores, retornando o código de status HTTP `200 OK` acompanhado do payload JSON estruturado:
 
-O Front-end nunca acessa diretamente o banco, garantindo que qualquer acesso aos dados seja intermediado pelo Back-end.
+```json
+{
+  "sucesso": true,
+  "filtros_aplicados": {
+    "estado": "SP",
+    "dimensao": "renda"
+  },
+  "total_registros": 1,
+  "dados": [
+    {
+      "id": 35001,
+      "codigo_uf": 35,
+      "estado": "SP",
+      "dimensao": "renda",
+      "indicador": "Rendimento médio per capita",
+      "periodo_referencia": "2023",
+      "valor": 2492.00,
+      "unidade_medida": "R$",
+      "fonte": "IBGE - PNAD Contínua"
+    }
+  ]
+}
+```
+
+##### Exemplo 2: Upload de dados pelo administrador (Requisitos B-04 e B-09)
+
+O administrador autenticado envia um arquivo CSV contendo atualizações socioeconômicas por meio da área administrativa. O cliente dispara uma requisição HTTP via método `POST` com codificação multipart:
+
+```http
+POST /api/admin/indicadores/upload HTTP/1.1
+Host: brasilhub.vercel.app
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="arquivo"; filename="indicadores_educacao_2024.csv"
+Content-Type: text/csv
+
+uf,dimensao,indicador,ano,valor,unidade,fonte
+SP,educacao,Taxa de Alfabetizacao,2024,96.8,%,IBGE - Censo
+RJ,educacao,Taxa de Alfabetizacao,2024,95.9,%,IBGE - Censo
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+```
+
+A API intercepta a requisição, valida o token de autorização, encaminha o arquivo para processamento no Pandas e, após validação e persistência atômica, retorna a resposta com o código de status HTTP `201 Created`:
+
+```json
+{
+  "sucesso": true,
+  "mensagem": "Arquivo processado e base de dados atualizada com sucesso.",
+  "detalhes": {
+    "arquivo": "indicadores_educacao_2024.csv",
+    "linhas_processadas": 2,
+    "linhas_inseridas": 2,
+    "erros_encontrados": 0
+  }
+}
+```
 
 ### 2.3.2 Modelo de persistência
 
-O banco de dados do Brasil Hub será responsável por armazenar os dados socioeconômicos tratados e as informações necessárias à autenticação dos administradores.
+(ver nota de atualização na Seção 2.6 quanto à utilização do PostgreSQL no ambiente operacional).
 
-A estrutura lógica mínima da base deverá contemplar uma tabela de administradores e uma estrutura para armazenamento dos indicadores socioeconômicos.
+O modelo de persistência do Brasil Hub atende à necessidade de armazenar de forma íntegra os dados socioeconômicos tratados e as credenciais de autenticação administrativa.
 
-A tabela de administradores deverá armazenar, no mínimo:
+O acesso ao banco de dados é estritamente encapsulado pelo módulo de repositório (`src/database`), isolando a camada de aplicação de especificidades dialetais de SQL e facilitando a realização de testes com bancos em memória ou simulações via mocks.
 
-- Um identificador;
-- O nome de usuário;
-- A senha protegida por hash.
+A estrutura lógica mínima da base de dados contempla duas tabelas principais, cujos campos e propósitos estão sintetizados na Tabela 3.1:
 
-A senha original não deverá ser persistida.
+**Tabela 3.1 — Estruturas mínimas de persistência**
 
-A estrutura dos indicadores deverá manter, no mínimo, informações referentes ao indicador, estado ou unidade territorial, dimensão socioeconômica, valor, período de referência, unidade de medida e fonte dos dados, permitindo preservar o contexto necessário para exibição e comparação.
+| Tabela | Campo | Tipo de Dado | Restrição | Descrição |
+|---|---|---|---|---|
+| `administradores` | `id` | INTEGER | PRIMARY KEY, AUTOINCREMENT | Identificador unívoco do administrador |
+| `administradores` | `usuario` | VARCHAR(50) | UNIQUE, NOT NULL | Nome de usuário para acesso à área restrita |
+| `administradores` | `password_hash` | VARCHAR(255) | NOT NULL | Hash criptográfico da senha (gerado com bcrypt) |
+| `administradores` | `criado_em` | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Data e hora de cadastramento do registro |
+| `indicadores` | `id` | INTEGER | PRIMARY KEY, AUTOINCREMENT | Identificador unívoco do registro de indicador |
+| `indicadores` | `codigo_uf` | INTEGER | NOT NULL | Código numérico da UF segundo padrão IBGE (ex: 35) |
+| `indicadores` | `estado` | VARCHAR(2) | NOT NULL | Sigla da Unidade Federativa (ex: SP, DF, RJ) |
+| `indicadores` | `dimensao` | VARCHAR(30) | NOT NULL | Dimensão temática (renda, educacao, longevidade) |
+| `indicadores` | `indicador` | VARCHAR(100) | NOT NULL | Nome do índice socioeconômico |
+| `indicadores` | `periodo_referencia` | VARCHAR(10) | NOT NULL | Ano ou intervalo de coleta do indicador (ex: 2023) |
+| `indicadores` | `valor` | NUMERIC(12,4) | NOT NULL | Valor numérico apurado para o indicador |
+| `indicadores` | `unidade_medida` | VARCHAR(20) | NOT NULL | Unidade do valor apurado (ex: R$, %, anos) |
+| `indicadores` | `fonte` | VARCHAR(80) | NOT NULL | Instituição governamental de origem (ex: IBGE) |
 
-O acesso ao banco será encapsulado pela camada de persistência, evitando que os demais módulos dependam diretamente da implementação do banco. Essa decisão reduz o acoplamento e permite uma eventual substituição da tecnologia de persistência sem alterações relevantes no Front-end ou nas regras da aplicação.
+*Fonte: Elaborado por Josef Wojtyla (2026).*
+
+Em hipótese alguma a senha do administrador em texto simples é gravada em banco, atendendo ao requisito B-09 de segurança.
 
 ## 2.4 Metas e restrições arquiteturais
 
-As metas e restrições arquiteturais foram definidas a partir dos requisitos funcionais e não funcionais do Documento de Visão e têm como objetivo garantir desempenho, manutenibilidade, segurança, compatibilidade e consistência estrutural do sistema.
+As metas e restrições técnicas do Brasil Hub derivam dos requisitos funcionais e não funcionais estabelecidos no Documento de Visão e Projeto (GRUPO DIJKSTRA, 2026), visando assegurar estabilidade, segurança e manutenibilidade:
 
-1. **Comunicação por API REST:** a comunicação entre Front-end e Back-end deverá ocorrer exclusivamente por HTTP por meio da API REST. Requisições de consulta deverão utilizar GET, enquanto operações de criação ou alteração de dados deverão utilizar POST, respeitando a semântica dos métodos HTTP.
-
-2. **Formato de dados:** respostas estruturadas da API deverão utilizar JSON. O envio de arquivos CSV deverá utilizar `multipart/form-data`.
-
-3. **Desempenho:** as consultas realizadas por meio dos filtros deverão apresentar resposta da API em até 3 segundos, conforme estabelecido pelo requisito B-05. A medição deverá ser realizada em ambiente de teste controlado, utilizando o procedimento definido no roteiro de testes do projeto.
-
-4. **Compatibilidade:** a interface deverá funcionar em telas com largura mínima de 360 pixels e nos navegadores Chrome, Firefox e Edge, sem quebra de layout ou perda das funcionalidades classificadas como MUST.
-
-5. **Segurança:** o armazenamento de senhas administrativas deverá ser realizado exclusivamente utilizando valores de hash, impedindo o armazenamento da senha em texto simples. O acesso às operações administrativas deverá ser condicionado à autenticação e autorização do usuário.
-
-6. **Padrão de desenvolvimento Back-end:** o código Python deverá seguir PEP 8, utilizando `snake_case` para funções e variáveis e `PascalCase` para classes.
-
-7. **Padrão de desenvolvimento Front-end:** o código JavaScript deverá seguir as regras de lintagem definidas pelo ESLint, utilizando `camelCase` para funções e variáveis e `UPPER_SNAKE_CASE` para constantes.
-
-8. **Controle de versão:** as alterações deverão ser realizadas em branches de funcionalidade, submetidas à revisão por pull request antes da integração à branch de integração definida pela equipe, seguindo a política de branches e Conventional Commits definida no Documento de Visão.
+1. **Comunicação estrita por API REST:** A troca de dados entre Front-end e Back-end ocorre exclusivamente via requisições HTTP/HTTPS padronizadas conforme o modelo REST (FIELDING, 2000). Operações de recuperação de indicadores usam o método `GET`, enquanto operações autenticadas de submissão e atualização usam o método `POST`.
+2. **Formato dos Dados:** As saídas estruturadas da API utilizam exclusivamente payloads em formato JSON, com codificação de caracteres em UTF-8. O tráfego de arquivos brutos de indicadores utiliza `multipart/form-data`.
+3. **Desempenho da Aplicação (B-05):** As requisições de consulta de dados filtrados devem ser processadas e respondidas pela API em um tempo limite de até 3 segundos em ambiente estável, minimizando o tempo de espera do usuário e garantindo resposta ágil do mapa interativo.
+4. **Compatibilidade e Responsividade (B-08):** A interface deve renderizar adequadamente e manter suas funções de interação em telas com resolução horizontal mínima a partir de 360 pixels, assegurando compatibilidade homogênea nos navegadores Google Chrome, Mozilla Firefox e Microsoft Edge.
+5. **Segurança de Credenciais (B-09):** Senhas administrativas não devem ser trafegadas sem criptografia em repouso nem salvas em texto claro no banco de dados. O armazenamento deve empregar hash gerado com algoritmo robusto (`bcrypt`) e salt criptográfico. O acesso às rotas restritas de envio de arquivos exige validação de token de sessão.
+6. **Padronização de Código Back-end:** Todo o desenvolvimento em linguagem Python é orientado pelas diretrizes de estilo da norma PEP 8 (VAN ROSSUM; WARSAW; COGHLAN, 2001), adotando a convenção `snake_case` para nomes de variáveis e funções, e `PascalCase` para declaração de classes.
+7. **Padronização de Código Front-end:** O código JavaScript é submetido à verificação estática automatizada através da ferramenta ESLint (ESLINT, 2026), respeitando a nomenclatura `camelCase` para métodos e variáveis e `UPPER_SNAKE_CASE` para constantes.
+8. **Controle de Versão e Ciclo de Releases:** As alterações de código são desenvolvidas em branches específicas de funcionalidade (`feature/`), integradas à branch `developer` mediante aprovação em Pull Request com revisão cruzada de código por pares. As versões estáveis são promovidas para a branch `main`, na qual as releases do projeto são formalmente sinalizadas por tags semânticas (`R1`, `R2` e `R3`), conforme definido na Seção 6.1 do Documento de Visão e Projeto (GRUPO DIJKSTRA, 2026).
