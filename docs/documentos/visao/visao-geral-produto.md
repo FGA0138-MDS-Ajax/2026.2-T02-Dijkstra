@@ -2,7 +2,7 @@
 
 ## 1.1. Problema
 
-**Contexto:** Os dados socioeconômicos brasileiros, como o Índice de Desenvolvimento Humano (IDH), são publicados por órgãos governamentais de forma descentralizada e em formatos estáticos brutos (CSV, planilhas complexas, PDF). (IBGE, [s.d.])
+**Contexto:** Os dados socioeconômicos brasileiros, como o Índice de Desenvolvimento Humano (IDH), são publicados por órgãos governamentais de forma descentralizada e em formatos estáticos brutos (CSV, planilhas complexas, PDF). (IBGE, [2026])
 
 **Problema encontrado:** A fragmentação e a ausência de interfaces visuais dinâmicas criam uma barreira técnica, dificultando o cruzamento de dados e a análise comparativa por pesquisadores, jornalistas e gestores.
 
@@ -14,16 +14,16 @@
 
 A Figura 1 detalha as causas-raiz desse problema. Observa-se que a dificuldade de acesso e interpretação apresenta-se em quatro frentes principais:
 
-1. **Fontes e Formatos:** devido à dispersão em portais distintos e incompatibilidade de APIs e tabelas;
-2. **Qualidade e Métodos:** lidando com dados desatualizados ou índices agregados que ocultam as dimensões reais;
-3. **Tempo e Território:** onde a defasagem de anos de referências e limites geográficos prejudica o cruzamento;
-4. **Consulta e Interpretação:** onde a falta de contexto induz o usuário a erros de inferência.
+1. **Fontes e Formatos:** os indicadores estão em portais distintos, como o IBGE e o Atlas do Desenvolvimento Humano no Brasil (PNUD, Ipea e FJP), cada um com formato de arquivo e estrutura de tabela próprios (IBGE, [2026]; ATLAS DO DESENVOLVIMENTO HUMANO NO BRASIL, [2026]). Para cruzar o IDHM de um estado com outro indicador, o usuário precisa baixar arquivos separados e padronizar as colunas manualmente;
+2. **Qualidade e Métodos:**  o IDHM geral é um índice agregado das dimensões longevidade, educação e renda (ATLAS DO DESENVOLVIMENTO HUMANO NO BRASIL, [2026]). Dois estados podem ter IDHM geral parecido e desempenho muito diferente em cada dimensão, e o valor único esconde isso.;
+3. **Tempo e Território:** as bases usam anos de referência diferentes (por exemplo, 2010 em uma e 2012 em outra), então comparar estados ou indicadores sem alinhar o ano leva a conclusões erradas. O projeto restringe a análise às UFs e padroniza o ano de referência no tratamento (Tabela 8);
+4. **Consulta e Interpretação:** um valor sem unidade, fonte e período, ou um dado ausente lido como zero, induz erro de inferência. O Brasil Hub exibe indicador, período, unidade e fonte, e preserva valores ausentes (TC-10).
 
 Para solucionar essas lacunas, a solução de software proposta é a construção de uma plataforma centralizada — dashboard — baseada em ciência de dados. A aplicação extrairá os dados brutos e os converterá em gráficos interativos e mapas, delimitados por estados, reduzindo o trabalho operacional e entregando o dado já tratado visualmente para o usuário.
 
 ## 1.2. Declaração de Posição do Produto
 
-O Brasil Hub surge com a proposta de preencher uma lacuna técnica e de usabilidade no acesso a dados socioeconômicos do Brasil. Atualmente, as principais fontes de dados socioeconômicos do país são portais oficiais, como o IBGE e o Atlas do Desenvolvimento Humano no Brasil (PNUD, Ipea e FJP). Essas fontes são confiáveis e trazem indicadores como o IDHM, mas os dados ficam espalhados em portais distintos, com formatos próprios, o que dificulta a comparação (ATLAS DO DESENVOLVIMENTO HUMANO NO BRASIL, [s.d.]).
+O Brasil Hub surge com a proposta de preencher uma lacuna técnica e de usabilidade no acesso a dados socioeconômicos do Brasil. Atualmente, as principais fontes de dados socioeconômicos do país são portais oficiais, como o IBGE e o Atlas do Desenvolvimento Humano no Brasil (PNUD, Ipea e FJP). Essas fontes são confiáveis e trazem indicadores como o IDHM, mas os dados ficam espalhados em portais distintos, com formatos próprios, o que dificulta a comparação (ATLAS DO DESENVOLVIMENTO HUMANO NO BRASIL, [2026]).
 
 O diferencial do Brasil Hub é reunir os indicadores em uma única interface, com filtros por estado e por dimensão do IDH e recursos de acessibilidade, além de comparação lado a lado e exportação de dados, se houver tempo (COULD). A posição exclusiva do Brasil Hub é democratizar essa análise, entregando inteligência visual imediata. A Tabela 3 resume o posicionamento estratégico da plataforma em relação ao seu público e às alternativas competitivas.
 
