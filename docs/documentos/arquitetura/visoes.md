@@ -2,211 +2,157 @@
 
 As diferentes visões arquiteturais apresentam o Brasil Hub sob perspectivas complementares, permitindo compreender o sistema quanto à sua utilização pelos atores, à organização lógica dos módulos, à estrutura interna dos componentes e ao ambiente no qual a aplicação será implantada.
 
-Juntas, essas visões complementam a representação arquitetural apresentada nas seções anteriores e permitem relacionar os requisitos do produto às decisões técnicas adotadas.
+Juntas, essas visões complementam a representação arquitetural apresentada nas seções anteriores e permitem relacionar os requisitos do produto às decisões técnicas adotadas (BASS; CLEMENTS; KAZMAN, 2021).
 
 ## 2.5.1 Visão de uso
 
 A visão de uso apresenta o sistema a partir das funcionalidades disponíveis para os atores que interagem com o Brasil Hub. São definidos dois atores principais: o Visitante e o Administrador.
 
-O Visitante não necessita de autenticação e pode consultar os indicadores socioeconômicos disponibilizados pelo sistema, utilizar o mapa interativo, aplicar os filtros por estado e pelas dimensões do IDH, utilizar os recursos de acessibilidade e, quando implementados, utilizar os recursos complementares de comparação, tabelas, linha do tempo e exportação de dados.
+O Visitante não necessita de autenticação e pode consultar os indicadores socioeconômicos disponibilizados pelo sistema, utilizar o mapa interativo (B-01), aplicar os filtros por estado e pelas dimensões do IDH (B-02), utilizar os recursos de acessibilidade para ajuste de contraste e tamanho de fonte (B-03) e, conforme a evolução do backlog, usufruir dos recursos complementares de comparação entre estados (B-06) e gráficos analíticos (B-10).
 
-O Administrador representa o usuário autenticado responsável pela manutenção dos dados da plataforma. Além das funcionalidades disponíveis ao Visitante, possui acesso à área administrativa e pode realizar o envio de arquivos CSV do IBGE para atualização da base de dados.
+O Administrador representa o usuário autenticado responsável pela manutenção dos dados da plataforma. Além das funcionalidades disponíveis ao Visitante, possui acesso à área administrativa restrita e pode realizar o envio de arquivos CSV do IBGE para atualização da base de dados (B-04 e B-09).
 
-A Figura 2 apresenta o diagrama de casos de uso do sistema, destacando a generalização do Administrador em relação ao Visitante, uma vez que o perfil administrativo também possui as funcionalidades de consulta disponibilizadas ao público.
+A **Figura 2** apresenta o diagrama de casos de uso do sistema, destacando os casos de uso prioritários do produto — consulta aos indicadores no mapa interativo, aplicação de filtros, utilização dos recursos de acessibilidade e gerenciamento administrativo por meio de upload de dados — evidenciando a relação de herança na qual o Administrador estende as capacidades do Visitante.
 
-**Figura 2 — Diagrama de Caso de Uso**
+**Figura 2 — Diagrama de Casos de Uso**
 
-![alt text](assets/caso-uso.png)
-*Fonte: produzido por Felipe George.*
+![Diagrama de Casos de Uso](assets/caso-uso.png)
 
-A funcionalidade selecionada para o diagrama de atividades é o processo de atualização da base de dados pelo Administrador, por apresentar maior quantidade de etapas e dependências entre os componentes arquiteturais.
+*Fonte: Elaborado por Felipe George (2026).*
 
-O processo envolve autenticação, autorização, envio do arquivo, validação do formato, processamento dos dados, persistência das informações e retorno do resultado ao usuário.
+A funcionalidade selecionada para o diagrama de atividades é o processo de atualização da base de dados pelo Administrador, por apresentar maior quantidade de etapas e dependências entre os componentes arquiteturais. O processo envolve autenticação e autorização prévia, recepção do arquivo CSV, validação estrutural do formato, processamento analítico com a biblioteca Pandas, persistência atômica no banco de dados e notificação de sucesso ou falha ao usuário.
+
+Esse fluxo operacional é detalhado na **Figura 3**, que apresenta o diagrama de atividades da área administrativa.
 
 **Figura 3 — Diagrama de Atividades: Painel do Administrador**
 
-![alt text](assets/atividades.png)
+<img src="../assets/atividades.png" alt="Diagrama de Atividades" style="max-width: 16cm; width: 100%; border: 1px solid #ddd; border-radius: 4px;" />
 
-*Fonte: produzido por Fabiana Reis.*
+*Fonte: Elaborado por Fabiana Reis (2026).*
 
-A visão de uso também evidencia decisões que influenciaram a escolha do estilo arquitetural. Os requisitos de tratamento e padronização dos arquivos, desempenho da API, segurança da área administrativa e separação entre interface e processamento justificam a utilização da arquitetura Cliente-Servidor em Camadas.
-
-Dessa maneira, o navegador concentra a apresentação dos dados, enquanto o servidor concentra o processamento, as regras de acesso e a persistência.
+A visão de uso também evidencia decisões que influenciaram a escolha do estilo arquitetural. Os requisitos de tratamento e padronização dos arquivos CSV, desempenho da API (B-05), segurança da área administrativa (B-09) e separação entre interface e processamento justificam a utilização da arquitetura Cliente-Servidor em Camadas. Dessa maneira, o navegador concentra a apresentação dos dados, enquanto o servidor concentra o processamento, as regras de acesso e a persistência.
 
 ## 2.5.2 Visão de organização lógica
 
-O Brasil Hub é organizado logicamente em seis módulos principais, distribuídos entre as camadas da arquitetura. A divisão foi definida para concentrar responsabilidades relacionadas e minimizar dependências desnecessárias entre os componentes.
+O Brasil Hub é organizado logicamente em seis módulos principais, distribuídos entre as camadas da arquitetura. A divisão foi definida para concentrar responsabilidades afins e minimizar dependências entre os componentes.
 
-- `src/frontend`: concentra a apresentação e a interação com o usuário.
-- `src/api`: representa a fronteira de comunicação entre o navegador e o Back-end.
-- `src/services`: concentra as regras e a coordenação das operações da aplicação.
-- `src/data`: concentra a ingestão, validação, transformação e disponibilização dos dados.
-- `src/auth`: concentra as responsabilidades de autenticação e autorização e atua como módulo transversal de segurança.
-- `src/database`: encapsula o acesso ao banco de dados.
+- `src/frontend`: concentra a apresentação e a interação com o usuário;
+- `src/api`: representa a fronteira de comunicação HTTP entre o navegador e o Back-end;
+- `src/services`: concentra as regras de negócio e a coordenação das operações da aplicação;
+- `src/data`: concentra a ingestão, validação, transformação e disponibilização dos dados;
+- `src/auth`: concentra as responsabilidades de autenticação, autorização e hashing de senhas;
+- `src/database`: encapsula o acesso ao banco de dados relacional.
 
-As dependências seguem uma direção única, reduzindo o acoplamento entre os módulos. O Front-end utiliza a API; a API utiliza os serviços e a autenticação; os serviços utilizam os módulos de dados; os módulos de dados utilizam a persistência; e a autenticação utiliza a persistência para consultar as credenciais administrativas.
+A **Tabela 4** sintetiza as responsabilidades e a camada de cada módulo na arquitetura do sistema.
 
-Dessa forma, o Front-end não possui conhecimento da estrutura interna do banco de dados, e os módulos de apresentação não implementam regras de persistência diretamente.
-
-### Tabela 4 — Tabela de Módulos
+**Tabela 4 — Tabela de Módulos**
 
 | Camada | Módulo | Papel resumido |
 |---|---|---|
-| Interface | `src/frontend` | Dashboard, mapas, filtros, acessibilidade e área administrativa |
-| API | `src/api` | Rotas HTTP e contratos de entrada e saída |
-| Lógica de aplicação | `src/services` | Coordenação das consultas e da atualização da base |
-| Segurança | `src/auth` | Autenticação, autorização e proteção das senhas |
-| Dados | `src/data` | Leitura, validação, tratamento e acesso aos indicadores |
-| Persistência | `src/database` | Acesso às credenciais administrativas e aos indicadores |
+| Interface | `src/frontend` | Dashboard, mapa interativo, filtros, acessibilidade e painel do administrador |
+| API | `src/api` | Rotas HTTP, validação de esquemas e contratos de entrada e saída |
+| Lógica de aplicação | `src/services` | Coordenação das consultas analíticas e da atualização da base |
+| Segurança | `src/auth` | Autenticação, autorização e proteção das senhas via hash |
+| Dados | `src/data` | Leitura, validação, tratamento e acesso aos indicadores socioeconômicos |
+| Persistência | `src/database` | Conexão e repositórios para persistência de credenciais e indicadores |
 
-*Fonte: produzido por Ágatha Natasha.*
+*Fonte: Elaborado por Ágatha Natasha (2026).*
 
 ### 2.5.2.1 Razão lógica de cada módulo
 
 #### `src/frontend` — JavaScript e Leaflet
 
-Concentra tudo o que o usuário vê e manipula. Separa as páginas (`pages/`) dos componentes reutilizáveis de mapa e filtros (`components/`), dos recursos de acessibilidade de fonte e contraste (`accessibility/`), do envio de requisições (`api_client/`) e dos estilos e recursos (`assets/`).
-
-Assim, a aparência pode mudar sem afetar as regras do sistema, e o acesso à API fica em um único ponto.
+Concentra a interface gráfica manipulada pelo usuário. Organiza o código separando as páginas (`pages/`), os componentes reutilizáveis de mapa e filtros (`components/`), os recursos de acessibilidade de fonte e alto contraste (`accessibility/`), o cliente HTTP de envio de requisições (`api_client/`) e os estilos e recursos estáticos (`assets/`). Dessa forma, a interface pode evoluir esteticamente sem impactar as regras da aplicação.
 
 #### `src/api` — FastAPI
 
-É a fronteira do Back-end: recebe as requisições do navegador e devolve as respostas.
-
-Cada rota tem uma responsabilidade: consultas de indicadores (`indicators.py`), upload de CSV pela administração (`admin.py`) e login (`auth.py`).
-
-Os diretórios `schemas/` definem os contratos de entrada e saída, de modo que a validação do formato fica na borda do sistema e a lógica interna não depende dela.
+Constitui o ponto de entrada do Back-end, recebendo as requisições HTTP do cliente e devolvendo respostas estruturadas. Cada rota atende a uma responsabilidade específica: consulta de indicadores (`indicators.py`), upload de arquivos pelo administrador (`admin.py`) e autenticação (`auth.py`). Os esquemas do Pydantic em `schemas/` formalizam os contratos de dados na borda do sistema, assegurando que apenas requisições válidas atinjam a lógica interna.
 
 #### `src/services`
 
-Fica entre as rotas e o tratamento de dados. `indicators.py` coordena as consultas e os filtros por estado e pelas dimensões do IDH/IDHM, enquanto `updates.py` coordena a atualização da base.
-
-Com isso, as rotas apenas delegam, e as regras de negócio podem ser alteradas ou testadas sem depender do protocolo HTTP.
+Posiciona-se como camada intermediária entre as rotas HTTP e o tratamento de dados. O módulo `indicators.py` coordena as consultas e os filtros temáticos, enquanto `updates.py` gerencia o fluxo de atualização da base de dados. Com isso, os endpoints HTTP atuam como controladores leves, permitindo testar e manter a lógica de negócio independentemente do framework web.
 
 #### `src/data` — Pandas
 
-Reúne o ciclo de vida dos indicadores:
+Responsável pelo ciclo de vida e qualidade dos dados dos indicadores socioeconômicos:
+- `ingestion.py`: realiza a leitura dos arquivos brutos em formato CSV;
+- `validation.py`: verifica o esquema tabular, tipos e restrições de nulidade;
+- `processing.py`: executa a higienização, normalização e cálculo de médias;
+- `storage.py`: gerencia as coleções de indicadores consolidados.
 
-- `ingestion.py`: lê o CSV;
-- `validation.py`: verifica estrutura e valores;
-- `processing.py`: realiza limpeza e padronização;
-- `storage.py`: dá acesso aos indicadores já tratados.
-
-Isolar esse ciclo mantém a qualidade dos dados em um só lugar e evita que dados inválidos cheguem ao dashboard.
+Isolar o tratamento em um módulo especializado assegura que apenas dados íntegros e consistentes sejam disponibilizados para exibição.
 
 #### `src/auth`
 
-Protege a área administrativa.
-
-- `authentication.py`: confirma a identidade de quem faz login;
-- `permissions.py`: decide se o usuário pode executar determinada ação, como atualizar a base;
-- `password_hash.py`: garante que as senhas sejam armazenadas protegidas.
-
-Mantê-lo separado concentra as regras de segurança, que podem ser revisadas e evoluídas sem alterar o restante do sistema.
+Centraliza a segurança e o controle de acesso à área administrativa:
+- `authentication.py`: verifica a autenticidade do usuário no processo de login;
+- `permissions.py`: valida autorizações para execução de operações administrativas restritas;
+- `password_hash.py`: executa a geração e verificação de hashes de senhas via `bcrypt`.
 
 #### `src/database`
 
-Encapsula o acesso ao banco de dados. `connection.py` gerencia a conexão e `admin_repository.py` consulta as credenciais.
-
-Apenas esse módulo conhece os detalhes de persistência; se o banco for trocado no futuro, o impacto deverá ser minimizado pela separação dessa responsabilidade.
+Encapsula o acesso ao banco de dados relacional (ver nota de atualização na Seção 2.6). O módulo `connection.py` gerencia o pool de conexões e as transações, enquanto os repositórios (`admin_repository.py` e `indicator_repository.py`) executam as instruções SQL para persistir e recuperar tanto as credenciais administrativas quanto a totalidade dos registros de indicadores socioeconômicos tratados. Dessa forma, nenhuma regra de persistência vaza para as camadas de apresentação ou serviços.
 
 ### 2.5.2.2 Comunicação entre os módulos
 
-As dependências seguem uma direção única, reduzindo o acoplamento entre os módulos.
+As dependências entre os módulos seguem uma direção única e estritamente hierárquica, reduzindo o acoplamento:
 
-- O Front-end utiliza a API.
-- A API utiliza os serviços e o módulo de autenticação.
-- Os serviços utilizam o módulo de dados.
-- O módulo de dados utiliza a persistência.
-- O módulo de autenticação utiliza a persistência para consultar as credenciais administrativas.
+- O módulo `frontend` interage unicamente com o módulo `api`;
+- O módulo `api` aciona os serviços de `services` e as rotas de segurança de `auth`;
+- O módulo `services` coordena as operações do módulo `data`;
+- O módulo `data` persiste e consulta dados por meio do módulo `database`;
+- O módulo `auth` consulta e valida credenciais administrativas por intermédio do módulo `database`.
 
-### 2.5.2.3 Fluxos principais
+A **Tabela 5** detalha as formas de comunicação e as interfaces utilizadas entre os módulos do sistema.
 
-A organização lógica pode ser compreendida a partir de dois fluxos principais.
-
-#### Fluxo de consulta
-
-No fluxo de consulta, o Visitante interage com a interface web e seleciona os critérios desejados.
-
-O Front-end envia uma requisição HTTP para a API, que valida os parâmetros e encaminha a operação para o serviço responsável.
-
-O serviço consulta os dados tratados por meio da camada de dados e da persistência, retornando à API os registros correspondentes.
-
-A API transforma o resultado em JSON e o envia ao Front-end, que atualiza a visualização do mapa, tabela ou gráfico.
-
-**Fluxo resumido:**
-
-`frontend → api → services → data → database`
-
-#### Fluxo de atualização
-
-No fluxo de atualização, o Administrador realiza a autenticação e, após autorização, envia um arquivo CSV pela área administrativa.
-
-A API recebe o arquivo, encaminha-o aos serviços responsáveis e o módulo de dados realiza a leitura, validação, limpeza e padronização utilizando Pandas.
-
-Após a validação, os dados são persistidos no banco e o resultado da operação é retornado ao Administrador.
-
-**Fluxo resumido:**
-
-- Autenticação: `api → auth → database`
-- Atualização: `api → services → data → database`
-
-Essa divisão permite que a lógica de apresentação, as regras da aplicação, o processamento dos dados, a segurança e a persistência permaneçam isolados, facilitando a manutenção e a realização de testes.
-
-### Tabela 5 — Comunicação entre os módulos
+**Tabela 5 — Comunicação entre os módulos**
 
 | Origem → Destino | Forma de comunicação | Interface |
 |---|---|---|
-| `frontend → api` | Requisições HTTP feitas por `api_client/`, com dados em JSON | Rotas HTTP de consulta de indicadores, login e atualização da base |
-| `frontend → api` (upload) | Envio do arquivo CSV por `multipart/form-data`, pela área administrativa | Rota de upload em `routes/admin.py` |
-| `api → services` | Importação de módulos e chamada de funções Python | Funções de `indicators.py` e `updates.py` |
-| `api → auth` | Importação de módulos e chamada de funções Python | Funções de autenticação e autorização |
-| `services → data` | Importação de módulos e chamada de funções Python | Funções de ingestão, validação, tratamento e acesso aos indicadores |
-| `auth → database` | Importação de módulos e chamada de funções Python | Funções de `admin_repository.py` para consultar credenciais |
-| `data → database` | Importação de módulos e chamadas de funções Python | Funções de persistência dos indicadores e conexão com o banco |
+| `frontend → api` | Requisições HTTP feitas por `api_client/`, com dados estruturados em JSON | Rotas REST de consulta de indicadores e login |
+| `frontend → api` (upload) | Envio de arquivo CSV codificado em `multipart/form-data` | Rota REST de upload em `routes/admin.py` |
+| `api → services` | Chamadas diretas de funções e métodos Python | Módulos `indicators.py` e `updates.py` |
+| `api → auth` | Chamadas diretas de funções e métodos Python | Funções de validação de token e credenciais |
+| `services → data` | Chamadas diretas de funções e métodos Python | Módulos de ingestão, validação e higienização |
+| `auth → database` | Chamadas de funções do repositório de administradores | Módulo `admin_repository.py` |
+| `data → database` | Chamadas de funções do repositório de indicadores | Módulo `indicator_repository.py` e conexão SQL |
 
-*Fonte: produzido por Ágatha Natasha.*
+*Fonte: Elaborado por Ágatha Natasha (2026).*
 
-Em resumo, a comunicação entre o navegador e o servidor usa HTTP com JSON, e o CSV do upload segue por `multipart/form-data`. Dentro do Back-end, os módulos Python se comunicam por importações e chamadas de função, sem protocolo de rede.
+O arranjo estrutural desses pacotes e suas dependências unidirecionais estão formalizados no diagrama de pacotes da **Figura 4**.
 
 ### Diagrama de pacotes
 
 **Figura 4 — Diagrama de Pacotes**
 
-![alt text](assets/diagrama-pacotes.png)
+![Diagrama de Pacotes](assets/diagrama-pacotes.png)
 
-*Fonte: produzido por Ágatha Natasha.*
+*Fonte: Elaborado por Ágatha Natasha (2026).*
 
 ## 2.5.3 Visão estrutural
 
-A visão estrutural apresenta os principais elementos internos do Brasil Hub e as relações entre eles, complementando a visão lógica apresentada anteriormente.
+A visão estrutural detalha os componentes de execução e as classes que materializam a arquitetura do Brasil Hub. Enquanto a visão lógica organiza o código por responsabilidade funcional, a visão estrutural evidencia as entidades de software e seus relacionamentos durante a execução do sistema (BASS; CLEMENTS; KAZMAN, 2021).
 
-Enquanto a visão lógica organiza os módulos por responsabilidade, a visão estrutural apresenta os componentes que participam diretamente da execução do sistema e as relações existentes entre eles.
+Na camada de apresentação, os componentes de interface (mapa Leaflet, seletores de filtros, módulo de acessibilidade e formulário administrativo) realizam requisições assíncronas à API. Na camada de aplicação, o controlador FastAPI recebe os dados, valida os schemas Pydantic e aciona os serviços de indicadores ou de ingestão. O processamento com Pandas valida o layout dos arquivos enviados e consolida os números antes de delegar a gravação à persistência.
 
-Na camada de apresentação estão os componentes responsáveis pela interface web, incluindo o mapa interativo, os filtros, os recursos de acessibilidade e o painel administrativo. Esses componentes utilizam a API como única interface de comunicação com o Back-end.
+A persistência de dados é organizada por meio do padrão *Repository*, dividida em `IndicadorRepository` (responsável pelo ciclo de armazenamento e recuperação de indicadores) e `AdminRepository` (responsável pela consulta de credenciais de administradores). O escopo funcional do sistema contempla unicamente a consulta pública e a importação/substituição de dados via arquivo CSV, não havendo funcionalidades de edição manual de registros individuais.
 
-Na camada de aplicação, o controlador da API recebe as requisições, valida os parâmetros e encaminha as operações para os serviços responsáveis. O processador de dados utiliza Pandas para executar as etapas de leitura, validação, limpeza e padronização dos dados. O módulo de autenticação valida as credenciais e verifica as permissões necessárias para as operações administrativas.
-
-Na camada de persistência, o banco de dados é acessado por meio dos repositórios responsáveis pelas operações de persistência das entidades correspondentes.
-
-O repositório de indicadores trata da persistência dos indicadores socioeconômicos, enquanto o repositório de administradores realiza as operações relacionadas às credenciais administrativas.
-
-Essa separação impede que os componentes de apresentação ou os atores externos acessem diretamente o banco de dados e reduz o acoplamento entre a aplicação e a tecnologia de persistência.
-
-O diagrama de componentes apresenta as dependências entre os principais componentes de execução. O diagrama de classes apresenta as entidades e serviços necessários para representar as responsabilidades estruturais do sistema, devendo manter a separação entre atores externos, componentes de aplicação e entidades persistentes.
+O diagrama de componentes da **Figura 5** ilustra as dependências e interfaces de execução entre os módulos do sistema.
 
 ### Diagrama de componentes
 
 **Figura 5 — Diagrama de Componentes**
 
-![alt text](assets/componentes.png)
+![Diagrama de Componentes](assets/componentes.png)
 
-*Fonte: elaborado por César Augusto.*
+*Fonte: Elaborado por César Augusto (2026).*
+
+O modelo estrutural de dados e suas operações está detalhado no diagrama de classes da **Figura 6**, apresentando as entidades de domínio, os serviços de processamento, as classes de repositório (`IndicadorRepository` e `AdminRepository`) e os componentes de controle de Autenticação e Autorização.
 
 ### Diagrama de classes
 
 **Figura 6 — Diagrama de Classes**
 
-![alt text](assets/classes.png)
+![Diagrama de Classes](assets/classes.png)
 
-*Fonte: elaborado por César Augusto.*
+*Fonte: Elaborado por César Augusto (2026).*

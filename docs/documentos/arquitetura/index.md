@@ -1,5 +1,37 @@
 # Documento de Arquitetura — Equipe Dijkstra
 
+## Identificação e Contribuições da Equipe
+
+**Tabela 1 — Contribuições da equipe na entrega da arquitetura**
+
+| Integrante | Matrícula | Papel na Entrega | Contribuição Técnica Específica | Pontos |
+|---|---|---|---|:---:|
+| Ágatha Natasha | 231018991 | Back-end / Dados | Elaboração da Tabela de Módulos (Tabela 4), Diagrama de Pacotes (Figura 4) e Tabela de Comunicação (Tabela 5) | 10 |
+| César Augusto | 231019041 | Front-end | Elaboração do Diagrama de Componentes (Figura 5) e Diagrama de Classes (Figura 6) | 10 |
+| Eduardo Brito (Rotativo) | 231021447 | Back-end / Infraestrutura | Elaboração do Diagrama de Implantação (Figura 7) e especificação das restrições de infraestrutura | 10 |
+| Fabiana Reis | 231021465 | Produto / Front-end | Elaboração do Diagrama de Atividades do Administrador (Figura 3) e refinamento de fluxos de negócio | 10 |
+| Felipe George | 231021474 | Front-end | Elaboração do Diagrama de Casos de Uso (Figura 2) e especificação das visões de uso do sistema | 10 |
+| Josef Wojtyla | 231021581 | Scrum Master / Back-end | Redação da representação arquitetural, Tabela de Componentes (Tabela 3), revisão técnica e estruturação do documento | 10 |
+| Lucas Nery | 231021616 | Front-end | Elaboração do Diagrama Arquitetural Genérico (Figura 1) e especificação de conectores de apresentação | 10 |
+| Paulo Eduardo | 231021699 | Back-end / Infraestrutura | Especificação do modelo de persistência de dados, metas arquiteturais e requisitos de desempenho | 10 |
+
+*Fonte: Elaborado por Josef Wojtyla (2026).*
+
+---
+
+## Histórico de Versões
+
+**Tabela 2 — Histórico de versões**
+
+| Versão | Data | Descrição | Autor(es) | Revisor(es) |
+|:---:|:---:|---|---|---|
+| 1.0 | 06/10/2026 | Elaboração inicial do Documento de Arquitetura, contemplando o estilo em camadas, diagramas UML (casos de uso, pacotes, componentes, classes e implantação) e definição de tecnologias. | Equipe Dijkstra | Josef Wojtyla |
+| 1.1 | 09/11/2026 | Nota de atualização do banco de dados para PostgreSQL e ajustes de coerência com o Documento de Visão (correção de citações formais, rastreabilidade dos requisitos B-01 a B-11, exemplos de endpoints HTTP e detalhamento de segurança). | Equipe Dijkstra | Josef Wojtyla |
+
+*Fonte: Elaborado por Josef Wojtyla (2026).*
+
+---
+
 ## 1. Sobre o Documento
 
 O Documento de Arquitetura apresenta a organização estrutural e técnica do Brasil Hub, uma plataforma web destinada à centralização, ao tratamento e à visualização de indicadores socioeconômicos brasileiros, com foco nas dimensões de renda, educação e longevidade.
