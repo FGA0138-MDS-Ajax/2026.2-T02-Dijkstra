@@ -36,6 +36,7 @@ class IndicadorRepository:
         if dimensao is not None:
             query += " AND dimensao = %s"
             params.append(dimensao)
+        query += " ORDER BY periodo_referencia ASC, unidade_territorial ASC, id ASC"
         conn = get_connection()
         try:
             return [dict(row) for row in conn.execute(query, params).fetchall()]
@@ -69,7 +70,7 @@ class IndicadorRepository:
         linhas = list(dados.itertuples(index=False, name=None))
 
         conn = get_connection()
-        try: #simplifiquei aqui pois estava relançando a mesma exceção sem tratar o erro
+        try:
             with conn.cursor() as cursor:
                 cursor.executemany(
                     """
@@ -84,4 +85,4 @@ class IndicadorRepository:
             conn.commit()
             return len(linhas)
         finally:
-            conn.close() 
+            conn.close()
