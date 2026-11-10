@@ -26,7 +26,7 @@
 | Versão | Data | Descrição | Autor(es) | Revisor(es) |
 |:---:|:---:|---|---|---|
 | 1.0 | 06/10/2026 | Elaboração inicial do Documento de Arquitetura, contemplando o estilo em camadas, diagramas UML (casos de uso, pacotes, componentes, classes e implantação) e definição de tecnologias. | Equipe Dijkstra | Josef Wojtyla |
-| 1.1 | 09/11/2026 | Nota de atualização do banco de dados para PostgreSQL e ajustes de coerência com o Documento de Visão (correção de citações formais, rastreabilidade dos requisitos B-01 a B-11, exemplos de endpoints HTTP e detalhamento de segurança). | Equipe Dijkstra | Josef Wojtyla |
+| 1.1 | 09/11/2026 | Revisão do Documento de Arquitetura e ajustes de coerência com o Documento de Visão v1.1 (correção de citações formais, rastreabilidade dos requisitos B-01 a B-11, exemplos concretos de endpoints REST, detalhamento da matriz de permissões e segurança). | Equipe Dijkstra | Josef Wojtyla |
 
 *Fonte: Elaborado por Josef Wojtyla (2026).*
 

@@ -91,7 +91,7 @@ Centraliza a segurança e o controle de acesso à área administrativa:
 
 #### `src/database`
 
-Encapsula o acesso ao banco de dados relacional (ver nota de atualização na Seção 2.6). O módulo `connection.py` gerencia o pool de conexões e as transações, enquanto os repositórios (`admin_repository.py` e `indicator_repository.py`) executam as instruções SQL para persistir e recuperar tanto as credenciais administrativas quanto a totalidade dos registros de indicadores socioeconômicos tratados. Dessa forma, nenhuma regra de persistência vaza para as camadas de apresentação ou serviços.
+Encapsula o acesso ao banco de dados SQLite. O módulo `connection.py` gerencia a conexão com o arquivo de banco de dados e as operações transacionais, enquanto os repositórios (`admin_repository.py` e `indicator_repository.py`) executam as instruções SQL para persistir e recuperar tanto as credenciais administrativas quanto a totalidade dos registros de indicadores socioeconômicos tratados. Dessa forma, nenhuma regra de persistência vaza para as camadas de apresentação ou serviços.
 
 ### 2.5.2.2 Comunicação entre os módulos
 

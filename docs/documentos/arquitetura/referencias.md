@@ -20,8 +20,6 @@ OWASP. **Password Storage Cheat Sheet**. Open Web Application Security Project, 
 
 PANDAS. **pandas: Powerful Python data analysis toolkit**. PyData Development Team, 2026. Disponível em: <https://pandas.pydata.org/docs/>. Acesso em: 07 out. 2026.
 
-POSTGRESQL. **PostgreSQL 17 Documentation**. The PostgreSQL Global Development Group, 2026. Disponível em: <https://www.postgresql.org/docs/17/>. Acesso em: 26 out. 2026.
-
 SOMMERVILLE, Ian. **Engenharia de Software**. 10. ed. São Paulo: Pearson Education do Brasil, 2018.
 
 VAN ROSSUM, Guido; WARSAW, Barry; COGHLAN, Nick. **PEP 8 — Style Guide for Python Code**. Python Enhancement Proposals, 2001. Disponível em: <https://peps.python.org/pep-0008/>. Acesso em: 26 out. 2026.

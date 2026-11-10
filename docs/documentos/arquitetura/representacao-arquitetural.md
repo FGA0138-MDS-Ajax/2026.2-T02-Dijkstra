@@ -21,7 +21,7 @@ A seleção da arquitetura Cliente-Servidor em Camadas decorre diretamente dos r
 3. **Compatibilidade Multiplataforma e Responsividade (Requisito B-08):** O requisito B-08 estabelece suporte pleno a dispositivos a partir de 360 pixels de largura e navegadores modernos (Chrome, Firefox, Edge). O desacoplamento permite que a interface cliente seja construída com tecnologias web puras (HTML5, CSS3, JavaScript e Leaflet), operando de maneira leve e nativa no motor de renderização do cliente sem a sobrecarga de renderização server-side, garantindo fluidez e rápida resposta visual em telas reduzidas.
 4. **Alinhamento com a Estrutura da Equipe:** A segregação em camadas viabiliza o desenvolvimento paralelo entre as duplas de trabalho da equipe Dijkstra (frente de interface e frente de dados/API), minimizando dependências de código e conflitos de integração durante as Sprints de desenvolvimento.
 
-A camada de persistência centraliza o armazenamento estruturado dos indicadores socioeconômicos e das credenciais administrativas com controle de concorrência e integridade transacional (ver nota de atualização na Seção 2.6 quanto à especificação técnica do PostgreSQL).
+A camada de persistência utiliza o SQLite, centralizando o armazenamento estruturado dos indicadores socioeconômicos e das credenciais administrativas. A escolha do SQLite fundamenta-se na sua simplicidade arquitetural, baixo consumo de recursos, portabilidade em arquivo único e perfeita integração com o ecossistema Python, permitindo desenvolvimento e testes ágeis sem a necessidade de gerenciamento de um serviço externo de banco de dados.
 
 ## 2.3 Detalhamento
 
@@ -63,7 +63,7 @@ Os módulos e componentes que constituem a arquitetura do Brasil Hub, bem como s
 | Serviço de Atualização | Python / Pandas | Orquestração do fluxo de ingestão e atualização da base | Arquivo CSV do administrador | Relatório de validação e confirmação de persistência |
 | Módulo de Autenticação | Python / bcrypt | Verificação de credenciais e emissão de tokens de autorização | Usuário e senha em texto simples | Token de sessão ou recusa de acesso |
 | Processador de Dados | Pandas | Leitura, validação estrutural, limpeza e padronização | Arquivo CSV bruto / DataFrame | DataFrame sanitizado e validado |
-| Banco de Dados | PostgreSQL | Persistência transacional de indicadores e credenciais | Comandos e consultas SQL estruturadas | Conjuntos de registros persistidos |
+| Banco de Dados | SQLite | Persistência estruturada de indicadores e credenciais | Comandos e consultas SQL estruturadas | Conjuntos de registros persistidos |
 
 *Fonte: Elaborado por Josef Wojtyla (2026).*
 
@@ -144,9 +144,7 @@ A API intercepta a requisição, valida o token de autorização, encaminha o ar
 
 ### 2.3.2 Modelo de persistência
 
-(ver nota de atualização na Seção 2.6 quanto à utilização do PostgreSQL no ambiente operacional).
-
-O modelo de persistência do Brasil Hub atende à necessidade de armazenar de forma íntegra os dados socioeconômicos tratados e as credenciais de autenticação administrativa.
+O modelo de persistência do Brasil Hub utiliza o banco de dados SQLite para armazenar de forma íntegra e estruturada os dados socioeconômicos tratados e as credenciais de autenticação administrativa.
 
 O acesso ao banco de dados é estritamente encapsulado pelo módulo de repositório (`src/database`), isolando a camada de aplicação de especificidades dialetais de SQL e facilitando a realização de testes com bancos em memória ou simulações via mocks.
 
