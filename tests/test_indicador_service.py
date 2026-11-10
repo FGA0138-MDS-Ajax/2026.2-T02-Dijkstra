@@ -234,3 +234,136 @@ def test_sem_anos_com_mesmo_estado_nao_consulta(service_comparacao):
             service_comparacao.comparar(estado_a="SP", estado_b="SP")
 
     consultar.assert_not_called()
+
+
+def test_consultar_repassa_filtros_ao_repositorio():
+    repository = Mock(spec=IndicadorRepository)
+    repository.listar.return_value = []
+    service = IndicadorService(repository)
+
+    service.consultar(estado="SP", dimensao="educacao", periodo=2021)
+
+    repository.listar.assert_called_once_with(
+        unidade_territorial="SP",
+        dimensao="educacao",
+        periodo_referencia="2021",
+    )
+
+
+def test_consultar_organizacao_dos_indicadores():
+    repository = Mock(spec=IndicadorRepository)
+    desordenados = [
+        {"id": 4, "unidade_territorial": "SP", "dimensao": "renda", "valor": 0.745, "periodo_referencia": "2021"},
+        {"id": 1, "unidade_territorial": "SP", "dimensao": "idhm_geral", "valor": 0.806, "periodo_referencia": "2021"},
+        {"id": 3, "unidade_territorial": "SP", "dimensao": "longevidade", "valor": 0.845, "periodo_referencia": "2021"},
+        {"id": 2, "unidade_territorial": "SP", "dimensao": "educacao", "valor": 0.828, "periodo_referencia": "2021"},
+    ]
+    repository.listar.return_value = desordenados
+    service = IndicadorService(repository)
+
+    resultado = service.consultar(estado="SP", periodo=2021)
+
+    dimensoes = [r["dimensao"] for r in resultado]
+    assert dimensoes == ["idhm_geral", "educacao", "longevidade", "renda"]
+
+
+def test_consultar_organizacao_multiplos_periodos_e_estados():
+    repository = Mock(spec=IndicadorRepository)
+    desordenados = [
+        {"id": 10, "unidade_territorial": "SP", "dimensao": "renda", "periodo_referencia": "2021"},
+        {"id": 5, "unidade_territorial": "AC", "dimensao": "renda", "periodo_referencia": "2021"},
+        {"id": 2, "unidade_territorial": "SP", "dimensao": "renda", "periodo_referencia": "2010"},
+        {"id": 1, "unidade_territorial": "AC", "dimensao": "renda", "periodo_referencia": "2010"},
+    ]
+    repository.listar.return_value = desordenados
+    service = IndicadorService(repository)
+
+    resultado = service.consultar()
+
+    ordem = [(r["periodo_referencia"], r["unidade_territorial"]) for r in resultado]
+    assert ordem == [
+        ("2010", "AC"),
+        ("2010", "SP"),
+        ("2021", "AC"),
+        ("2021", "SP"),
+    ]
+
+
+def test_consultar_preservacao_de_valores_e_periodos():
+    repository = Mock(spec=IndicadorRepository)
+    registros = [
+        {
+            "id": 101,
+            "nome_indicador": "IDHM",
+            "unidade_territorial": "MG",
+            "dimensao": "idhm_geral",
+            "valor": 0.774,
+            "periodo_referencia": "2021",
+            "unidade_medida": "índice",
+            "fonte": "IPEA",
+        }
+    ]
+    repository.listar.return_value = registros
+    service = IndicadorService(repository)
+
+    resultado = service.consultar(estado="MG", periodo=2021)
+
+    assert len(resultado) == 1
+    item = resultado[0]
+    assert item["id"] == 101
+    assert item["nome_indicador"] == "IDHM"
+    assert item["unidade_territorial"] == "MG"
+    assert item["dimensao"] == "idhm_geral"
+    assert item["valor"] == 0.774
+    assert item["periodo_referencia"] == "2021"
+    assert item["unidade_medida"] == "índice"
+    assert item["fonte"] == "IPEA"
+
+
+def test_consultar_tratamento_valores_ausentes_e_zero():
+    repository = Mock(spec=IndicadorRepository)
+    registros = [
+        {"id": 1, "unidade_territorial": "RR", "dimensao": "renda", "valor": None, "periodo_referencia": "1991"},
+        {"id": 2, "unidade_territorial": "RR", "dimensao": "educacao", "valor": 0.0, "periodo_referencia": "1991"},
+    ]
+    repository.listar.return_value = registros
+    service = IndicadorService(repository)
+
+    resultado = service.consultar(estado="RR", periodo=1991)
+
+    assert len(resultado) == 2
+    assert resultado[0]["valor"] == 0.0
+    assert resultado[1]["valor"] is None
+
+
+def test_consultar_com_dados_conhecidos_de_teste():
+    from tests.fixtures.gerar_dados_teste import gerar_dataframe
+    df = gerar_dataframe(seed=42)
+    registros_ac_2021 = df[
+        (df["unidade_territorial"] == "AC") & (df["periodo_referencia"] == "2021")
+    ].to_dict(orient="records")
+
+    repository = Mock(spec=IndicadorRepository)
+    repository.listar.return_value = registros_ac_2021
+    service = IndicadorService(repository)
+
+    resultado = service.consultar(estado="AC", periodo=2021)
+
+    assert len(resultado) == 4
+    dimensoes = [r["dimensao"] for r in resultado]
+    assert dimensoes == ["idhm_geral", "educacao", "longevidade", "renda"]
+    for item in resultado:
+        assert item["unidade_territorial"] == "AC"
+        assert item["periodo_referencia"] == "2021"
+        assert isinstance(item["valor"], float)
+        assert 0.0 <= item["valor"] <= 1.0
+
+
+def test_consultar_sem_resultados_retorna_lista_vazia():
+    repository = Mock(spec=IndicadorRepository)
+    repository.listar.return_value = []
+    service = IndicadorService(repository)
+
+    resultado = service.consultar(estado="AC", periodo=1995)
+
+    assert resultado == []

@@ -179,6 +179,16 @@ Isso sinaliza uma consulta indisponível, não ausência de dados. Não há
 tentativa automática de recuperação ou repetição. Outros tipos de erro
 continuam sendo propagados para diagnóstico.
 
+### Visualização em tabela e gráfico (S7-03 / S7-04)
+
+A consulta de indicadores em `/api/indicadores` atende diretamente às visualizações em tabela e gráfico de barras no front-end:
+
+- **Organização determinística**: os registros são retornados ordenados por período de referência (`periodo_referencia ASC`), unidade territorial (`unidade_territorial ASC`), dimensão (na ordem `idhm_geral`, `educacao`, `longevidade`, `renda`) e identificador (`id ASC`).
+- **Preservação de informações essenciais**: cada elemento retornado contém `nome_indicador`, `dimensao`, `valor`, `unidade_territorial`, `periodo_referencia`, `unidade_medida` e `fonte`.
+- **Tratamento de valores ausentes**: campos sem valor na base são preservados como `null` no JSON, sem conversão indevida para zero. Valores reais zero (`0.0`) são mantidos como número.
+- **Coerência entre tabela e gráfico (TC-10)**: ambas as visualizações consomem a mesma resposta da API, garantindo equivalência de rótulos, escalas e valores exibidos.
+- **Sem resultados**: consultas com filtros válidos sem dados correspondentes retornam status `200` com lista vazia `[]`.
+
 ### Comparação de Estados (`/api/indicadores/comparar`)
 
 Esta rota permite comparar indicadores de duas UFs lado a lado.
