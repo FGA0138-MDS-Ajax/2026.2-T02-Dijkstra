@@ -754,4 +754,33 @@ gap: var(--space-3);
     gap: var(--space-2);
     margin-bottom: var(--space-2);
 }
+
+}
+
+.comparacao__resultado {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.comparacao__resultado[hidden] {
+    display: none;
+}
+
+.comparacao__card {
+    background: var(--bg-surface);
+    color: var(--text-primary);
+    border: 1px solid var(--border-subtle);
+    border-radius: 0.5rem;
+    padding: 1rem;
+}
+
+.comparacao__item {
+    margin: 0.5rem 0;
+}
+
+@media (max-width: 768px) {
+    .comparacao__resultado {
+        grid-template-columns: 1fr;
+    }
 }

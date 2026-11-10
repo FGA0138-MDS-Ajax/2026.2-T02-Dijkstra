@@ -28,8 +28,51 @@ function bloquearEstadoRepetido(selectA, selectB) {
     }
 }
 
+
+    const INDICADORES = [
+    { chave: "idhm_geral",  rotulo: "IDHM Geral" },
+    { chave: "renda",       rotulo: "IDHM Renda" },
+    { chave: "educacao",    rotulo: "IDHM Educação" },
+    { chave: "longevidade", rotulo: "IDHM Longevidade" },
+];
+
+function formatarValor(valor) {
+    return typeof valor === "number" ? valor.toFixed(3).replace(".", ",") : "Sem dados";
+}
+
+function criarCardEstado(estado) {
+    const card = document.createElement("div");
+    card.className = "comparacao__card";
+
+    const nome = ESTADOS.find(e => e.valor === estado.estado)?.rotulo ?? estado.estado;
+    const titulo = document.createElement("h3");
+    titulo.textContent = `${nome} (${estado.estado})`;
+    card.append(titulo);
+
+    const anoBase = document.createElement("p");
+    anoBase.textContent = "Ano base: " + (estado.periodo_referencia ?? "—");
+    card.append(anoBase);
+
+    for (const ind of INDICADORES) {
+        const dado = estado.indicadores?.[ind.chave];
+        const linha = document.createElement("p");
+        linha.className = "comparacao__item";
+        let texto = `${ind.rotulo}: ${formatarValor(dado?.valor)}`;
+        if (typeof dado?.valor === "number" && dado.unidade_medida) {
+            texto += ` (${dado.unidade_medida})`;
+        }
+        linha.textContent = texto;
+        card.append(linha);
+    }
+
+    return card;
+}
+
 function renderizarComparacao(dados, containerResultado) {
-    // montar os cards
+    containerResultado.replaceChildren();
+    for (const estado of dados.estados ?? []) {
+        containerResultado.append(criarCardEstado(estado));
+    }
     containerResultado.hidden = false;
 }
 
