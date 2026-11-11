@@ -114,7 +114,10 @@ nav:
         - Dailies: acompanhamento/sprints/sprint09/dailies/dailies.md
 
     - Reuniões:
+      - PDF das Atas: acompanhamento/reunioes/atas.md
       - Ata Reunião 01: acompanhamento/reunioes/ata01.md
+      - Ata Reunião 02: acompanhamento/reunioes/ata02.md
+      - Ata Reunião 03: acompanhamento/reunioes/ata03.md
   - Padrões:
     - Commits: padroes/commits.md
     - Issues: padroes/issues.md
