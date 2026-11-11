@@ -754,4 +754,36 @@ gap: var(--space-3);
     gap: var(--space-2);
     margin-bottom: var(--space-2);
 }
+
+}
+
+.comparacao__resultado {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.comparacao__resultado[hidden] {
+    display: none;
+}
+
+.comparacao__card {
+    background: var(--color-surface-soft);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    padding: 1rem;
+}
+html[data-theme="high-contrast"] .comparacao__card {
+    border-width: var(--border-width);
+}
+
+.comparacao__item {
+    margin: 0.5rem 0;
+}
+
+@media (max-width: 768px) {
+    .comparacao__resultado {
+        grid-template-columns: 1fr;
+    }
 }
