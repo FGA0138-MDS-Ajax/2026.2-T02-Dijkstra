@@ -1,20 +1,20 @@
 // grafico de barra dos indicadores (HTML/CSS) 
 // decidi nao fazer com SVG/CSS para melhorar responsividade mobile
 
-const ESCALA_GRAFICO = [0, 0.25, 0.5, 0.75, 1];
+const MARCAS_ESCALA = [0, 0.25, 0.5, 0.75, 1];
 
 const ROTULOS = {
-    idhm_geral: "IDHM GERAL",
+    idhm_geral: "IDHM Geral",
     renda: "Renda",
     educacao: "Educação",
     longevidade: "Longevidade"
 };
 
 const formatarValor = (valor) =>
-    valor.toLocaleString("pt-BR", {style: "percent", minimumFractionDigits: 3, maximumFractionDigits: 3});
+    valor.toLocaleString("pt-BR", {minimumFractionDigits: 3, maximumFractionDigits: 3});
 
 const formatarMarca = (valor) =>
-    valor.toLocaleString("pt-BR", {style: "percent", minimumFractionDigits: 0, maximumFractionDigits: 2});
+    valor.toLocaleString("pt-BR", {minimumFractionDigits: 0, maximumFractionDigits: 2});
 
 // normaliza o valor para entre 0 e 1 - null ou undefined vira null
 function normalizarValor(valor) {
@@ -30,7 +30,7 @@ function rotuloDe(item) {
     return item.ROTULOS ?? ROTULOS[item.dimensao] ?? String(item.dimensao ?? "Indicador");
 }
 
-function criar(tag, item, texto) {
+function criar(tag, classe, texto) {
     const novo = document.createElement(tag);
     if (classe) { 
         novo.className = classe;
@@ -65,13 +65,13 @@ function montarLinha({rotulo, valor}) {
 function montarEixo() {
     const eixo = criar("div", "eixo");
     const linha = criar("div", "linha-eixo");
-    MARCAS.forEach((m, i) => {
+    MARCAS_ESCALA.forEach((m, i) => {
         const marca = criar("span", "marca-eixo", formatarMarca(m));
         marca.style.left = `${m * 100}%`;
         if (i === 0) {
             marca.classList.add("inicio");
         }
-        if (i === MARCAS.length - 1) {
+        if (i === MARCAS_ESCALA.length - 1) {
             marca.classList.add("fim");
         }
         eixo.append(marca);
