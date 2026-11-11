@@ -26,13 +26,14 @@ function  montarURL(caminho, parametros={}){
     return API_BASE_URL + caminho + (texto ? "?" + texto: "");
 }
 
-export async function verificarSaude() {
+export async function requisitarJSON(url, {tempoLimite = TEMPO_LIMITE_MS, ...opcoesFetch} = {}){
     const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), TEMPO_LIMITE_SAUDE);
+    const timer = setTimeout(() => controller.abort(), tempoLimite);
     let resposta;
     try{
-        resposta = await fetch(API_BASE_URL + "/health",{signal:controller.signal});
-    } catch(erro){
+        resposta = await fetch(url, {...opcoesFetch, signal: controller.signal});
+    }
+    catch(erro){
         if(erro.name == "AbortError"){
             throw new ErroApi("tempo_esgotado", "A Api demorou muito para responder");
         }
@@ -41,9 +42,11 @@ export async function verificarSaude() {
     finally{
         clearTimeout(timer);
     }
-
     if(!resposta.ok){
-        throw new ErroApi("http","Erro na resposta do servidor" ,{status: resposta.status});
+        const corpoErro = await resposta.json().catch(() => null);
+        // FastAPI manda {detail: "..."}; no 422 o detail é lista, então só usamos se for texto
+        const detalhe = typeof corpoErro?.detail === "string" ? corpoErro.detail : "Erro na resposta do servidor";
+        throw new ErroApi("http", detalhe, { status: resposta.status });
     }
     if(resposta.status===204){
         return null;
@@ -54,124 +57,49 @@ export async function verificarSaude() {
     catch(erro){
         throw new ErroApi("resposta_invalida", "A reposta da Api não é um JSON válido",{status: resposta.status , causa: erro});
     }
+}
+export async function verificarSaude() {
+   return requisitarJSON(API_BASE_URL + "/health", { tempoLimite: TEMPO_LIMITE_SAUDE });
+
 }
 
 export async function buscarIndicadores(filtros = {}) {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), TEMPO_LIMITE_MS);
-    let resposta;
-    try{
-        resposta = await fetch(montarURL("/api/indicadores",filtros),{signal:controller.signal});
-    } catch(erro){
-        if(erro.name == "AbortError"){
-            throw new ErroApi("tempo_esgotado", "A Api demorou muito para responder");
-        }
-        throw new ErroApi("rede", "Não foi possivel se concetar a API", {causa : erro});
-    }
-    finally{
-        //reseta o timer
-        clearTimeout(timer);
-    }
+   return requisitarJSON(montarURL("/api/indicadores", filtros));
+}
 
-    if(!resposta.ok){
-        throw new ErroApi("http","Erro na resposta do servidor" ,{status: resposta.status});
-    }
-    if(resposta.status===204){
-        return null;
-    }
-    try{
-        return await resposta.json();
-    }
-    catch(erro){
-        throw new ErroApi("resposta_invalida", "A reposta da Api não é um JSON válido",{status: resposta.status , causa: erro});
-    }
+export async function buscarIndicadoresEstado(estado) {
+    return requisitarJSON(montarURL("/api/indicadores", { estado }));
+}
+
+export async function buscarComparacao(estadoA, estadoB, { periodoA = null, periodoB = null } = {}) {
+    const url = montarURL("/api/indicadores/comparar", {
+        estado_a: estadoA, estado_b: estadoB, periodo_a: periodoA, periodo_b: periodoB,
+    });
+    return requisitarJSON(url);
 }
 
 export async function fazerLogin(usuario, senha) {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), TEMPO_LIMITE_MS);
-    let resposta;
-    try{
-        resposta = await fetch(API_BASE_URL + "/api/auth/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ usuario, senha }),
-            signal: controller.signal,
-        });
-    } catch(erro){
-        if(erro.name == "AbortError"){
-            throw new ErroApi("tempo_esgotado", "A Api demorou muito para responder");
-        }
-        throw new ErroApi("rede", "Não foi possivel se concetar a API", {causa : erro});
-    }
-    finally{
-        clearTimeout(timer);
-    }
-
-    if(!resposta.ok){
-        throw new ErroApi("http", resposta.status === 401 ? "Credenciais inválidas." : "Erro na resposta do servidor", {status: resposta.status});
-    }
+    const dados = await requisitarJSON(API_BASE_URL + "/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ usuario, senha }),
+    });
     // guarda o cabeçalho Basic para as próximas rotas administrativas
     sessionStorage.setItem("auth", "Basic " + btoa(`${usuario}:${senha}`));
-    return await resposta.json();
+    return dados;
 }
 
 export async function buscarPainelAdmin() {
     const auth = sessionStorage.getItem("auth");
-    let resposta;
     try{
-        resposta = await fetch(API_BASE_URL + "/api/admin/painel", {
+        return await requisitarJSON(API_BASE_URL + "/api/admin/painel", {
             headers: auth ? { Authorization: auth } : {},
         });
     } catch(erro){
-        throw new ErroApi("rede", "Não foi possivel se concetar a API", {causa : erro});
-    }
-    if(resposta.status === 401){
-        sessionStorage.removeItem("auth");
-    }
-    if(!resposta.ok){
-        throw new ErroApi("http", "Acesso não autorizado", {status: resposta.status});
-    }
-    return await resposta.json();
-}
-
-export async function buscarComparacao(estadoA, estadoB, { periodoA = null, periodoB = null } = {}) {
-    
-    const url = montarURL("/api/indicadores/comparar", {
-        estado_a: estadoA,
-        estado_b: estadoB,
-        periodo_a: periodoA,
-        periodo_b: periodoB,
-    });
-
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), TEMPO_LIMITE_MS);
-    let resposta;
-
-    try{
-        resposta = await fetch(url, {signal:controller.signal});
-    } catch(erro){
-        if(erro.name == "AbortError"){
-            throw new ErroApi("tempo_esgotado", "A Api demorou muito para responder");
+        // sessão inválida: limpa as credenciais salvas
+        if(erro instanceof ErroApi && erro.status === 401){
+            sessionStorage.removeItem("auth");
         }
-        throw new ErroApi("rede", "Não foi possivel se concetar a API", {causa : erro});
-    }
-    finally{
-        //reseta o timer
-        clearTimeout(timer);
-        
-    }
-    if(!resposta.ok){
-        const corpoErro = await resposta.json().catch(() => null);
-        const detalhe = corpoErro?.detail || "erro na resposta do servidor";
-
-        throw new ErroApi("http", detalhe, { status: resposta.status });
-    }
-
-    try{
-        return await resposta.json();
-    }
-    catch(erro){
-        throw new ErroApi("resposta_invalida", "A reposta da Api não é um JSON válido",{status: resposta.status , causa: erro});
+        throw erro;
     }
 }
