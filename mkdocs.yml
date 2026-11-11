@@ -106,7 +106,9 @@ nav:
       - Sprint 7: 
         - Visão Geral: acompanhamento/sprints/sprint07/index.md
         - Dailies: acompanhamento/sprints/sprint07/dailies/dailies.md
-      - Sprint 8: acompanhamento/sprints/sprint08/sprint08.md
+      - Sprint 8:
+        - Visão Geral: acompanhamento/sprints/sprint08/index.md
+        - Dailies: acompanhamento/sprints/sprint08/dailies/dailies.md
       - Sprint 9: acompanhamento/sprints/sprint09/sprint09.md
 
     - Reuniões:
