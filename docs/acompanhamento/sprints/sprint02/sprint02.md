@@ -4,52 +4,57 @@
 
 | Informação | Descrição |
 |---|---|
-| Período | 30/09/2026 a 06/10/2026 |
-| Objetivo | Definir a estrutura técnica do Brasil Hub com base nos requisitos estabelecidos no Documento de Visão. |
-| Entrega principal | Documento de Arquitetura |
+| **Período** | 30/09/2026 a 06/10/2026 |
+| **Objetivo** | Definir a estrutura técnica, componentes e visões do Brasil Hub (Documento de Arquitetura). |
+| **Situação da Sprint** | Concluída com sucesso ✅ |
+| **Issues Planejadas** | 8 issues documentais |
+| **Taxa de Conclusão** | 100% |
 
-## 2. Planejamento e resultados
+---
 
-A Sprint 2 foi dedicada à elaboração do Documento de Arquitetura, com o objetivo de transformar os requisitos do produto em uma proposta de organização técnica para o sistema.
+## 2. Planejamento e Objetivos
 
-O documento deveria descrever os componentes da aplicação, suas responsabilidades, as tecnologias previstas e a comunicação entre as camadas.
+A Sprint 2 foi dedicada à elaboração do **Documento de Arquitetura v1.0**, transformando os requisitos do Documento de Visão em uma proposta concreta de organização de software. 
 
-| Atividade | Resultado esperado |
+A equipe adotou o estilo **Cliente-Servidor em Três Camadas (Three-Tier)**, dividindo o sistema em Apresentação (Leaflet), Aplicação (FastAPI/Pandas) e Persistência (SQLite). As responsabilidades foram distribuídas entre os pares para modelagem dos diagramas UML essenciais (Casos de Uso, Atividades, Pacotes, Classes, Componentes e Implantação).
+
+---
+
+## 3. Issues Planejadas e Situação Final
+
+| Issue | Requisito | Entrega Planejada | Área | Responsáveis | Situação |
+|---|:---:|---|:---:|---|:---:|
+| **#1 (S2-ARQ-01)** | — | Textos de fundação, justificativa em camadas e metas | Arquitetura | Josef Wojtyla | Concluída |
+| **#2 (S2-ARQ-02)** | — | Diagrama Arquitetural Genérico (Figura 1) | Arquitetura | Lucas Nery e Paulo Eduardo | Concluída |
+| **#3 (S2-ARQ-03)** | B-01, B-02 | Diagrama de Casos de Uso (Figura 2) | Visão de Uso | Felipe George | Concluída |
+| **#4 (S2-ARQ-04)** | B-04, B-09 | Diagrama de Atividades do Administrador (Figura 3) | Visão de Uso | Fabiana Reis | Concluída |
+| **#5 (S2-ARQ-05)** | — | Diagrama de Pacotes e módulos lógicos (Figura 4) | Visão Lógica | Ágatha Natasha | Concluída |
+| **#6 (S2-ARQ-06)** | — | Diagrama de Classes e modelo de dados (Figura 6) | Estrutural | César Augusto | Concluída |
+| **#7 (S2-ARQ-07)** | — | Diagrama de Componentes de execução (Figura 5) | Estrutural | César Augusto | Concluída |
+| **#8 (S2-ARQ-08)** | B-08, B-09 | Diagrama de Implantação e restrições (Figura 7) | Infraestrutura | Eduardo Brito | Concluída |
+
+---
+
+## 4. Métricas da Sprint
+
+| Métrica | Definição / Fórmula (GQM) | Meta | Resultado da Sprint | Análise do Resultado |
+|---|---|:---:|:---:|---|
+| **M1: Conclusão de Issues** | $\frac{\text{Issues Concluídas}}{\text{Issues Planejadas}} \times 100$ | > 90% | **100%** (8/8) | Meta atingida. Todos os diagramas e seções técnicas foram integrados. |
+| **M2: Proporção de Defeitos** | $\frac{\text{Bugs Reportados}}{\text{Issues Entregues}} \times 100$ | < 10% | **0%** (0/8) | Meta atingida. Nenhuma inconformidade impeditiva identificada na revisão cruzada. |
+| **M3: Saldo de Débito Técnico** | $\text{Novos Débitos} - \text{Débitos Resolvidos}$ | $\le$ 0 | **Saldo: 0** (0 - 0) | Meta atingida. Nenhuma pendência técnica transferida para a Sprint 3. |
+
+---
+
+## 5. Testes Implementados e Garantia da Qualidade
+
+Por se tratar de uma Sprint exclusivamente para documentação, não houve testagem dos requisitos ainda.
+
+---
+
+## 6. Retrospectiva, Dificuldades e Aprendizados
+
+| Aspecto | Análise da Sprint |
 |---|---|
-| Definição da arquitetura geral | Descrever a organização dos componentes do sistema. |
-| Definição das tecnologias | Registrar as tecnologias utilizadas no desenvolvimento. |
-| Organização dos componentes | Estabelecer as responsabilidades do front-end, da API, dos serviços e da persistência. |
-| Modelagem dos dados | Definir a estrutura inicial de armazenamento dos indicadores e dos dados administrativos. |
-| Definição da comunicação | Especificar a comunicação entre a interface, a API e o banco de dados. |
-| Documentação das decisões técnicas | Registrar as escolhas arquiteturais e sua relação com os requisitos. |
-
-## 3. Principais decisões arquiteturais
-
-A proposta técnica do Brasil Hub utiliza uma arquitetura cliente-servidor organizada em camadas.
-
-| Componente | Responsabilidade | Tecnologias previstas |
-|---|---|---|
-| Front-end | Apresentar os indicadores, o mapa e os filtros ao visitante. | JavaScript e Leaflet |
-| API | Receber as requisições e disponibilizar os dados para a interface. | Python e FastAPI |
-| Serviços | Processar dados e executar as regras necessárias às consultas. | Python e Pandas |
-| Persistência | Armazenar e disponibilizar os indicadores consultados pela aplicação. | SQLite |
-| Entrada de dados | Permitir o processamento dos arquivos CSV utilizados na atualização dos indicadores. | Pandas |
-
-A comunicação entre o front-end e a API ocorre por requisições HTTP, com utilização de JSON nas consultas e respostas. O envio de arquivos CSV utiliza o mecanismo adequado para transferência de arquivos.
-
-## 4. Pendências e próximos passos
-
-| Encaminhamento | Objetivo |
-|---|---|
-| Revisar a consistência do documento | Garantir que todas as seções estejam completas e coerentes com o Documento de Visão. |
-| Detalhar as visões arquiteturais | Explicar a organização e o comportamento do sistema sob diferentes perspectivas. |
-| Relacionar arquitetura e requisitos | Demonstrar como as decisões técnicas atendem aos requisitos do produto. |
-| Iniciar a preparação do ambiente | Criar a base necessária para a implementação dos componentes. |
-
-## 5. Conclusão
-
-A Sprint 2 teve como foco a definição da estrutura técnica do Brasil Hub, estabelecendo uma proposta arquitetural baseada na separação entre interface, API, serviços e persistência.
-
-O Documento de Arquitetura passou a orientar a organização do código e as decisões técnicas das etapas seguintes. A revisão e o detalhamento das seções arquiteturais também são importantes para garantir que o documento represente adequadamente a solução planejada.
-
-As definições estabelecidas nesta Sprint serviram de referência para a Sprint 3, dedicada à configuração do ambiente de desenvolvimento e à construção da base técnica do sistema.
+| **O que funcionou bem** | Divisão modular de diagramas entre duplas com papéis bem definidos e conformidade com a UML. |
+| **Dificuldades e impedimentos** | Alinhamento sobre a representação da persistência e contratos de interface entre front-end e back-end. |
+| **Plano de ação / Próximos passos** | Iniciar a Sprint 3 configurando o ambiente Docker e criando as bases executáveis de código do Front-end e Back-end. |

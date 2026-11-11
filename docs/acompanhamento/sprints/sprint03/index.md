@@ -4,72 +4,65 @@
 
 | Informação | Descrição |
 |---|---|
-| Período | 07/10/2026 a 13/10/2026 |
-| Objetivo | Estabelecer a estrutura inicial do ambiente de desenvolvimento e do back-end do Brasil Hub. |
-| Resultado | Parcialmente alcançado |
-| Issues planejadas | 8 |
+| **Período** | 07/10/2026 a 13/10/2026 |
+| **Objetivo** | Estabelecer a estrutura inicial do ambiente de desenvolvimento e do back-end do Brasil Hub. |
+| **Situação da Sprint** | Parcialmente alcançada |
+| **Issues Planejadas** | 8 issues técnicas |
+| **Taxa de Conclusão** | 62,5% |
 
-## 2. Planejamento e resultados
+---
 
-A Sprint 3 teve como objetivo preparar a base técnica do Brasil Hub, incluindo o ambiente de desenvolvimento, a estrutura do projeto, a persistência dos dados e os primeiros componentes de back-end e front-end.
+## 2. Planejamento e Objetivos
 
-| Issue | Entrega planejada | Situação ao final da Sprint |
-|---|---|---|
-| S3-01 | Política de branches, Pull Requests e revisão de código | Concluída |
-| S3-02 | Estrutura inicial do projeto e configurações | Concluída |
-| S3-03 | Configuração do Docker e Docker Compose | Concluída |
-| S3-04 | Estrutura inicial do front-end | Concluída |
-| S3-05 | Banco SQLite e repositório de indicadores | Concluída |
-| S3-06 | Leitura e tratamento de CSV com Pandas | Não concluída no período |
-| S3-07 | API FastAPI para consulta de indicadores | Não concluída no período |
-| S3-08 | Testes de integração e avaliação do requisito B-05 | Não concluída |
+A Sprint 3 teve como meta estabelecer o alicerce técnico do projeto Brasil Hub: repositório padronizado, ambiente conteinerizado via Docker Compose, esqueleto do Front-end e módulos iniciais de persistência e ingestão de dados.
 
-A situação definitiva das issues deve ser conferida no GitHub, considerando o estado registrado ao encerramento da Sprint e os critérios de aceitação.
+A equipe definiu a distribuição de tarefas entre 4 duplas de trabalho. Embora a infraestrutura base e a persistência tenham sido entregues, as tarefas de processamento de CSV e endpoints da API sofreram atrasos por dependências técnicas e foram transferidas para a Sprint 4.
 
-## 3. Principais resultados
+---
 
-- Organização inicial do repositório e dos diretórios do projeto.
-- Definição do fluxo de branches, Pull Requests e revisão de código.
-- Preparação do ambiente de desenvolvimento com Docker e Docker Compose.
-- Criação da estrutura inicial do front-end.
-- Preparação da persistência de dados com SQLite.
-- Início do processamento dos arquivos CSV e da implementação da API.
+## 3. Issues Planejadas e Situação Final
 
-As atividades de processamento de dados, consulta pela API e testes integrados permaneceram como pendências para continuidade do desenvolvimento.
+| Issue | Requisito | Entrega Planejada | Área | Responsáveis | Situação |
+|---|:---:|---|:---:|---|:---:|
+| **#9 (S3-01)** | — | Política de branches, Pull Requests e revisão de código | Processo | Lucas Nery e Fabiana Reis | Concluída |
+| **#10 (S3-02)** | — | Estrutura inicial do projeto e arquivos de configuração | Infra / DevOps | Ágatha Natasha e Eduardo Brito | Concluída |
+| **#11 (S3-03)** | — | Configuração do Docker e Docker Compose | Infra / DevOps | Josef Wojtyla e Paulo Eduardo | Concluída |
+| **#12 (S3-04)** | — | Estrutura inicial de diretórios e páginas do Front-end | Front-end | César Augusto e Felipe George | Concluída |
+| **#13 (S3-05)** | — | Esquema de persistência e repositório de indicadores | Dados / Infra | Josef Wojtyla e Paulo Eduardo | Concluída |
+| **#16 (S3-06)** | B-04 | Leitura, validação e tratamento de CSV com Pandas | Dados | Ágatha Natasha e Eduardo Brito | Pendente |
+| **#14 (S3-07)** | B-05 | API FastAPI para consulta de indicadores | Back-end | Ágatha Natasha e Eduardo Brito | Pendente |
+| **#15 (S3-08)** | B-05 | Testes de integração e avaliação do requisito B-05 | Testes | Lucas Nery e Fabiana Reis | Pendente |
 
-## 4. Métricas
+---
 
-| Métrica | Meta | Resultado preliminar |
-|---|---|---|
-| Conclusão das issues | > 90% | 62,5%, considerando 5 de 8 issues concluídas |
-| Proporção de defeitos | < 10% | Nenhum defeito identificado |
-| Saldo de débito técnico | saldo <= zero | saldo 3 issues não finalizadas |
-| Desempenho B-05 | Resposta em até 3 segundos | Não avaliado |
+## 4. Métricas da Sprint
 
-**Observação:** o percentual de conclusão considera cinco issues concluídas entre as oito planejadas.
+| Métrica | Definição / Fórmula (GQM) | Meta | Resultado da Sprint | Análise do Resultado |
+|---|---|:---:|:---:|---|
+| **M1: Conclusão de Issues** | $\frac{\text{Issues Concluídas}}{\text{Issues Planejadas}} \times 100$ | > 90% | **62,5%** (5/8) | Meta não atingida. Houve gargalo no tratamento de dados (Pandas) que bloqueou a API e os testes. |
+| **M2: Proporção de Defeitos** | $\frac{\text{Bugs Reportados}}{\text{Issues Entregues}} \times 100$ | < 10% | **0%** (0/5) | Meta atingida. O código de infraestrutura integrado não gerou bugs na branch principal. |
+| **M3: Saldo de Débito Técnico** | $\text{Novos Débitos} - \text{Débitos Resolvidos}$ | $\le$ 0 | **Saldo: +3** (3 - 0) | Meta não atingida. 3 issues permaneceram incompletas e foram herdadas pela Sprint 4. |
+| **Desempenho B-05** | Tempo de resposta da consulta $\le$ 3 s | $\le$ 3 s | **Não avaliado** | Dependência técnica de S3-07 e S3-08 não concluídas no ciclo. |
 
-## 5. Pendências e próximos passos
+---
 
-| Pendência | Encaminhamento |
+## 5. Testes Implementados e Garantia da Qualidade
+
+Nesta Sprint foram estabelecidas as bases para a automação de testes unitários e de integração no Back-end:
+
+| Teste / Validação | Nível | Requisito / Caso | Função / Arquivo Responsável | Objetivo da Validação |
+|---|:---:|:---:|---|---|
+| **Ambiente Conteinerizado** | Sistema | — | `docker-compose.yml` | Subida íntegra dos serviços locais sem dependência do SO do desenvolvedor. |
+| **Persistência Inicial** | Unitário | — | `src/database/` | Inicialização de esquema tabular e operações básicas de conexão. |
+
+*Nota: Os testes formais de integração da API (TC-01, TC-02 e TC-06) ficaram pendentes em S3-08 para finalização na Sprint 4.*
+
+---
+
+## 6. Retrospectiva, Dificuldades e Aprendizados
+
+| Aspecto | Análise da Sprint |
 |---|---|
-| S3-06 — Processamento de CSV | Finalizar e validar a ingestão dos dados. |
-| S3-07 — API de consulta | Concluir e testar os endpoints necessários. |
-| S3-08 — Testes de integração | Executar os testes após a conclusão das dependências. |
-| Requisito B-05 | Medir e documentar o tempo de resposta das consultas. |
-| Pull Requests | Verificar revisões e integração das alterações. |
-
-As pendências devem ser acompanhadas na Sprint 4, respeitando as dependências entre as atividades.
-
-## 6. Acompanhamento
-
-Os registros diários da equipe estão disponíveis na seção de dailies:
-
-- [Acessar as dailies da Sprint 3](dailies/dailies.md)
-
-As issues e os Pull Requests correspondentes devem ser utilizados como referência para verificar o andamento e as evidências das entregas.
-
-## 7. Conclusão
-
-A Sprint 3 estabeleceu parte da estrutura técnica necessária ao desenvolvimento do Brasil Hub, incluindo a organização do repositório, o ambiente de desenvolvimento e a preparação da persistência dos dados.
-
-Entretanto, o processamento dos arquivos CSV, a API de consulta e os testes integrados não foram concluídos dentro do período planejado. Essas pendências devem ser priorizadas na Sprint 4 para viabilizar a integração entre o back-end, o mapa interativo e os filtros da aplicação.
+| **O que funcionou bem** | Padronização bem-sucedida do repositório, branches, PRs e ambiente de desenvolvimento local via Docker. |
+| **Dificuldades e impedimentos** | Curva de aprendizado no tratamento massivo de CSV com Pandas e configuração do Docker em ambientes Windows. |
+| **Plano de ação / Próximos passos** | Priorizar imediatamente as 3 issues herdadas (S3-06, S3-07, S3-08) logo no primeiro dia da Sprint 4 para liberar o Front-end. |
