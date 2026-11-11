@@ -109,7 +109,9 @@ nav:
       - Sprint 8:
         - Visão Geral: acompanhamento/sprints/sprint08/index.md
         - Dailies: acompanhamento/sprints/sprint08/dailies/dailies.md
-      - Sprint 9: acompanhamento/sprints/sprint09/sprint09.md
+      - Sprint 9: 
+        - Visão Geral: acompanhamento/sprints/sprint09/index.md
+        - Dailies: acompanhamento/sprints/sprint09/dailies/dailies.md
 
     - Reuniões:
       - Ata Reunião 01: acompanhamento/reunioes/ata01.md

@@ -17,3 +17,4 @@ Os registros são organizados por data e apresentam os avanços, as atividades p
 | 17/11/2026 | [Acessar daily de 17 de novembro](17-11-26.md) |
 
 > Os registros refletem as informações disponibilizadas pela equipe. Dias sem acompanhamento formal não são apresentados como se uma daily tivesse ocorrido.
+
