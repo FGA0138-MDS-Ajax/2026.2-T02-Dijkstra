@@ -115,7 +115,8 @@ export function renderizarGrafico(container, itens, contexto = {}) {
     container.replaceChildren(grafico);
 }
 
-// -------------------- Mocks ------------------------------
+// -------------------- Mocks (REMOVER ANTES DO PR) ------------------------------
+/*
 export const MOCK_NORMAL = [
     { dimensao: "idhm_geral",  valor: 0.806, periodo_referencia: 2021 },
     { dimensao: "renda",       valor: 0.789, periodo_referencia: 2021 },
@@ -128,4 +129,4 @@ export const MOCK_COM_NULL = [
     { dimensao: "educacao",    valor: 0,    periodo_referencia: 2021 },
     { dimensao: "longevidade", valor: 1,    periodo_referencia: 2021 },
 ];
-export const MOCK_TODOS_NULL = MOCK_NORMAL.map((i) => ({ ...i, valor: null }));
+export const MOCK_TODOS_NULL = MOCK_NORMAL.map((i) => ({ ...i, valor: null })); */
