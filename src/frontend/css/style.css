@@ -787,3 +787,122 @@ html[data-theme="high-contrast"] .comparacao__card {
         grid-template-columns: 1fr;
     }
 }
+
+/* visualizacao (grafico) */
+.visualizacao__resultado {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr)); 
+    gap: var(--space-3);
+    align-items: start;
+}
+.visualizacao__resultado[hidden] { display: none; } 
+
+#visualizacao-tabela { min-width: 0; overflow-x: auto; }
+
+#visualizacao-grafico {
+    min-width: 0;
+    background: var(--color-surface);
+    color: var(--color-text);
+    border: max(1px, var(--border-width)) solid var(--color-border-soft);
+    border-radius: var(--radius);
+    box-shadow: var(--box-shadow);
+    padding: var(--space-2);
+}
+
+#visualizacao-grafico .grafico {
+    --col-rotulo: 8rem;
+    --col-valor: 3.5rem;
+    display: grid;
+    gap: var(--space-1-5);
+    font-family: var(--font-body);
+    font-size: calc(var(--font-size-0) * var(--font-scale));
+}
+
+#visualizacao-grafico .linha,
+#visualizacao-grafico .linha-eixo {
+    display: grid;
+    grid-template-columns: var(--col-rotulo) minmax(0, 1fr) var(--col-valor);
+    column-gap: var(--space-1);
+    align-items: center;
+}
+
+#visualizacao-grafico .grafico-rotulo { color: var(--color-text); font-weight: 600; }
+#visualizacao-grafico .campo-valor {
+    color: var(--color-text);
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+#visualizacao-grafico .trilho {
+    position: relative;
+    height: 1.5rem;
+    background-color: var(--color-surface-soft);
+    background-image: linear-gradient(to right, var(--color-border-soft) 1px, transparent 1px);
+    background-size: 25% 100%;
+    border-right: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+}
+#visualizacao-grafico .barra {
+    display: block;
+    height: 100%;
+    background: var(--color-primary);
+}
+
+#visualizacao-grafico .trilho.vazio {
+    display: flex;
+    align-items: center;
+    padding-inline: var(--space-1);
+    background: none;
+    border: 1px dashed var(--color-border);
+}
+#visualizacao-grafico .trilho .grafico-sem-dados {
+    color: var(--color-text-muted);
+    font-style: italic;
+}
+
+#visualizacao-grafico .eixo { grid-column: 2; position: relative; height: 1.25rem; }
+#visualizacao-grafico .marca-eixo {
+    position: absolute;
+    top: 0;
+    transform: translateX(-50%);
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+}
+#visualizacao-grafico .marca-eixo.inicio { transform: none; }
+#visualizacao-grafico .marca-eixo.fim    { transform: translateX(-100%); }
+
+#visualizacao-grafico .grafico-legenda {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+    text-align: center;
+}
+
+#visualizacao-grafico > .grafico-sem-dados {
+    margin: 0;
+    padding: var(--space-2);
+    color: var(--color-text-muted);
+    text-align: center;
+}
+
+html[data-theme="high-contrast"] #visualizacao-grafico .barra {
+    outline: 2px solid var(--color-text);
+    outline-offset: -2px;
+}
+
+/* responsivo */
+@media (max-width: 768px) {
+    .visualizacao__resultado { grid-template-columns: 1fr; }   
+}
+@media (max-width: 480px) {
+    #visualizacao-grafico .linha {
+        grid-template-columns: minmax(0, 1fr) var(--col-valor);
+        grid-template-areas: "rotulo rotulo" "trilho valor";
+        row-gap: var(--space-0);
+    }
+    #visualizacao-grafico .grafico-rotulo { grid-area: rotulo; }
+    #visualizacao-grafico .trilho         { grid-area: trilho; }
+    #visualizacao-grafico .campo-valor    { grid-area: valor; }
+    #visualizacao-grafico .linha-eixo     { grid-template-columns: minmax(0, 1fr) var(--col-valor); }
+    #visualizacao-grafico .eixo           { grid-column: 1; }
+}

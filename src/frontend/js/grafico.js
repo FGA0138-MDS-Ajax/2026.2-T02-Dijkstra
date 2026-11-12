@@ -27,7 +27,7 @@ function normalizarValor(valor) {
 }
 
 function rotuloDe(item) {
-    return item.ROTULOS ?? ROTULOS[item.dimensao] ?? String(item.dimensao ?? "Indicador");
+    return item.rotulo ?? ROTULOS[item.dimensao] ?? String(item.dimensao ?? "Indicador");
 }
 
 function criar(tag, classe, texto) {
@@ -44,7 +44,7 @@ function criar(tag, classe, texto) {
 function montarLinha({rotulo, valor}) {
     const linha = criar("div", "linha");
     const trilho = criar("div", "trilho");
-    const campoValor = criar("div", "campo-valor", formatarValor(valor));
+    const campoValor = criar("div", "campo-valor");
 
     if (valor === null) {
         trilho.classList.add("vazio");
@@ -95,8 +95,8 @@ export function renderizarGrafico(container, itens, contexto = {}) {
     if (dados.every((d) => d.valor === null)) {
         container.removeAttribute("role");
         container.removeAttribute("aria-label");
-        const msg = criar("p", "grafico-sem-dados", "Sem dados disponíveispara exibir");
-        msg.setAtribute("role", "status");
+        const msg = criar("p", "grafico-sem-dados", "Sem dados disponíveis para exibir");
+        msg.setAttribute("role", "status");
         container.replaceChildren(msg);
         return;
     }
@@ -110,13 +110,13 @@ export function renderizarGrafico(container, itens, contexto = {}) {
     const onde = contexto.uf ? `de ${contexto.uf}` : "";
     const quando = contexto.ano ? `em ${contexto.ano}` : "";
     const resumo = dados.map((d) => `${d.rotulo}: ${d.valor === null ? "sem dados" : formatarValor(d.valor)}`).join("; ");
-    container.setAttribute("role", "imagem");
+    container.setAttribute("role", "img");
     container.setAttribute("aria-label", `Gráfico de barras dos indicadores ${onde} ${quando}. ${resumo}.`);
     container.replaceChildren(grafico);
 }
 
 // -------------------- Mocks (REMOVER ANTES DO PR) ------------------------------
-/*
+
 export const MOCK_NORMAL = [
     { dimensao: "idhm_geral",  valor: 0.806, periodo_referencia: 2021 },
     { dimensao: "renda",       valor: 0.789, periodo_referencia: 2021 },
@@ -129,4 +129,4 @@ export const MOCK_COM_NULL = [
     { dimensao: "educacao",    valor: 0,    periodo_referencia: 2021 },
     { dimensao: "longevidade", valor: 1,    periodo_referencia: 2021 },
 ];
-export const MOCK_TODOS_NULL = MOCK_NORMAL.map((i) => ({ ...i, valor: null })); */
+export const MOCK_TODOS_NULL = MOCK_NORMAL.map((i) => ({ ...i, valor: null })); 
