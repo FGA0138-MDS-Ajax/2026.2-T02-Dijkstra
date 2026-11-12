@@ -8,6 +8,8 @@ copyright: Equipe Dijkstra — MDS 2026.2 — UnB/FGA
 theme:
   name: material
   language: pt-BR
+  logo: assets/brasil-map.png
+  favicon: assets/brasil-map.png
   features:
     - toc.follow
     - navigation.footer
@@ -17,7 +19,7 @@ theme:
     - search.highlight
     - content.code.copy      
   font:
-    text: Inter
+    text: Plus Jakarta Sans
     code: Roboto Mono
   palette:
     - media: "(prefers-color-scheme: light)"
@@ -39,6 +41,8 @@ extra_css:
   - stylesheets/extra.css
 
 markdown_extensions:
+  - attr_list
+  - md_in_html
   - toc:
       permalink: true
   - admonition
