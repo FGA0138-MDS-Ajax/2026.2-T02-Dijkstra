@@ -155,6 +155,33 @@ class IndicadorService:
             }
             for dimensao in DIMENSOES_COMPARACAO
         }
+
+    def consultar_historico(self, estado: str, dimensao: str) -> dict:
+        if estado not in UFS_VALIDAS:
+            raise EstadoInvalido(f"Estado Inválido: {estado}")
+        
+        registros = self.consultar(estado = estado, dimensao = dimensao)
+
+        unidade = None
+        serie = []
+        for registro in registros:
+            if unidade == None and registro.get("unidade_medida") != None:
+                unidade = registro.get("unidade_medida")
+            
+            serie.append({
+                "periodo": int(registro["periodo_referencia"]),
+                "valor": registro["valor"],
+            })
+
+        
+        serie.sort(key=lambda item: item["periodo"])
+    
+        return {
+            "indicador": dimensao,
+            "uf": estado,
+            "unidade": unidade, 
+            "serie": serie,
+        }
     
 class ImportacaoService:
     def __init__(self, repository: IndicadorRepository):
