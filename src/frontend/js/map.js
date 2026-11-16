@@ -25,7 +25,7 @@ function obterValorIdhParaAno(listaIndicadores,  ano, dimensao){
     const ind = listaIndicadores.find(i=>
     // esse dimensão cor é só pra falar que a dimensão observada é idhm_geral, e não outra dimensão que não está no foco.
     // a galera do filtros vai poder filtrar isso aqui.
-    i.periodo_referencia === ano && i.dimensao === dimensao
+    String(i.periodo_referencia) === String(ano) && i.dimensao === dimensao
     );
     return ind ? ind.valor : null;
 }
@@ -46,9 +46,9 @@ export function inicializarMapa(idContainer) {
     mapa.setMinZoom(zoomMin);
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 6 ,
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(mapa);
+        maxZoom: 6 ,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(mapa);
 
 
     let indicadoresporUf = {};
@@ -56,6 +56,7 @@ export function inicializarMapa(idContainer) {
     let anoSelecionado = null;
     let camadaEstados = null;
     let dimensaoAtiva = DIMENSAO_COR;
+    let selectAnoMapa = null;
     
     // função para retonar indicadores do estado da mesma uf do que foi passado
     function indicadoresDoEstado(feature){
@@ -65,8 +66,7 @@ export function inicializarMapa(idContainer) {
     function atualizarIndicadores(lista, dimensao, estadoUF){
         indicadoresporUf = {};
         
-        
-
+    
         const indicadores = Array.isArray(lista) ? lista : [];
         // array dos dados, para cada dado eu pego a uf e crio um vetor dela no meu vetor de dados pra cada uf.
         // ai toda vez que aparece um dado de uma uf conhecida eu coloco nesse vetor.
@@ -83,19 +83,26 @@ export function inicializarMapa(idContainer) {
 
         anosDisponiveis = [...new Set(indicadores.map(i => String(i.periodo_referencia)))].sort();
         anoSelecionado = anosDisponiveis[anosDisponiveis.length - 1] || null;
- 
-        if(camadaEstados){
-            camadaEstados.setStyle(estiloEstado);
+
+        const selectAnoMapa = document.getElementById("seletor-ano");
+        if (selectAnoMapa){
+            selectAnoMapa.innerHTML = [...anosDisponiveis]
+                .reverse()
+                .map(a => `<option value="${a}" ${a === anoSelecionado ? 'selected' : ''}>${a}</option>`)
+                .join('');
         }
 
-        if (camadaEstados) {
-            if (estadoUF) {
+        if (camadaEstados){
+            camadaEstados.setStyle(estiloEstado);
+
+            if (estadoUF){
                 const camada = camadaEstados.getLayers().find(
                 camada => camada.feature.properties.sigla === estadoUF
-        );
+                );
 
                 estadoSelecionado = camada?.feature ?? null;
-            } else {
+            }
+            else{
                 estadoSelecionado = null;
             }
         }
@@ -104,6 +111,7 @@ export function inicializarMapa(idContainer) {
             infoEstado.update();
         }
     }
+    
     //escolhe a cor e preenche os estados com base no ano selecionado e idhm_geral
     function estiloEstado(feature){
         const valor = obterValorIdhParaAno(indicadoresDoEstado(feature), anoSelecionado, dimensaoAtiva);

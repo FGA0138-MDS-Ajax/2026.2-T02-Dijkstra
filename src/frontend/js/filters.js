@@ -1,5 +1,6 @@
 const ID_ESTADO = "filtro-estado";
 const ID_DIMENSAO = "filtro-dimensao";
+const ID_PERIODO = "filtro-periodo";
 const ID_LIMPAR = "filtro-limpar";
 
 export const ESTADOS = [
@@ -33,6 +34,7 @@ export const ESTADOS = [
 ];
 
 export const DIMENSOES = [
+    { valor: "idhm_geral", rotulo: "IDHM Geral" },
     { valor: "renda", rotulo: "Renda" },
     { valor: "educacao", rotulo: "Educação" },
     { valor: "longevidade", rotulo: "Longevidade" },
@@ -52,11 +54,12 @@ export function obterFiltros() {
     return normalizarFiltros({
         estado: document.getElementById(ID_ESTADO)?.value,
         dimensao: document.getElementById(ID_DIMENSAO)?.value,
+        periodo: document.getElementById(ID_PERIODO)?.value,
     });
 }
 
 export function limparFiltros() {
-    for (const id of [ID_ESTADO, ID_DIMENSAO]) {
+    for (const id of [ID_ESTADO, ID_DIMENSAO, ID_PERIODO]) {
         const select = document.getElementById(id);
         if (select) select.value = "";
     }
@@ -70,9 +73,27 @@ function preencherSelect(select, opcoes, rotuloTodos) {
     }
 }
 
+export function atualizarOpcoesPeriodo(periodos) {
+    const selectPeriodo = document.getElementById(ID_PERIODO);
+    if (!selectPeriodo) return;
+
+    const valorAtual = selectPeriodo.value;
+    const opcoes = [...new Set(periodos.map(String))]
+        .sort()
+        .reverse()
+        .map((ano) => ({ valor: ano, rotulo: ano }));
+
+    preencherSelect(selectPeriodo, opcoes, "Todos os períodos");
+
+    if (valorAtual && opcoes.some((o) => o.valor === valorAtual)) {
+        selectPeriodo.value = valorAtual;
+    }
+}
+
 export function inicializarFiltros(aoMudar) {
     const selectEstado = document.getElementById(ID_ESTADO);
     const selectDimensao = document.getElementById(ID_DIMENSAO);
+    const selectPeriodo = document.getElementById(ID_PERIODO);
     const botaoLimpar = document.getElementById(ID_LIMPAR);
 
     if (!selectEstado || !selectDimensao) {
@@ -86,6 +107,7 @@ export function inicializarFiltros(aoMudar) {
     const avisar = () => aoMudar(obterFiltros());
     selectEstado.addEventListener("change", avisar);
     selectDimensao.addEventListener("change", avisar);
+    selectPeriodo?.addEventListener("change", avisar);
 
     botaoLimpar?.addEventListener("click", () => {
         limparFiltros();
