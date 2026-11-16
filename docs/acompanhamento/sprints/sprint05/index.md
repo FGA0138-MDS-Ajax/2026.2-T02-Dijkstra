@@ -36,9 +36,9 @@ O objetivo foi implementar o mecanismo de hash de senhas (`bcrypt`), proteger en
 
 | Métrica | Definição / Fórmula (GQM) | Meta | Resultado da Sprint | Análise do Resultado |
 |---|---|:---:|:---:|---|
-| **M1: Conclusão de Issues** | $\frac{\text{Issues Concluídas}}{\text{Issues Planejadas}} \times 100$ | > 90% | **60%** (3/5) | Meta não atingida. Bloqueios no Front-end administrativo impediram a conclusão integral. |
-| **M2: Proporção de Defeitos** | $\frac{\text{Bugs Reportados}}{\text{Issues Entregues}} \times 100$ | < 10% | **0%** (0/3) | Meta atingida. O código de segurança e endpoints integrado não apresentou defeitos em produção. |
-| **M3: Saldo de Débito Técnico** | $\text{Novos Débitos} - \text{Débitos Resolvidos}$ | $\le$ 0 | **Saldo: +2** (2 - 0) | Meta não atingida. 2 issues (S5-04 e S5-05) foram carregadas para a Sprint 6. |
+| **M1: Conclusão de Issues** | (Issues Concluídas ÷ Issues Planejadas) × 100 | > 90% | **60%** (3/5) | Meta não atingida. Bloqueios no Front-end administrativo impediram a conclusão integral. |
+| **M2: Proporção de Defeitos** | (Bugs Reportados ÷ Issues Entregues) × 100 | < 10% | **0%** (0/3) | Meta atingida. O código de segurança e endpoints integrado não apresentou defeitos em produção. |
+| **M3: Saldo de Débito Técnico** | Novos Débitos − Débitos Resolvidos | ≤ 0 | **Saldo: +2** (2 - 0) | Meta não atingida. 2 issues (S5-04 e S5-05) foram carregadas para a Sprint 6. |
 
 ---
 

@@ -71,7 +71,7 @@ Cada requisito do catálogo está formalmente vinculado a casos de teste (TC —
 - **B-02 (Filtros):** Validado em suíte de testes unitários da API (`test_indicators.py`) e testes de contrato HTTP;
 - **B-03 (Acessibilidade):** Coberto pelos testes de interface e validação de acessibilidade DOM (`test_accessibility.js`);
 - **B-04 (Upload de Dados):** Coberto pelas suítes de validação de ingestão CSV com Pandas (`test_ingestion.py`, `test_validation.py`);
-- **B-05 (Desempenho):** Aferido nos testes de carga e tempo de resposta da API (verificação do limiar $\le$ 3 s);
+- **B-05 (Desempenho):** Aferido nos testes de carga e tempo de resposta da API (verificação do limiar ≤ 3 s);
 - **B-06 (Comparação):** Validado pelo endpoint `/api/comparacao` e testes de regras de seleção de UFs distintas;
 - **B-08 (Compatibilidade):** Verificado em testes cross-browser e testes responsivos em viewport de 360 px;
 - **B-09 (Segurança):** Validado nos testes de autenticação, hashing de senhas e proteção de rotas restritas (`test_auth.py`).

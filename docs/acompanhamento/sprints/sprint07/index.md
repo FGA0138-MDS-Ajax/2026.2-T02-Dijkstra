@@ -36,9 +36,9 @@ As atividades englobaram a finalização dos controles de acessibilidade herdado
 
 | Métrica | Definição / Fórmula (GQM) | Meta | Resultado da Sprint | Análise do Resultado |
 |---|---|:---:|:---:|---|
-| **M1: Conclusão de Issues** | $\frac{\text{Issues Concluídas}}{\text{Issues Planejadas}} \times 100$ | > 90% | **100%** (5/5) | Meta atingida com excelência. Todas as 4 novas issues e o débito técnico foram entregues e mergeados. |
-| **M2: Proporção de Defeitos** | $\frac{\text{Bugs Reportados}}{\text{Issues Entregues}} \times 100$ | < 10% | **0%** (0/5) | Meta atingida. Nenhum bug impeditivo aberto após a integração das funcionalidades. |
-| **M3: Saldo de Débito Técnico** | $\text{Novos Débitos} - \text{Débitos Resolvidos}$ | $\le$ 0 | **Saldo: -1** (0 - 1) | Meta atingida com perfeição. O débito de acessibilidade (S6-01) foi totalmente quitado e nenhum novo débito foi gerado. |
+| **M1: Conclusão de Issues** | (Issues Concluídas ÷ Issues Planejadas) × 100 | > 90% | **100%** (5/5) | Meta atingida com excelência. Todas as 4 novas issues e o débito técnico foram entregues e mergeados. |
+| **M2: Proporção de Defeitos** | (Bugs Reportados ÷ Issues Entregues) × 100 | < 10% | **0%** (0/5) | Meta atingida. Nenhum bug impeditivo aberto após a integração das funcionalidades. |
+| **M3: Saldo de Débito Técnico** | Novos Débitos − Débitos Resolvidos | ≤ 0 | **Saldo: -1** (0 - 1) | Meta atingida com perfeição. O débito de acessibilidade (S6-01) foi totalmente quitado e nenhum novo débito foi gerado. |
 
 ---
 

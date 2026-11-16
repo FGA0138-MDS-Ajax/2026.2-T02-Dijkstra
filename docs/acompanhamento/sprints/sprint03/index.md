@@ -39,10 +39,10 @@ A equipe definiu a distribuição de tarefas entre 4 duplas de trabalho. Embora 
 
 | Métrica | Definição / Fórmula (GQM) | Meta | Resultado da Sprint | Análise do Resultado |
 |---|---|:---:|:---:|---|
-| **M1: Conclusão de Issues** | $\frac{\text{Issues Concluídas}}{\text{Issues Planejadas}} \times 100$ | > 90% | **62,5%** (5/8) | Meta não atingida. Houve gargalo no tratamento de dados (Pandas) que bloqueou a API e os testes. |
-| **M2: Proporção de Defeitos** | $\frac{\text{Bugs Reportados}}{\text{Issues Entregues}} \times 100$ | < 10% | **0%** (0/5) | Meta atingida. O código de infraestrutura integrado não gerou bugs na branch principal. |
-| **M3: Saldo de Débito Técnico** | $\text{Novos Débitos} - \text{Débitos Resolvidos}$ | $\le$ 0 | **Saldo: +3** (3 - 0) | Meta não atingida. 3 issues permaneceram incompletas e foram herdadas pela Sprint 4. |
-| **Desempenho B-05** | Tempo de resposta da consulta $\le$ 3 s | $\le$ 3 s | **Não avaliado** | Dependência técnica de S3-07 e S3-08 não concluídas no ciclo. |
+| **M1: Conclusão de Issues** | (Issues Concluídas ÷ Issues Planejadas) × 100 | > 90% | **62,5%** (5/8) | Meta não atingida. Houve gargalo no tratamento de dados (Pandas) que bloqueou a API e os testes. |
+| **M2: Proporção de Defeitos** | (Bugs Reportados ÷ Issues Entregues) × 100 | < 10% | **0%** (0/5) | Meta atingida. O código de infraestrutura integrado não gerou bugs na branch principal. |
+| **M3: Saldo de Débito Técnico** | Novos Débitos − Débitos Resolvidos | ≤ 0 | **Saldo: +3** (3 - 0) | Meta não atingida. 3 issues permaneceram incompletas e foram herdadas pela Sprint 4. |
+| **Desempenho B-05** | Tempo de resposta da consulta ≤ 3 s | ≤ 3 s | **Não avaliado** | Dependência técnica de S3-07 e S3-08 não concluídas no ciclo. |
 
 ---
 

@@ -9,6 +9,7 @@
 | **Situação da Sprint** | Concluída com sucesso ✅ |
 | **Issues Planejadas** | 8 issues documentais |
 | **Taxa de Conclusão** | 100% |
+| **Registro de Reunião / Acompanhamento** | [Ata de Reunião 02 (03/10/2026)](../../reunioes/ata02.md) |
 
 ---
 
@@ -39,9 +40,9 @@ A equipe adotou o estilo **Cliente-Servidor em Três Camadas (Three-Tier)**, div
 
 | Métrica | Definição / Fórmula (GQM) | Meta | Resultado da Sprint | Análise do Resultado |
 |---|---|:---:|:---:|---|
-| **M1: Conclusão de Issues** | $\frac{\text{Issues Concluídas}}{\text{Issues Planejadas}} \times 100$ | > 90% | **100%** (8/8) | Meta atingida. Todos os diagramas e seções técnicas foram integrados. |
-| **M2: Proporção de Defeitos** | $\frac{\text{Bugs Reportados}}{\text{Issues Entregues}} \times 100$ | < 10% | **0%** (0/8) | Meta atingida. Nenhuma inconformidade impeditiva identificada na revisão cruzada. |
-| **M3: Saldo de Débito Técnico** | $\text{Novos Débitos} - \text{Débitos Resolvidos}$ | $\le$ 0 | **Saldo: 0** (0 - 0) | Meta atingida. Nenhuma pendência técnica transferida para a Sprint 3. |
+| **M1: Conclusão de Issues** | (Issues Concluídas ÷ Issues Planejadas) × 100 | > 90% | **100%** (8/8) | Meta atingida. Todos os diagramas e seções técnicas foram integrados. |
+| **M2: Proporção de Defeitos** | (Bugs Reportados ÷ Issues Entregues) × 100 | < 10% | **0%** (0/8) | Meta atingida. Nenhuma inconformidade impeditiva identificada na revisão cruzada. |
+| **M3: Saldo de Débito Técnico** | Novos Débitos − Débitos Resolvidos | ≤ 0 | **Saldo: 0** (0 - 0) | Meta atingida. Nenhuma pendência técnica transferida para a Sprint 3. |
 
 ---
 

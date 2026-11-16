@@ -46,6 +46,7 @@ A disposição estrutural desses níveis e o fluxo de dados entre os componentes
 Conforme ilustrado na Figura 1, o sistema organiza-se em camadas lineares e adjacentes. Cada camada possui limites funcionais rigorosamente delimitados e comunica-se exclusivamente com a camada contígua por meio de interfaces explícitas e contratos de dados formalizados. Esse arranjo assegura a separação de responsabilidades, eleva a segurança no acesso aos dados e simplifica a manutenibilidade e a evolução do código-fonte (BASS; CLEMENTS; KAZMAN, 2021; SOMMERVILLE, 2018).
 
 Os atores do sistema interagem exclusivamente com a Camada de Apresentação:
+
 - **Visitante:** consome as rotas públicas de consulta de indicadores e controle visual;
 - **Administrador:** autentica-se para obter permissões de gerenciamento e envio de dados brutos.
 
