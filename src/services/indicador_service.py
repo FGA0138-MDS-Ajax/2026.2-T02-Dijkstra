@@ -12,6 +12,20 @@ from src.data.mapeamento_indicadores import preparar_para_persistencia
 
 logger = logging.getLogger(__name__)
 
+UFS_VALIDAS = frozenset({
+    "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA",
+    "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO",
+})
+
+DIMENSOES_COMPARACAO = ("idhm_geral", "renda", "educacao", "longevidade")
+
+ORDEM_DIMENSOES = {
+    "idhm_geral": 1,
+    "educacao": 2,
+    "longevidade": 3,
+    "renda": 4,
+}
+
 
 class ConsultaIndicadoresIndisponivel(Exception):
     """Falha operacional que impediu a consulta dos indicadores."""
@@ -21,6 +35,21 @@ class ErroProcessamentoCSV(Exception):
 
 class ErroPersistenciaIndicadores(Exception):
     """Falha ao gravar os dados no banco."""
+
+class ComparacaoSemAnoInformado(ValueError):
+    """Não é possível fazer a comparação sem informar o ano."""
+
+class EstadoInvalido(ValueError):
+    """Sigla que não corresponde a uma UF válida."""
+
+class ComparacaoEstadosIguais(ValueError):
+    """Não é possível comparar o mesmo estado."""
+
+class ComparacaoEstadosIguaisMesmoAno(ValueError):
+    """Não é possível comparar o mesmo estado no mesmo ano."""
+
+class ComparacaoSemDados(ValueError):
+    """Não tem dados das UFS para o periodo selecionado."""
 
 class IndicadorService:
     def __init__(self, repository: IndicadorRepository):
@@ -33,24 +62,105 @@ class IndicadorService:
         periodo: int | None = None,
     ) -> list[dict]:
         try:
-            return self.repository.listar(
+            registros = self.repository.listar(
                 unidade_territorial=estado,
                 dimensao=dimensao,
                 periodo_referencia=str(periodo) if periodo is not None else None,
             )
+            return sorted(
+                registros,
+                key=lambda r: (
+                    str(r.get("periodo_referencia", "")),
+                    str(r.get("unidade_territorial", "")),
+                    ORDEM_DIMENSOES.get(r.get("dimensao", ""), 99),
+                    r.get("id") or 0,
+                ),
+            )
         except psycopg.OperationalError as erro:
             logger.exception("Falha operacional ao consultar indicadores.")
             raise ConsultaIndicadoresIndisponivel() from erro
+        
+    def comparar(
+        self,
+        estado_a    : str,
+        estado_b    : str,
+        ano_a       : int | None = None,
+        ano_b       : int | None = None
+    ) -> dict:
+        for estado in (estado_a, estado_b):
+            if estado not in UFS_VALIDAS:
+                raise EstadoInvalido(f"Estado Inválido: {estado}")
 
+        if estado_a == estado_b and ano_a == ano_b:
+            raise ComparacaoEstadosIguaisMesmoAno(
+                "Selecione dois anos diferentes para comparar."
+            )
+
+        if ano_a is None and ano_b is None:
+            registros_a_todos = self.consultar(estado=estado_a)
+            registros_b_todos = self.consultar(estado=estado_b)
+
+            periodo_comum = (
+                {r["periodo_referencia"] for r in registros_a_todos}
+                & {r["periodo_referencia"] for r in registros_b_todos}
+            )
+
+            if not periodo_comum:
+                raise ComparacaoSemDados(
+                    "Não há dados do mesmo periodo"
+                )
+            ano_mais_recente = int(max(periodo_comum,key=int))
+            ano_a = ano_b = ano_mais_recente
+
+        elif ano_b is None:
+            ano_b = ano_a
+        elif ano_a is None:
+            ano_a = ano_b
+
+        registros_a = self.consultar(estado=estado_a,periodo=ano_a)
+        if not registros_a:
+            raise ComparacaoSemDados(f"Não há dados para {estado_a} em {ano_a}.")
+
+        registros_b = self.consultar(estado=estado_b,periodo=ano_b)
+        if not registros_b:
+            raise ComparacaoSemDados(f"Não há dados para {estado_b} em {ano_b}.")
+
+        return{
+            "estados":[
+                {
+                    "estado"                : estado_a,
+                    "periodo_referencia"    : ano_a,
+                    "indicadores"           : self._indicadores_do_periodo(
+                        registros_a, str(ano_a)
+                    )
+                },
+                {
+                    "estado": estado_b,
+                    "periodo_referencia": ano_b,
+                    "indicadores": self._indicadores_do_periodo(
+                        registros_b, str(ano_b)
+                    )
+                }
+            ],
+        }
+    
+    def _indicadores_do_periodo(self, registros: list[dict], periodo:str) -> dict:
+        registros_ano = {r["dimensao"]: r for r in registros if r["periodo_referencia"]==periodo}
+
+        return{
+            dimensao:{
+                "valor": registros_ano.get(dimensao,{}).get("valor"),
+                "unidade_medida": registros_ano.get(dimensao,{}).get("unidade_medida"),
+                "fonte": registros_ano.get(dimensao,{}).get("fonte"),
+            }
+            for dimensao in DIMENSOES_COMPARACAO
+        }
+    
 class ImportacaoService:
     def __init__(self, repository: IndicadorRepository):
         self._repository = repository
 
     def processar_upload(self, file: UploadFile) -> int:
-        """
-        Recebe o UploadFile, usa TemporaryDirectory preservando o nome original,
-        trata via Pandas, mapeia com preparar_para_persistencia e delega o Upsert.
-        """
         try:
             with tempfile.TemporaryDirectory() as pasta_temp:
                 nome_arquivo = Path(file.filename).name if file.filename else "idhm_geral_uf.csv"
@@ -59,7 +169,6 @@ class ImportacaoService:
                 with open(temp_path, "wb") as destino:
                     shutil.copyfileobj(file.file, destino)
 
-                # Processar e validar dados
                 df_tratado = tratar_csv(temp_path)
 
         except ValueError as erro:
@@ -68,10 +177,8 @@ class ImportacaoService:
             logger.exception("Erro ao manipular o arquivo CSV enviado.")
             raise ErroProcessamentoCSV("O arquivo enviado é inválido ou está corrompido.") from erro
 
-        # Mapeia os dados tratados para o formato de persistência
         dados_persistidos = preparar_para_persistencia(df_tratado, fonte="IPEA")
 
-        # Persistir os dados de forma atômica no banco (Upsert)
         try:
             return self._repository.salvar_ou_atualizar_indicadores(dados_persistidos)
         except psycopg.Error as erro:

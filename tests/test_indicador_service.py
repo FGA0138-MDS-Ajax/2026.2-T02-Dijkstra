@@ -14,6 +14,10 @@ from src.services.indicador_service import (
     ErroPersistenciaIndicadores,
     ImportacaoService,
     IndicadorService,
+    ComparacaoSemAnoInformado,
+    ComparacaoEstadosIguaisMesmoAno,
+    ComparacaoSemDados,
+    EstadoInvalido,
 )
 
 
@@ -81,3 +85,285 @@ def test_falha_na_persistencia_e_traduzida_e_registrada(caplog):
         registro.exc_info is not None and registro.exc_info[1] is falha
         for registro in caplog.records
     )
+
+@pytest.fixture
+def service_comparacao():
+    """Gera um serviço com o repositório mockado preparado para interceptar a função consultar."""
+    repository = Mock(spec=IndicadorRepository)
+    return IndicadorService(repository)
+
+
+def test_comparacao_com_sucesso_anos_diferentes(service_comparacao):
+    # Emula um banco devolvendo dados para SP em 2010 e RJ em 2021
+    def mock_consultar(estado, dimensao=None, periodo=None):
+        if estado == "SP" and periodo == 2010:
+            return [{"dimensao": "renda", "valor": 1000.0, "unidade_medida": "R$", "fonte": "IBGE", "periodo_referencia": "2010"}]
+        if estado == "RJ" and periodo == 2021:
+            return [{"dimensao": "educacao", "valor": 0.8, "unidade_medida": "índice", "fonte": "IBGE", "periodo_referencia": "2021"}]
+        return []
+
+    with patch.object(service_comparacao, 'consultar', side_effect=mock_consultar):
+        resultado = service_comparacao.comparar(estado_a="SP", ano_a=2010, estado_b="RJ", ano_b=2021)
+
+        # Valida Estado A
+        assert resultado["estados"][0]["estado"] == "SP"
+        assert resultado["estados"][0]["periodo_referencia"] == 2010
+        assert resultado["estados"][0]["indicadores"]["renda"]["valor"] == 1000.0
+        
+        # Valida Estado B
+        assert resultado["estados"][1]["estado"] == "RJ"
+        assert resultado["estados"][1]["periodo_referencia"] == 2021
+        assert resultado["estados"][1]["indicadores"]["educacao"]["valor"] == 0.8
+        assert resultado["estados"][1]["indicadores"]["renda"]["valor"] is None
+
+
+def test_comparacao_mesmo_ano_se_ano_b_nao_for_informado(service_comparacao):
+    # ambos estados com mesmo ano
+    with patch.object(service_comparacao, 'consultar', return_value=[{"dimensao": "renda", "valor": 500, "periodo_referencia": "2015"}]):
+        resultado = service_comparacao.comparar(estado_a="SP", estado_b="RJ", ano_a=2015)
+        
+        assert resultado["estados"][0]["periodo_referencia"] == 2015
+        assert resultado["estados"][1]["periodo_referencia"] == 2015
+
+
+@pytest.mark.parametrize("estado_a, ano_a, estado_b, ano_b, excecao_esperada", [
+    ("SP", 2020, "SP", 2020, ComparacaoEstadosIguaisMesmoAno),      #1 mesmo estado e mesmo ano
+    ("XX", 2020, "RJ", 2020, EstadoInvalido),                       #2 estado a invalido
+    ("SP", 2020, "XX", 2020, EstadoInvalido),                       #3 estado b invalido
+])
+def test_validacoes_de_entrada_comparacao_rejeitada(service_comparacao, estado_a, ano_a, estado_b, ano_b, excecao_esperada):
+    with pytest.raises(excecao_esperada):
+        service_comparacao.comparar(estado_a=estado_a, ano_a=ano_a, estado_b=estado_b, ano_b=ano_b)
+
+
+def test_comparacao_falha_se_estado1_nao_tiver_dados(service_comparacao):
+    # O mock retorna vazio logo na primeira consulta
+    with patch.object(service_comparacao, 'consultar', return_value=[]):
+        with pytest.raises(ComparacaoSemDados) as erro:
+            service_comparacao.comparar(estado_a="SP", ano_a=1995, estado_b="RJ")
+            
+        assert "Não há dados para SP em 1995" in str(erro.value)
+
+
+def test_comparacao_falha_se_estado2_nao_tiver_dados(service_comparacao):
+    #Estado B sem dados
+    def mock_consultar(estado, dimensao=None, periodo=None):
+        if estado == "SP":
+            return [{"dimensao": "renda", "periodo_referencia": "2015"}]
+        return []
+
+    with patch.object(service_comparacao, 'consultar', side_effect=mock_consultar):
+        with pytest.raises(ComparacaoSemDados) as erro:
+            service_comparacao.comparar(estado_a="SP", ano_a=2015, estado_b="RJ", ano_b=1991)
+            
+        assert "Não há dados para RJ em 1991" in str(erro.value)
+
+
+def test_comparacao_sem_anos_informados_encontra_mais_recente_em_comum(service_comparacao):
+    #manda sem ano especificado, ai deve encontrar o ano recente em comum de ambos
+    #finge banco
+    def mock_consultar(estado, dimensao=None, periodo=None):
+        # o mock vai responder que tem SP em 2010 e 2022 e RJ em 1991 e 2022
+        if estado == "SP" and periodo is None:
+            return [{"periodo_referencia": "2010"}, {"periodo_referencia": "2022"}]
+        if estado == "RJ" and periodo is None:
+            return [{"periodo_referencia": "1991"}, {"periodo_referencia": "2022"}]
+        
+        #vai encontrar o ano 2022 como em comum e vai pedir os indicadores
+        if estado == "SP" and periodo == 2022:
+            return [{"dimensao": "renda", "valor": 2000.0, "periodo_referencia": "2022"}]
+        if estado == "RJ" and periodo == 2022:
+            return [{"dimensao": "renda", "valor": 1500.0, "periodo_referencia": "2022"}]
+        
+        return []
+    
+    #substitui consultar com o mock 
+    with patch.object(service_comparacao, 'consultar', side_effect=mock_consultar):
+        resultado = service_comparacao.comparar(estado_a="SP", estado_b="RJ") # procura SP e RJ com mock
+        
+        # verifica se encontrou 2022 como ano em comum
+        assert resultado["estados"][0]["periodo_referencia"] == 2022
+        assert resultado["estados"][1]["periodo_referencia"] == 2022
+        assert resultado["estados"][0]["indicadores"]["renda"]["valor"] == 2000.0
+
+
+#def test_somente_ano_b_informado_e_rejeitado(service_comparacao):
+#    with pytest.raises(ComparacaoSemAnoInformado):
+#        service_comparacao.comparar(estado_a="SP", estado_b="RJ", ano_b=2010)
+#
+#    service_comparacao.repository.listar.assert_not_called()
+
+def test_mesmo_estado_em_anos_diferentes_e_permitido(service_comparacao):
+    def mock_consultar(estado, dimensao=None, periodo=None):
+        valor = 0.5 if periodo == 2010 else 0.7
+        return [{"dimensao": "renda", "valor": valor, "periodo_referencia": str(periodo)}]
+
+    with patch.object(service_comparacao, "consultar", side_effect=mock_consultar):
+        resultado = service_comparacao.comparar(estado_a="SP", estado_b="SP", ano_a=2010, ano_b=2021)
+
+    assert [e["indicadores"]["renda"]["valor"] for e in resultado["estados"]] == [0.5, 0.7]
+
+
+def test_valor_ausente_e_preservado_e_zero_nao_vira_ausente(service_comparacao):
+    registros = [
+        {"dimensao": "renda", "valor": None, "periodo_referencia": "2010"},
+        {"dimensao": "educacao", "valor": 0.0, "periodo_referencia": "2010"},
+    ]
+    with patch.object(service_comparacao, "consultar", return_value=registros):
+        resultado = service_comparacao.comparar(estado_a="SP", estado_b="RJ", ano_a=2010)
+
+    indicadores = resultado["estados"][0]["indicadores"]
+    assert indicadores["renda"]["valor"] is None          # nulo continua nulo
+    assert indicadores["educacao"]["valor"] == 0.0        # zero real continua zero
+    assert indicadores["longevidade"]["valor"] is None    # sem registro
+
+
+def test_sem_anos_e_sem_ano_em_comum(service_comparacao):
+    def mock_consultar(estado, dimensao=None, periodo=None):
+        ano = "2010" if estado == "SP" else "2022"
+        return [{"periodo_referencia": ano, "valor": 0.5}]
+
+    with patch.object(service_comparacao, "consultar", side_effect=mock_consultar):
+        with pytest.raises(ComparacaoSemDados):
+            service_comparacao.comparar(estado_a="SP", estado_b="RJ")
+
+
+def test_sem_anos_com_mesmo_estado_nao_consulta(service_comparacao):
+    with patch.object(service_comparacao, "consultar") as consultar:
+        with pytest.raises(ComparacaoEstadosIguaisMesmoAno):
+            service_comparacao.comparar(estado_a="SP", estado_b="SP")
+
+    consultar.assert_not_called()
+
+
+def test_consultar_repassa_filtros_ao_repositorio():
+    repository = Mock(spec=IndicadorRepository)
+    repository.listar.return_value = []
+    service = IndicadorService(repository)
+
+    service.consultar(estado="SP", dimensao="educacao", periodo=2021)
+
+    repository.listar.assert_called_once_with(
+        unidade_territorial="SP",
+        dimensao="educacao",
+        periodo_referencia="2021",
+    )
+
+
+def test_consultar_organizacao_dos_indicadores():
+    repository = Mock(spec=IndicadorRepository)
+    desordenados = [
+        {"id": 4, "unidade_territorial": "SP", "dimensao": "renda", "valor": 0.745, "periodo_referencia": "2021"},
+        {"id": 1, "unidade_territorial": "SP", "dimensao": "idhm_geral", "valor": 0.806, "periodo_referencia": "2021"},
+        {"id": 3, "unidade_territorial": "SP", "dimensao": "longevidade", "valor": 0.845, "periodo_referencia": "2021"},
+        {"id": 2, "unidade_territorial": "SP", "dimensao": "educacao", "valor": 0.828, "periodo_referencia": "2021"},
+    ]
+    repository.listar.return_value = desordenados
+    service = IndicadorService(repository)
+
+    resultado = service.consultar(estado="SP", periodo=2021)
+
+    dimensoes = [r["dimensao"] for r in resultado]
+    assert dimensoes == ["idhm_geral", "educacao", "longevidade", "renda"]
+
+
+def test_consultar_organizacao_multiplos_periodos_e_estados():
+    repository = Mock(spec=IndicadorRepository)
+    desordenados = [
+        {"id": 10, "unidade_territorial": "SP", "dimensao": "renda", "periodo_referencia": "2021"},
+        {"id": 5, "unidade_territorial": "AC", "dimensao": "renda", "periodo_referencia": "2021"},
+        {"id": 2, "unidade_territorial": "SP", "dimensao": "renda", "periodo_referencia": "2010"},
+        {"id": 1, "unidade_territorial": "AC", "dimensao": "renda", "periodo_referencia": "2010"},
+    ]
+    repository.listar.return_value = desordenados
+    service = IndicadorService(repository)
+
+    resultado = service.consultar()
+
+    ordem = [(r["periodo_referencia"], r["unidade_territorial"]) for r in resultado]
+    assert ordem == [
+        ("2010", "AC"),
+        ("2010", "SP"),
+        ("2021", "AC"),
+        ("2021", "SP"),
+    ]
+
+
+def test_consultar_preservacao_de_valores_e_periodos():
+    repository = Mock(spec=IndicadorRepository)
+    registros = [
+        {
+            "id": 101,
+            "nome_indicador": "IDHM",
+            "unidade_territorial": "MG",
+            "dimensao": "idhm_geral",
+            "valor": 0.774,
+            "periodo_referencia": "2021",
+            "unidade_medida": "índice",
+            "fonte": "IPEA",
+        }
+    ]
+    repository.listar.return_value = registros
+    service = IndicadorService(repository)
+
+    resultado = service.consultar(estado="MG", periodo=2021)
+
+    assert len(resultado) == 1
+    item = resultado[0]
+    assert item["id"] == 101
+    assert item["nome_indicador"] == "IDHM"
+    assert item["unidade_territorial"] == "MG"
+    assert item["dimensao"] == "idhm_geral"
+    assert item["valor"] == 0.774
+    assert item["periodo_referencia"] == "2021"
+    assert item["unidade_medida"] == "índice"
+    assert item["fonte"] == "IPEA"
+
+
+def test_consultar_tratamento_valores_ausentes_e_zero():
+    repository = Mock(spec=IndicadorRepository)
+    registros = [
+        {"id": 1, "unidade_territorial": "RR", "dimensao": "renda", "valor": None, "periodo_referencia": "1991"},
+        {"id": 2, "unidade_territorial": "RR", "dimensao": "educacao", "valor": 0.0, "periodo_referencia": "1991"},
+    ]
+    repository.listar.return_value = registros
+    service = IndicadorService(repository)
+
+    resultado = service.consultar(estado="RR", periodo=1991)
+
+    assert len(resultado) == 2
+    assert resultado[0]["valor"] == 0.0
+    assert resultado[1]["valor"] is None
+
+
+def test_consultar_com_dados_conhecidos_de_teste():
+    from tests.fixtures.gerar_dados_teste import gerar_dataframe
+    df = gerar_dataframe(seed=42)
+    registros_ac_2021 = df[
+        (df["unidade_territorial"] == "AC") & (df["periodo_referencia"] == "2021")
+    ].to_dict(orient="records")
+
+    repository = Mock(spec=IndicadorRepository)
+    repository.listar.return_value = registros_ac_2021
+    service = IndicadorService(repository)
+
+    resultado = service.consultar(estado="AC", periodo=2021)
+
+    assert len(resultado) == 4
+    dimensoes = [r["dimensao"] for r in resultado]
+    assert dimensoes == ["idhm_geral", "educacao", "longevidade", "renda"]
+    for item in resultado:
+        assert item["unidade_territorial"] == "AC"
+        assert item["periodo_referencia"] == "2021"
+        assert isinstance(item["valor"], float)
+        assert 0.0 <= item["valor"] <= 1.0
+
+
+def test_consultar_sem_resultados_retorna_lista_vazia():
+    repository = Mock(spec=IndicadorRepository)
+    repository.listar.return_value = []
+    service = IndicadorService(repository)
+
+    resultado = service.consultar(estado="AC", periodo=1995)
+
+    assert resultado == []

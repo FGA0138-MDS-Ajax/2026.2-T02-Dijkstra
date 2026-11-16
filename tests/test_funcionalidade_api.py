@@ -1,5 +1,6 @@
 import os
 import uuid
+from unittest.mock import Mock
 
 import psycopg
 from psycopg import sql
@@ -22,6 +23,10 @@ from src.database.indicador_repository import IndicadorRepository
 from src.services.auth_service import AuthService
 from src.services.indicador_service import IndicadorService
 from src.services.indicador_service import ErroProcessamentoCSV
+from src.services.indicador_service import (ComparacaoSemAnoInformado,
+                                            ComparacaoEstadosIguaisMesmoAno,
+                                            ComparacaoSemDados,
+                                            ConsultaIndicadoresIndisponivel)
 
 client = TestClient(app)
 
@@ -41,6 +46,44 @@ class MockIndicadorService:
         if estado == 'AC' and dimensao == 'educacao' and periodo == 1991:
             return test_json
         return []
+
+    def comparar(self, estado_a: str, estado_b: str, ano_a: int | None = None, ano_b: int | None = None) -> dict:
+        if ano_a is None and ano_b is None:
+            ano_a = ano_b = 2022
+        if ano_a is None:
+            ano_a = ano_b
+        if ano_b is None:
+            ano_b = ano_a
+
+        if estado_a == estado_b and ano_a == ano_b:
+            raise ComparacaoEstadosIguaisMesmoAno("Selecione dois anos diferentes para comparar.")
+
+            # 4. Gatilho do Vazio Absoluto (Erro 404) - Se o teste mandar 1995, finge que não achou nada
+        if ano_a == 1995 or ano_b == 1995:
+            raise ComparacaoSemDados("Não há dados para o(s) estado(s) no ano de 1995.")
+
+            # 5. Gatilho da Tela Azul (Erro 503) - Se o teste mandar 1999, finge que o banco explodiu
+        if ano_a == 1999 or ano_b == 1999:
+            raise ConsultaIndicadoresIndisponivel("Não foi possível consultar os indicadores no momento.")
+
+        return {
+            "estados": [
+                {
+                    "estado": estado_a,
+                    "periodo_referencia": ano_a,
+                    "indicadores": {
+                        "idhm": {"valor": 0.800, "unidade_medida": "índice", "fonte": "IBGE fake"}
+                    }
+                },
+                {
+                    "estado": estado_b,
+                    "periodo_referencia": ano_b,
+                    "indicadores": {
+                        "idhm": {"valor": 0.850, "unidade_medida": "índice", "fonte": "IBGE fake"}
+                    }
+                }
+            ]
+        }
 
 @pytest.fixture(autouse=True)
 def servico_simulado(monkeypatch):
@@ -696,3 +739,279 @@ def test_filtros_combinados_chegam_ao_servico_com_tipos_corretos(servico_espiao)
     assert response.status_code == 200
     assert servico_espiao.chamadas == [{"estado": "SP", "dimensao": "renda", "periodo": 2010}]
     assert type(servico_espiao.chamadas[0]["periodo"]) is int
+
+"""Teste Integração S7-01"""
+
+def teste_integracao_comparar_estados_com_sucesso():
+    response = client.get(
+        "/api/indicadores/comparar?estado_a=DF&estado_b=GO&periodo_a=2015&periodo_b=2020"
+    )
+
+    assert response.status_code == 200
+    dados = response.json()
+
+    assert "estados" in dados
+    assert len(dados["estados"]) == 2
+
+    estado_df = dados["estados"][0]
+    assert estado_df["estado"] == "DF"
+    assert estado_df["periodo_referencia"] == 2015
+
+def test_integracao_comparar_estados_iguais_mesmo_ano():
+    response = client.get(
+        "/api/indicadores/comparar?estado_a=DF&estado_b=DF&periodo_a=2020&periodo_b=2020"
+    )
+
+    assert response.status_code == 400
+    assert "Selecione dois anos diferentes" in response.json()["detail"]
+
+def teste_integracao_comparar_sem_periodo_b():
+    response = client.get(
+        "/api/indicadores/comparar?estado_a=DF&estado_b=GO&periodo_a=2022"
+    )
+
+    assert response.status_code == 200
+    dados = response.json()
+
+    estado_go = dados["estados"][1]
+    assert estado_go["estado"] == "GO"
+    assert estado_go["periodo_referencia"] == 2022
+
+def test_integracao_comparar_ano_fora_do_limite_inferior():
+    response = client.get(
+        "/api/indicadores/comparar?estado_a=DF&estado_b=GO&periodo_a=1500"
+    )
+
+    assert response.status_code == 422
+
+def test_integracao_comparar_sem_dados_no_banco():
+    response = client.get(
+        "/api/indicadores/comparar?estado_a=DF&estado_b=GO&periodo_a=1995"
+    )
+
+    assert response.status_code == 404
+    assert "Não há dados para" in response.json()["detail"]
+   
+
+def test_integracao_comparar_sem_ano_informado():
+    response = client.get(
+        "/api/indicadores/comparar?estado_a=DF&estado_b=GO"
+    )
+
+    assert response.status_code == 200
+    #assert "Selecione um ano válido" in response.json()["detail"]
+    dados = response.json()
+    # vai pegar o ano mais recente que no mundo teorico dos testes ta sendo 2022
+    assert len(dados["estados"]) == 2
+    assert dados["estados"][0]["periodo_referencia"] == 2022
+    assert dados["estados"][1]["periodo_referencia"] == 2022
+    
+
+def test_integracao_comparar_estado_invalido_url():
+    response = client.get(
+        "/api/indicadores/comparar?estado_a=DFG&estado_b=GO&periodo_a=2020"
+    )
+
+    assert response.status_code == 422
+
+def test_integracao_comparar_servico_indisponivel():
+    response = client.get(
+        "/api/indicadores/comparar?estado_a=DF&estado_b=GO&periodo_a=1999"
+    )
+    assert response.status_code == 503
+    assert "Não foi possível consultar os indicadores" in response.json()["detail"]
+
+
+@pytest.fixture
+def servico_s7_03(monkeypatch):
+    registros = [
+        {"id": 1, "nome_indicador": "IDHM", "unidade_territorial": "SP", "dimensao": "idhm_geral", "valor": 0.806, "periodo_referencia": "2021", "unidade_medida": "índice", "fonte": "IPEA"},
+        {"id": 2, "nome_indicador": "IDHM", "unidade_territorial": "SP", "dimensao": "educacao", "valor": 0.828, "periodo_referencia": "2021", "unidade_medida": "índice", "fonte": "IPEA"},
+        {"id": 3, "nome_indicador": "IDHM", "unidade_territorial": "SP", "dimensao": "longevidade", "valor": 0.845, "periodo_referencia": "2021", "unidade_medida": "índice", "fonte": "IPEA"},
+        {"id": 4, "nome_indicador": "IDHM", "unidade_territorial": "SP", "dimensao": "renda", "valor": 0.745, "periodo_referencia": "2021", "unidade_medida": "índice", "fonte": "IPEA"},
+        {"id": 5, "nome_indicador": "IDHM", "unidade_territorial": "RR", "dimensao": "idhm_geral", "valor": 0.707, "periodo_referencia": "1991", "unidade_medida": "índice", "fonte": "IPEA"},
+        {"id": 6, "nome_indicador": "IDHM", "unidade_territorial": "RR", "dimensao": "educacao", "valor": 0.0, "periodo_referencia": "1991", "unidade_medida": "índice", "fonte": "IPEA"},
+        {"id": 7, "nome_indicador": "IDHM", "unidade_territorial": "RR", "dimensao": "longevidade", "valor": 0.650, "periodo_referencia": "1991", "unidade_medida": "índice", "fonte": "IPEA"},
+        {"id": 8, "nome_indicador": "IDHM", "unidade_territorial": "RR", "dimensao": "renda", "valor": None, "periodo_referencia": "1991", "unidade_medida": "índice", "fonte": "IPEA"},
+    ]
+    mock_repo = Mock(spec=IndicadorRepository)
+
+    def mock_listar(unidade_territorial=None, nome_indicador=None, periodo_referencia=None, dimensao=None):
+        return [
+            r for r in registros
+            if (unidade_territorial is None or r["unidade_territorial"] == unidade_territorial)
+            and (nome_indicador is None or r["nome_indicador"] == nome_indicador)
+            and (periodo_referencia is None or r["periodo_referencia"] == periodo_referencia)
+            and (dimensao is None or r["dimensao"] == dimensao)
+        ]
+
+    mock_repo.listar.side_effect = mock_listar
+    service = IndicadorService(mock_repo)
+    monkeypatch.setitem(
+        app.dependency_overrides,
+        get_indicador_service,
+        lambda: service,
+    )
+    return service
+
+
+def test_integracao_consulta_estrutura_tabela_e_grafico(servico_s7_03):
+    response = client.get("/api/indicadores?estado=SP&periodo=2021")
+
+    assert response.status_code == 200
+    dados = response.json()
+    assert len(dados) == 4
+
+    campos_obrigatorios = {
+        "id", "nome_indicador", "unidade_territorial", "dimensao",
+        "valor", "periodo_referencia", "unidade_medida", "fonte",
+    }
+    for item in dados:
+        assert set(item.keys()) == campos_obrigatorios
+        assert item["unidade_territorial"] == "SP"
+        assert item["periodo_referencia"] == "2021"
+
+    dimensoes = [item["dimensao"] for item in dados]
+    assert dimensoes == ["idhm_geral", "educacao", "longevidade", "renda"]
+
+    linhas_tabela = [
+        {
+            "indicador": item["nome_indicador"],
+            "dimensao": item["dimensao"],
+            "valor": item["valor"],
+            "estado": item["unidade_territorial"],
+            "periodo": item["periodo_referencia"],
+        }
+        for item in dados
+    ]
+    assert len(linhas_tabela) == 4
+
+    barras_grafico = [
+        {
+            "rotulo": item["dimensao"],
+            "valor": item["valor"],
+            "escala": item["unidade_medida"],
+        }
+        for item in dados
+    ]
+    assert len(barras_grafico) == 4
+
+
+@pytest.mark.parametrize(
+    "query, esperado_contagem, dimensoes_esperadas",
+    [
+        ("estado=SP", 4, ["idhm_geral", "educacao", "longevidade", "renda"]),
+        ("dimensao=renda", 2, ["renda", "renda"]),
+        ("periodo=2021", 4, ["idhm_geral", "educacao", "longevidade", "renda"]),
+        ("estado=SP&periodo=2021", 4, ["idhm_geral", "educacao", "longevidade", "renda"]),
+        ("estado=SP&dimensao=renda&periodo=2021", 1, ["renda"]),
+    ],
+)
+def test_integracao_consulta_filtros_disponiveis(servico_s7_03, query, esperado_contagem, dimensoes_esperadas):
+    response = client.get(f"/api/indicadores?{query}")
+
+    assert response.status_code == 200
+    dados = response.json()
+    assert len(dados) == esperado_contagem
+    assert [d["dimensao"] for d in dados] == dimensoes_esperadas
+
+
+def test_integracao_preservacao_valores_ausentes_e_zero(servico_s7_03):
+    response = client.get("/api/indicadores?estado=RR&periodo=1991")
+
+    assert response.status_code == 200
+    dados = response.json()
+
+    por_dimensao = {d["dimensao"]: d["valor"] for d in dados}
+    assert por_dimensao["renda"] is None
+    assert por_dimensao["educacao"] == 0.0
+    assert por_dimensao["idhm_geral"] == 0.707
+    assert por_dimensao["longevidade"] == 0.650
+
+
+def test_integracao_consulta_sem_resultados_retorna_200_lista_vazia(servico_s7_03):
+    response = client.get("/api/indicadores?estado=DF&periodo=2021")
+
+    assert response.status_code == 200
+    assert response.json() == []
+
+def test_integracao_contrato_dados_para_tabela_e_grafico(servico_s7_03):
+    response = client.get("/api/indicadores?estado=SP&periodo=2021")
+
+    assert response.status_code == 200
+    dados = response.json()
+
+    # Resultado esperado, definido independentemente da resposta da API.
+    esperado = {
+        "idhm_geral": {
+            "indicador": "IDHM",
+            "valor": 0.806,
+            "estado": "SP",
+            "periodo": "2021",
+            "unidade": "índice",
+        },
+        "educacao": {
+            "indicador": "IDHM",
+            "valor": 0.828,
+            "estado": "SP",
+            "periodo": "2021",
+            "unidade": "índice",
+        },
+        "longevidade": {
+            "indicador": "IDHM",
+            "valor": 0.845,
+            "estado": "SP",
+            "periodo": "2021",
+            "unidade": "índice",
+        },
+        "renda": {
+            "indicador": "IDHM",
+            "valor": 0.745,
+            "estado": "SP",
+            "periodo": "2021",
+            "unidade": "índice",
+        },
+    }
+
+    dados_por_dimensao = {
+        item["dimensao"]: item for item in dados
+    }
+
+    # Verifica os campos necessários para montar a tabela.
+    dados_tabela = {
+        dimensao: {
+            "indicador": item["nome_indicador"],
+            "valor": item["valor"],
+            "estado": item["unidade_territorial"],
+            "periodo": item["periodo_referencia"],
+            "unidade": item["unidade_medida"],
+        }
+        for dimensao, item in dados_por_dimensao.items()
+    }
+
+    # Verifica os campos necessários para montar o gráfico.
+    dados_grafico = {
+        dimensao: {
+            "rotulo": dimensao,
+            "valor": item["valor"],
+            "unidade": item["unidade_medida"],
+        }
+        for dimensao, item in dados_por_dimensao.items()
+    }
+
+    esperado_tabela = {
+        dimensao: valores
+        for dimensao, valores in esperado.items()
+    }
+
+    esperado_grafico = {
+        dimensao: {
+            "rotulo": dimensao,
+            "valor": valores["valor"],
+            "unidade": valores["unidade"],
+        }
+        for dimensao, valores in esperado.items()
+    }
+
+    assert dados_tabela == esperado_tabela
+    assert dados_grafico == esperado_grafico

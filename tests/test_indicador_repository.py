@@ -79,3 +79,9 @@ def test_entrada_maliciosa_nao_e_interpolada_na_consulta(conexao):
     query, parametros = conexao.execute.call_args.args
     assert entrada not in query
     assert parametros == [entrada]
+
+
+def test_listar_inclui_ordenacao_consistente(conexao):
+    IndicadorRepository().listar()
+    query, _ = conexao.execute.call_args.args
+    assert "ORDER BY periodo_referencia ASC, unidade_territorial ASC, id ASC" in query
