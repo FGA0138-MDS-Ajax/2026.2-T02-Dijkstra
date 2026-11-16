@@ -385,3 +385,25 @@ def test_consultar_historico_ordena_periodos_e_preserva_nulos():
     assert [p["periodo"] for p in resultado["serie"]] == [1991, 2000, 2010]
     assert resultado["serie"][1]["valor"] is None
 
+
+def test_consultar_historico_sem_dados_retorna_serie_vazia():
+    
+    repository = Mock(spec=IndicadorRepository)
+    repository.listar.return_value = []
+    service = IndicadorService(repository)
+
+    resultado = service.consultar_historico(estado="AC", dimensao="renda")
+    
+    assert resultado["uf"] == "AC"
+    assert resultado["unidade"] is None
+    assert resultado["serie"] == []
+
+
+def test_consultar_historico_estado_invalido():
+    repository = Mock(spec=IndicadorRepository)
+    service = IndicadorService(repository)
+
+    with pytest.raises(EstadoInvalido):
+        service.consultar_historico(estado="XX", dimensao="renda")
+
+
