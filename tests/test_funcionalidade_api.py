@@ -85,6 +85,14 @@ class MockIndicadorService:
             ]
         }
 
+    def consultar_historico(self, estado:str, dimensao: str) -> dict:
+        return {
+            "indicador": dimensao,
+            "uf": estado,
+            "unidade": "indice",
+            "serie": [{"periodo": 2010, "valor": 0.824}],
+        }
+
 @pytest.fixture(autouse=True)
 def servico_simulado(monkeypatch):
     monkeypatch.setitem(
@@ -1015,3 +1023,16 @@ def test_integracao_contrato_dados_para_tabela_e_grafico(servico_s7_03):
 
     assert dados_tabela == esperado_tabela
     assert dados_grafico == esperado_grafico
+
+def test_integracao_historico_sucesso():
+    response = client.get("/api/indicadores/historico?estado=DF&dimensao=idhm_geral")
+
+    assert response.status_code == 200
+    dados = response.json()
+    assert dados["uf"] == "DF"
+    assert dados["indicador"] == "idhm_geral"
+    assert isinstance(dados["serie"], list)
+
+def test_integracao_historico_estado_invalido_retorna_442():
+    response = client.get("/api/indicadores/historico?estado=XX&dimensao=idhm_geral")
+    assert response.status_code == 422
