@@ -21,7 +21,8 @@ Acesse diretamente as principais seções da documentação:
 |  **Sobre & Equipe** | Contexto do problema, proposta de valor e membros do time. | [Ir para Sobre](sobre.md) |
 |  **Documentação do Projeto** | Documentos de Visão e de Arquitetura. | [Ir para Documento de Visão](documentos/visao/index.md) [Ir para Documento de Arquitetura](documentos/arquitetura/index.md)|
 |  **Estratégia & Metodologia** | Processo ágil (Scrum/Kanban), papéis e critérios de DoR e DoD. | [Ir para Metodologia](estrategia/metodologia.md) |
-|  **Acompanhamento & Sprints** | Cronograma da disciplina, atas de reunião e histórico de Sprints. | [Ir para Cronograma](acompanhamento/cronograma.md) |
+|  **Acompanhamento & Sprints** | Ponto de Controle, testes, atas de reunião e histórico de Sprints. | [Ponto de Controle 1](acompanhamento/ponto-controle-1.md) • [Sprints](acompanhamento/sprints/sprint01/sprint01.md) |
+|  **Métricas (GQM)** | Objetivos, coletas e análises das métricas de projeto e negociais. | [GQM de Projeto](metricas/gqm-projeto.md) • [GQM Negocial](metricas/gqm-negocial.md) |
 |  **Padrões de Engenharia** | Padrões de branches, commits semânticos, Pull Requests e code review. | [Ir para Padrões](padroes/branches.md) |
 
 ---
