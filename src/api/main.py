@@ -247,8 +247,13 @@ def upload_csv_indicadores(
 
 
 @app.get("/api/indicadores/historico", response_model=HistoricoResponse)
-def consulta_historico(estado: str = Query(..., pattern=PADRAO_UF), dimensao: Dimensao = Query(...), sevice: IndicadorService = Depends(get_indicador_sevice)):
+def consulta_historico(estado: str = Query(..., pattern=PADRAO_UF), dimensao: Dimensao = Query(...), service: IndicadorService = Depends(get_indicador_service)):
     try:
         return service.consultar_historico(estado=estado, dimensao=dimensao.value)
-    except EstadoInvalido
-    except ConsultaIndicadoresIndisponivel
+    except EstadoInvalido as erro:
+        raise HTTPException(status_code=422, detail=str(erro)) from erro
+    except ConsultaIndicadoresIndisponivel as erro:
+        raise HTTPException(
+            status_code = 503,
+            detail = "Não foi possível identificar os indicadores no momento."
+        ) from erro
