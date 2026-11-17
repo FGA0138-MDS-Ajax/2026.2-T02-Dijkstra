@@ -36,7 +36,7 @@ function formatarValor(valor) {
 
 
 //Inicializador do mapa
-export function inicializarMapa(idContainer) {
+export function inicializarMapa(idContainer, {aoCarregarDadosIniciais}={}) {
     const isMobile = window.innerWidth < 768;
     const zoomInicial = isMobile ? 3 : 4;
     const zoomMin = isMobile ? 3 : 4;
@@ -193,6 +193,7 @@ export function inicializarMapa(idContainer) {
     ])
     .then(([dados, geojson]) => {
         atualizarIndicadores(dados);
+        aoCarregarDadosIniciais?.(dados);
         
         //declara o desenho dos estados com base nas informações, tmb binda no final o montar popup que mostra informações ao clicar
         camadaEstados = L.geoJSON(geojson, {

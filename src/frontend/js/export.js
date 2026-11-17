@@ -11,15 +11,33 @@ function formatarCelulaCSV(valor, delimitador = ";"){
     }
     return texto;
 }
+//mudança para ter varios estados e varios periodos no mesmo csv. Fazer um checklist do que quer para criar o csv
+function resumirListaParaArquivo(lista, sufixoPlural) {
+    if (!Array.isArray(lista) || lista.length === 0) return "";
+    if (lista.length <= 3) {
+        return lista.map((item) => String(item).toLowerCase()).join("-");
+    }
+    return `${lista.length}-${sufixoPlural}`;
+}
 
-function gerarNomeArquivo(filtros = {}){
+function gerarNomeArquivo(filtros = {}) {
     const partes = ["brasil-hub"];
-    if(filtros.dimensao) partes.push(filtros.dimensao);
-    if(filtros.estado) partes.push(filtros.estado.toLowerCase());
-    if(filtros.periodo) partes.push(String(filtros.periodo));
 
-    if(partes.length === 1){
-        partes.push("todos-indicadores")
+    if (filtros.dimensao) {
+        partes.push(filtros.dimensao);
+    }
+    
+    //mudança para ter varios estados 
+    const estados = filtros.estados ?? (filtros.estado ? [filtros.estado] : []);
+    const resumoEstados = resumirListaParaArquivo(estados, "estados");
+    //mudança pros varios periodos
+    if (resumoEstados) partes.push(resumoEstados);
+    const periodos = filtros.periodos ?? (filtros.periodo ? [filtros.periodo] : []);
+    const resumoPeriodos = resumirListaParaArquivo(periodos, "periodos");
+    if (resumoPeriodos) partes.push(resumoPeriodos);
+
+    if (partes.length === 1) {
+        partes.push("todos-indicadores");
     }
     return `${partes.join("_")}.csv`;
 }
@@ -29,9 +47,10 @@ export function converterParaCSV(registros,delimitador=";"){
         return "";
     }
     
-    const possuiUnidade = registros.some((item => item?.unidade_medida !== null))
-    const possuiFonte = registros.some((item) => item?.fonte !== null)
+    const possuiUnidade = registros.some((item) => item?.unidade_medida !== null && item?.unidade_medida !== undefined);
+    const possuiFonte = registros.some((item) => item?.fonte !== null && item?.fonte !== undefined);
     const cabecalhos = ["Estados/UF", "Indicador", "Dimensão", "Período", "Valor"];
+    
     // pro arquivo csv
     if(possuiUnidade) cabecalhos.push("Unidade");
     if(possuiFonte) cabecalhos.push("Fonte");
@@ -54,6 +73,7 @@ export function converterParaCSV(registros,delimitador=";"){
         if(possuiFonte){
             linha.push(formatarCelulaCSV(item.fonte,delimitador));
         }
+        linhas.push(linha.join(delimitador));
     }
     return linhas.join("\r\n");
 

@@ -47,17 +47,32 @@
 
             <section class="filtros" aria-label="Filtros de indicadores">
                 <div class="filtros__campo">
-                    <label for="filtro-estado">Estado</label>
+                    <label for="filtro-estado">Estados</label>
                     <select id="filtro-estado" name="estado"></select>
                 </div>
                 <div class="filtros__campo">
                     <label for="filtro-dimensao">Dimensão do IDH</label>
                     <select id="filtro-dimensao" name="dimensao"></select>
                 </div>
+                <div class="filtros__campo">
+                    <label for="filtro-periodo">Período</label>
+                    <select id="filtro-periodo" name="periodo">
+                        <option value="">Todos os períodos</option>
+                    </select>
+                </div>
                 <button type="button" id="filtro-limpar" class="filtros__limpar">Limpar filtros</button>
+                <button
+                    type="button"
+                    id="btn-exportar-csv"
+                    class="filtros__exportar"
+                    disabled
+                    title="Não há registros disponíveis para exportar com os filtros atuais"
+                >
+                    Exportar CSV
+                </button>
             </section>
             <p id="filtros-resumo" class="filtros__resumo" role="status" aria-live="polite">
-                Escolha um estado e/ou uma dimensão para filtrar.
+                Escolha um estado, dimensão e/ou período para filtrar.
             </p>
 
             <div class="map-container" id="mapa-brasil"></div>
@@ -80,7 +95,7 @@
                 </div>
                 <button type="button" id="comparacao-limpar" class="filtros__limpar">Limpar Comparação</button>
             </div>
-                <p id="comparacao-status" class="filtros__resumo" role="status" aria-live="polite">
+            <p id="comparacao-status" class="filtros__resumo" role="status" aria-live="polite">
                 Selecione dois estados diferentes para comparar seus indicadores lado a lado.
             </p>
             <div id="comparacao-resultado" class="comparacao__resultado" hidden></div>

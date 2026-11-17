@@ -1,7 +1,9 @@
 import { inicializarMapa } from "./map.js";
-import { inicializarFiltros, obterFiltros } from "./filters.js";
+import { inicializarFiltros, obterFiltros , atualizarOpcoesPeriodo} from "./filters.js";
 import { buscarIndicadores, API_BASE_URL, ErroApi, verificarSaude } from "./api_client.js";
 import { inicializarComparacao } from "./comparacao.js";
+import { exportarDadosCSV } from "./export.js";
+
 
 const esconder_mensagem_MS = 5000;
 
@@ -9,7 +11,29 @@ const caixaStatus = document.getElementById("status-api");
 const tituloStatus = document.getElementById("status-titulo");
 const mensagemStatus = document.getElementById("status-mensagem");
 const botaoTentar = document.getElementById("status-tentar");
-const {mapa, atualizarIndicadores} = inicializarMapa("mapa-brasil")
+const botaoExportar = document.getElementById("btn-exportar-csv");
+
+const periodosConhecidos = new Set();
+
+function registrarPeriodos(lista) {
+    if (!Array.isArray(lista) || lista.length === 0) return;
+    for (const item of lista) {
+        if (item?.periodo_referencia !== undefined && item?.periodo_referencia !== null) {
+            periodosConhecidos.add(String(item.periodo_referencia));
+        }
+    }
+    atualizarOpcoesPeriodo([...periodosConhecidos]);
+}
+
+
+const { mapa, atualizarIndicadores } = inicializarMapa("mapa-brasil", {
+    aoCarregarDadosIniciais(dados) {
+        if (ultimaRequisicao > 0) return;
+        dadosFiltradosAtuais = Array.isArray(dados) ? dados : [];
+        registrarPeriodos(dadosFiltradosAtuais);
+        atualizarEstadoExportacao();
+    },
+});
 
 const Estado = Object.freeze({
     carregando : "carregando",
@@ -84,10 +108,16 @@ async function TentarNovamente() {
 function iniciar(){
     //aperta sozinho o tentar novamente pra garantir que ta funcionando
     botaoTentar.addEventListener("click", TentarNovamente);
+    botaoExportar?.addEventListener("click", () => {
+        exportarDadosCSV(dadosFiltradosAtuais, filtrosAtuais);
+    });
     inicializarFiltros(aoMudarFiltros);
     verificarConexaoApi();
     inicializarComparacao();
 }
+
+let dadosFiltradosAtuais = [];
+let filtrosAtuais = {};
 
 //filters ligação
 
@@ -99,6 +129,7 @@ function atualizarResumo(filtros) {
     const partes = [];
     if (filtros.estado) partes.push("estado: " + filtros.estado);
     if (filtros.dimensao) partes.push("dimensão: " + filtros.dimensao);
+    if (filtros.periodo) partes.push("periodo: " + filtros.periodo);
     resumoFiltros.textContent = partes.length
     ? "Filtrando por " + partes.join(", ") + "."
     : "Escolha um estado e/ou uma dimensão para filtrar.";
@@ -106,24 +137,47 @@ function atualizarResumo(filtros) {
 
 async function aoMudarFiltros(filtros) {
     const idRequisicao = ++ultimaRequisicao;
+    filtrosAtuais = filtros;
     atualizarResumo(filtros);
-    console.log("[Brasil Hub] filtros:", filtros); 
+    console.log("[Brasil Hub] filtros:", filtros);
 
-try {
-    const dados = await buscarIndicadores(filtros);
-    if (idRequisicao !== ultimaRequisicao) return; 
-    console.log("[Brasil Hub] indicadores recebidos:", dados);
+    try {
+        const dados = await buscarIndicadores(filtros);
+        if (idRequisicao !== ultimaRequisicao) return;
+        console.log("[Brasil Hub] indicadores recebidos:", dados);
 
-    if(!dados || dados.length === 0){
-        mostrarStatus(Estado.erro, "Sem resultados", "Nenhum indicador encontrado para os filtros selecionados.");
-        atualizarIndicadores([], filtros.dimensao, filtros.estado);
-    } else {
-        atualizarIndicadores(dados, filtros.dimensao, filtros.estado);
+        dadosFiltradosAtuais = Array.isArray(dados) ? dados : [];
+        registrarPeriodos(dadosFiltradosAtuais);
+        atualizarEstadoExportacao();
+
+        if (dadosFiltradosAtuais.length === 0) {
+            mostrarStatus(Estado.erro, "Sem resultados", "Nenhum indicador encontrado para os filtros selecionados.");
+            atualizarIndicadores([], filtros.dimensao, filtros.estado);
+        } else {
+            if(caixaStatus.dataset.estado === Estado.erro){
+                caixaStatus.hidden = true;
+            }
+            atualizarIndicadores(dadosFiltradosAtuais, filtros.dimensao, filtros.estado);
+        }
+    } catch (erro) {
+        if (idRequisicao !== ultimaRequisicao) return;
+        dadosFiltradosAtuais = [];
+        atualizarEstadoExportacao();
+        mostrarStatus(Estado.erro, "Não foi possível aplicar os filtros", descreverErro(erro), {
+            permitirNovaTentativa: true,
+        });
     }
-} catch (erro) {
-    if (idRequisicao !== ultimaRequisicao) return;
-    mostrarStatus(Estado.erro, "Não foi possível aplicar os filtros", descreverErro(erro), {permitirNovaTentativa: true});
 }
+
+///exportar csv
+
+function atualizarEstadoExportacao(){
+        if(!botaoExportar) return;
+        const semRegistros = dadosFiltradosAtuais.length === 0;
+        botaoExportar.disabled = semRegistros;
+        botaoExportar.title = semRegistros
+            ? "Não há registros disponíveis para os filtros atuais"
+            : `Exportar ${dadosFiltradosAtuais.length} registros em CSV`;
 }
 
 iniciar();
