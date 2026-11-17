@@ -599,11 +599,7 @@ def test_painel_admin_com_credenciais_validas(auth_com_banco_temporario):
     assert data["mensagem"] == f"Bem-vindo, {ADMIN_TESTE}."
     assert "admin_id" in data
 
-#espera erro, se um dia corrigirem só remover o @pytest.mark.xfail
-@pytest.mark.xfail(
-    reason="O FastAPI verifica extensões com string pura na rota. Decidir se iremos suportar .CSV em maiusculo.",
-    strict=False,
-)
+
 def test_upload_extensao_csv_maiuscula_deveria_ser_aceita(auth_com_banco_temporario, monkeypatch):
     class MockImportacaoRapida:
         def processar_upload(self, file): return 1
