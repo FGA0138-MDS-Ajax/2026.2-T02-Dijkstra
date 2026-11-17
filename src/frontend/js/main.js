@@ -2,6 +2,7 @@ import { inicializarMapa } from "./map.js";
 import { inicializarFiltros, obterFiltros } from "./filters.js";
 import { buscarIndicadores, API_BASE_URL, ErroApi, verificarSaude } from "./api_client.js";
 import { inicializarComparacao } from "./comparacao.js";
+import { inicializarVisualizacao } from "./visualizacao.js";
 
 const esconder_mensagem_MS = 5000;
 
@@ -87,6 +88,7 @@ function iniciar(){
     inicializarFiltros(aoMudarFiltros);
     verificarConexaoApi();
     inicializarComparacao();
+    inicializarVisualizacao();
 }
 
 //filters ligação

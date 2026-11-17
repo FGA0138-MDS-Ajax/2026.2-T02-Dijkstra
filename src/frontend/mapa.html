@@ -86,6 +86,30 @@
             <div id="comparacao-resultado" class="comparacao__resultado" hidden></div>
 
         </section>
+        <section class="visualizacao-section map-section" aria-labelledby="visualizacao-titulo">
+            <h2 id="visualizacao-titulo" class="map-titulo">Indicadores em Tabela e Gráfico</h2>
+
+            <div class="filtros">
+                <div class="filtros__campo">
+                    <label for="visualizacao-estado">Estado</label>
+                    <select name="estado" id="visualizacao-estado"></select>
+                </div>
+                <div class="filtros__campo">
+                    <label for="visualizacao-periodo">Período de referência</label>
+                    <select name="periodo" id="visualizacao-periodo" disabled></select>
+                </div>
+            </div>
+
+            <p id="visualizacao-status" class="filtros__resumo" role="status" aria-live="polite">
+                Selecione um estado para ver seus indicadores em tabela e gráfico.
+            </p>
+            <p id="visualizacao-erro" class="visualizacao__erro" role="alert" hidden></p>
+
+            <div id="visualizacao-resultado" class="visualizacao__resultado" hidden>
+                <div id="visualizacao-tabela"></div>
+                <div id="visualizacao-grafico"></div>
+            </div>
+        </section>
         </main>
 
 
