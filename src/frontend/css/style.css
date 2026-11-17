@@ -431,6 +431,18 @@ h1, h2, h3, h4, .logo {
     .filtros__limpar { width: 100%; }
 }
 
+.filtros__exportar {
+    padding: var(--space-1) var(--space-3);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    color: var(--color-action);
+    background: var(--color-action-soft);
+    border: var(--border-width) solid var(--color-action);
+    border-radius: var(--radius);
+}
+.filtros__exportar:hover { background: var(--color-action-soft-hover); }
+
 /*rodapéee*/
 
 .site-footer {
