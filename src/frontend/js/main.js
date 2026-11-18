@@ -102,6 +102,7 @@ function iniciar(){
     inicializarFiltros(aoMudarFiltros);
     verificarConexaoApi();
     inicializarComparacao();
+    inicializarVisualizacao();
 }
 
 let dadosFiltradosAtuais = [];
