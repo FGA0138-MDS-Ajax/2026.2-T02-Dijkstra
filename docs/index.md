@@ -1,28 +1,31 @@
-# Brasil Hub
-
-> **Plataforma integrada para consulta, visualização e análise de indicadores socioeconômicos das 27 Unidades Federativas brasileiras.**
+<div class="bh-masthead">
+  <span>UNB / FGA • MÉTODOS DE DESENVOLVIMENTO DE SOFTWARE • 2026.2</span>
+  <span class="bh-masthead-status"><span class="bh-live-dot"></span> EQUIPE DIJKSTRA • RELEASE 1.0</span>
+</div>
 
 <div class="bh-hero" markdown>
 
 <div class="bh-hero-text" markdown>
 
-<span class="bh-badge"><span class="bh-badge-dot"></span> MDS 2026.2 • Universidade de Brasília • Equipe Dijkstra</span>
+<span class="bh-kicker">OBSERVATÓRIO TERRITORIAL • IBGE & PNUD (1991–2024)</span>
 
-### Indicadores do Brasil com Clareza e Rigor
+### Cartografia e inteligência de dados sobre o <span class="bh-serif">desenvolvimento humano</span> brasileiro.
 
-Centralizamos indicadores públicos fundamentais (**IDHM**, **renda**, **educação** e **longevidade**), oferecendo visualização geográfica em mapas interativos e ferramentas de comparação direta entre estados e períodos históricos.
+O **Brasil Hub** estrutura séries históricas oficiais de **IDHM Geral**, **Renda**, **Educação** e **Longevidade** das 27 Unidades Federativas em uma arquitetura orientada a serviços, combinando visualização coroplética interativa, comparação interestadual e evolução temporal.
 
 [Documento de Visão →](documentos/visao/index.md){ .md-button .md-button--primary }
-[Documento de Arquitetura →](documentos/arquitetura/index.md){ .md-button }
-[Ponto de Controle 1 →](acompanhamento/ponto-controle-1.md){ .md-button }
+[Arquitetura de Software](documentos/arquitetura/index.md){ .md-button }
+[Ponto de Controle 1](acompanhamento/ponto-controle-1.md){ .md-button }
 
 </div>
 
 <div class="bh-hero-image" markdown>
 
-![Mapa Oficial do Brasil](assets/brasil-map.png)
+<span class="bh-specimen-header"><span>FIG. 01 — MALHA TERRITORIAL (27 UFs)</span><span>LEAFLET + GEOJSON</span></span>
 
-*Cartografia Interativa: Leaflet.js + GeoJSON IBGE*
+![Malha Cartográfica Oficial do Brasil Hub](assets/brasil-map.png)
+
+<span class="bh-choropleth-bar"><span class="bh-choropleth-title"><span>ESCALA COROPLÉTICA (IDHM)</span><span>[0,000 — 1,000]</span></span><span class="bh-choropleth-scale"><span class="bh-scale-1"></span><span class="bh-scale-2"></span><span class="bh-scale-3"></span><span class="bh-scale-4"></span><span class="bh-scale-5"></span></span><span class="bh-choropleth-labels"><span>&lt; 0,500 (Baixo)</span><span>0,650</span><span>&ge; 0,800 (Muito Alto)</span></span></span>
 
 </div>
 
@@ -30,91 +33,85 @@ Centralizamos indicadores públicos fundamentais (**IDHM**, **renda**, **educaç
 
 <div class="bh-stats-bar" markdown>
 
-| 27 | 11/11 | 12 | 100% |
+| 27 UFs | 1.728 REGISTROS | 11/11 (B-01..B-11) | 108 TESTES + CI |
 | :---: | :---: | :---: | :---: |
-| **UFs Mapeadas** | **Requisitos (B-01..11)** | **Casos de Teste (TC)** | **Sprints 1 a 7 Concluídas** |
+| **COBERTURA TERRITORIAL (1991–2024)** | **4 DIMENSÕES × 16 PERÍODOS** | **REQUISITOS IMPLEMENTADOS** | **PYTEST & ROTEIRO TC-01..12** |
 
 </div>
 
----
-
-## Estrutura da Documentação
-
-Acesse diretamente os núcleos conceituais, técnicos e gerenciais do projeto:
+## Índice de Engenharia e Documentação
 
 <div class="grid cards" markdown>
 
--   ### 📄 Documento de Visão
+-   <span class="bh-card-index">01 / CONCEPÇÃO & PRODUTO</span>
+    <strong class="bh-card-title">Documento de Visão</strong>
 
     ---
 
-    Contexto do problema, diagrama de Ishikawa, personas, objetivos estratégicos e modelo de processo de desenvolvimento de software.
+    Formulação do problema, diagrama de causa e efeito (Ishikawa), perfis de usuário, escopo MoSCoW e modelo híbrido Scrum/XP.
 
-    [Acessar Documento de Visão →](documentos/visao/index.md)
+    [Explorar Documento de Visão →](documentos/visao/index.md)
 
--   ### 🏛️ Documento de Arquitetura
-
-    ---
-
-    Visão lógica, casos de uso, diagrama de pacotes, persistência em SQLite, isolamento em contêineres Docker e restrições de implantação.
-
-    [Acessar Documento de Arquitetura →](documentos/arquitetura/index.md)
-
--   ### 📋 Gestão do Produto
+-   <span class="bh-card-index">02 / DESENHO TÉCNICO</span>
+    <strong class="bh-card-title">Arquitetura Three-Tier</strong>
 
     ---
 
-    Solução proposta, especificação de requisitos funcionais e não funcionais (B-01 a B-11) com rastreabilidade formal e critérios de aceitação.
+    Decomposição em camadas (Apresentação, Aplicação FastAPI/Pandas e Persistência), visões UML, pacotes e restrições de implantação.
 
-    [Ver Requisitos do Sistema →](gestao/requisitos.md)
+    [Explorar Arquitetura →](documentos/arquitetura/index.md)
 
--   ### ⚡ Histórico de Sprints
-
-    ---
-
-    Planejamento semanal homogêneo (Sprints 01 a 09), acompanhamento de issues, registro de dailies, retrospectivas e métricas GQM.
-
-    [Acompanhar Sprints →](acompanhamento/sprints/sprint01/sprint01.md)
-
--   ### 🧪 Matriz de Testes (TC)
+-   <span class="bh-card-index">03 / BACKLOG & REGRAS</span>
+    <strong class="bh-card-title">Engenharia de Requisitos</strong>
 
     ---
 
-    Roteiros de validação e testes de sistema (TC-01 a TC-12) cobrindo mapa territorial, acessibilidade, upload CSV e responsividade.
+    Especificação formal dos requisitos funcionais e não funcionais (`B-01` a `B-11`), regras de negócio e critérios de aceitação.
 
-    [Ver Roteiro de Testes →](acompanhamento/testes.md)
+    [Consultar Requisitos →](gestao/requisitos.md)
 
--   ### 📐 Métricas & Padrões
+-   <span class="bh-card-index">04 / EXECUÇÃO ITERATIVA</span>
+    <strong class="bh-card-title">Sprints, Dailies e Atas</strong>
 
     ---
 
-    Abordagem GQM (M1 produtividade, M2 qualidade, M3 cobertura de testes), convenções de branch git, commits semânticos e code review.
+    Rastreabilidade semanal das Sprints 01 a 09, entregas por dupla, dailies documentadas, retrospectivas e atas de reunião.
 
-    [Ver Métricas & Padrões →](metricas/gqm-projeto.md)
+    [Inspecionar Sprints →](acompanhamento/sprints/sprint01/sprint01.md)
+
+-   <span class="bh-card-index">05 / VERIFICAÇÃO & HOMOLOGAÇÃO</span>
+    <strong class="bh-card-title">Matriz de Testes (TC-01 a TC-12)</strong>
+
+    ---
+
+    Estratégia em três níveis (Unitário, Integração e Sistema), suíte automatizada no GitHub Actions e evidências de homologação.
+
+    [Ver Matriz de Qualidade →](acompanhamento/testes.md)
+
+-   <span class="bh-card-index">06 / GOVERNANÇA & INDICADORES</span>
+    <strong class="bh-card-title">Métricas GQM e Padrões</strong>
+
+    ---
+
+    Medições GQM de projeto (M1 conclusão, M2 defeitos, M3 débito técnico) e negociais (cobertura por UF), além de políticas de Git e PR.
+
+    [Analisar Métricas GQM →](metricas/gqm-projeto.md)
 
 </div>
 
----
+## Topologia Arquitetural do Sistema
 
-## Arquitetura Tecnológica e Camadas
-
-A plataforma segue o princípio de separação de responsabilidades para assegurar testabilidade, manutenibilidade e baixo acoplamento:
-
-| Camada | Tecnologia | Responsabilidade Principal |
+| Camada Arquitetural | Stack & Módulos | Contrato e Responsabilidade Técnica |
 | :--- | :--- | :--- |
-| **Apresentação (Frontend)** | HTML5, CSS3 Moderno, JavaScript ES6+ e Leaflet.js | Interface responsiva, mapa coroplético vetorial e acessibilidade (A+, A-, Alto Contraste). |
-| **Serviços & API (Backend)** | Python 3.12 estruturado com FastAPI | Endpoints RESTful, serialização de contratos e orquestração de regras de negócio. |
-| **Persistência de Dados** | SQLite 3.x com ingestão via Pandas | Armazenamento relacional dos indicadores históricos dos 26 estados e Distrito Federal. |
-| **Qualidade & Homologação** | Pytest, Pytest-Cov e Testes de Sistema | Automação de testes unitários, de integração e validação de sistema (TC-01 a TC-12). |
-| **Infraestrutura & DevOps** | Docker, Docker Compose e GitHub Actions | Paridade de ambientes de desenvolvimento/teste e pipeline contínuo de integração. |
+| **01. Apresentação (Client-Side)** | `HTML5` · `CSS3 Custom Properties` · `ES6 Modules` · `Leaflet.js` · `SVG` | Renderização coroplética das 27 UFs, comparação lado a lado (`B-06`), série temporal em gráfico de linha (`B-07`), gráficos/tabelas (`B-10`), exportação CSV (`B-11`) e acessibilidade (`B-03`). |
+| **02. Aplicação & Serviços (API)** | `Python 3.12` · `FastAPI` · `Pydantic v2` · `Pandas` · `bcrypt` | Validação de contratos REST (`/api/indicadores`, `/comparar`, `/historico`, `/admin`), higienização tabular de CSVs (`B-04`) e autenticação com derivação criptográfica (`B-09`). |
+| **03. Persistência & Qualidade** | `SQLite / Relacional` · `Pytest` · `Docker Compose` · `GitHub Actions` | Armazenamento transacional atômico dos 1.728 registros históricos, isolamento de ambiente em contêineres e pipeline de integração contínua validando tempo de resposta ≤ 3s (`B-05`). |
 
----
+## Ficha Institucional
 
-## Governança e Informações Institucionais
-
-- **Disciplina:** Métodos de Desenvolvimento de Software (MDS) — Semestre 2026.2
-- **Instituição:** Universidade de Brasília (UnB) — Faculdade do Gama (FGA)
-- **Orientação:** Prof. Ajax
-- **Equipe:** Dijkstra
-- **Repositório Oficial:** [GitHub FGA0138-MDS-Ajax/2026.2-T02-Dijkstra](https://github.com/FGA0138-MDS-Ajax/2026.2-T02-Dijkstra)
-- **Mais Detalhes sobre a Equipe:** Consulte a seção [Sobre a Equipe Dijkstra](sobre.md).
+| Atributo | Registro Oficial |
+| :--- | :--- |
+| **Instituição & Unidade** | Universidade de Brasília (UnB) — Faculdade do Gama (FGA) |
+| **Disciplina & Orientação** | FGA0138 — Métodos de Desenvolvimento de Software (2026.2) • Prof. Dr. Ajax |
+| **Equipe de Engenharia** | **Equipe Dijkstra** — [Conhecer integrantes e papéis →](sobre.md) |
+| **Código-Fonte & Governança** | [Repositório GitHub Oficial (`FGA0138-MDS-Ajax/2026.2-T02-Dijkstra`)](https://github.com/FGA0138-MDS-Ajax/2026.2-T02-Dijkstra) • [Padrões de Branches e PRs →](padroes/branches.md) |

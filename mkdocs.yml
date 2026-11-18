@@ -122,6 +122,9 @@ nav:
       - Ata Reunião 01: acompanhamento/reunioes/ata01.md
       - Ata Reunião 02: acompanhamento/reunioes/ata02.md
       - Ata Reunião 03: acompanhamento/reunioes/ata03.md
+  - Métricas:
+    - GQM de Projeto: metricas/gqm-projeto.md
+    - GQM Negocial: metricas/gqm-negocial.md
   - Padrões:
     - Commits: padroes/commits.md
     - Issues: padroes/issues.md

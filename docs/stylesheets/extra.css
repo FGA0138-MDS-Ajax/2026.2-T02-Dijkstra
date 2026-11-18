@@ -1,12 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 /* ==========================================================================
-   BRASIL HUB — PALETA OFICIAL (VERDE & BRANCO)
-   Alinhada com src/frontend/css/variables.css
+   BRASIL HUB — DESIGN SYSTEM EDITORIAL & CARTOGRÁFICO (VERDE & BRANCO)
+   Alinhado com as variáveis reais do produto (src/frontend/css/variables.css)
    ========================================================================== */
 :root {
-    --bh-green-950: #0b1f13;
+    --bh-green-950: #091910;
     --bh-green-900: #1f5a2e;
+    --bh-green-800: #236b36;
     --bh-green-700: #2a7f40;
     --bh-green-600: #43c363;
     --bh-green-400: #6ede8a;
@@ -15,447 +16,743 @@
     --bh-green-50:  #edfbf0;
     --bh-white:     #ffffff;
 
+    --bh-ink:       #0f2417;
+    --bh-ink-muted: #4b6353;
+    --bh-hairline:  #d5e8da;
+    --bh-surface:   #f7fbf8;
+
     --brand-primary:        #1f5a2e;
-    --brand-primary-light:  #43c363;
-    --brand-primary-dark:   #0b1f13;
+    --brand-primary-light:  #2a7f40;
+    --brand-primary-dark:   #091910;
 
     --md-primary-fg-color:        var(--brand-primary);
     --md-primary-fg-color--light: var(--brand-primary-light);
     --md-primary-fg-color--dark:  var(--brand-primary-dark);
-    --md-accent-fg-color:         var(--bh-green-600);
+    --md-accent-fg-color:         var(--bh-green-700);
 }
 
 /* ==========================================================================
-   TEMA CLARO (Clean Verde & Branco)
+   TEMA CLARO — Editorial Clean (Branco Puro, Papel Técnico & Verde Floresta)
    ========================================================================== */
 [data-md-color-scheme="default"] {
     --md-default-bg-color:        #ffffff;
-    --md-default-fg-color:        #1e293b;
-    --md-default-fg-color--light: #475569;
-    --md-code-bg-color:           #f8fafc;
-    --md-typeset-mark-color:      rgba(67, 195, 99, 0.25);
-    --md-typeset-table-sort-icon: var(--brand-primary);
+    --md-default-fg-color:        #0f2417;
+    --md-default-fg-color--light: #4b6353;
+    --md-code-bg-color:           #f3f8f4;
+    --md-typeset-a-color:         #1f5a2e;
+    --md-typeset-mark-color:      rgba(67, 195, 99, 0.22);
+
+    --bh-bg-elevated:             #ffffff;
+    --bh-bg-subtle:               #f6fbf7;
+    --bh-border:                  #d5e8da;
+    --bh-border-strong:           #1f5a2e;
+    --bh-text-main:               #0f2417;
+    --bh-text-muted:              #4b6353;
+    --bh-accent-serif:            #1f5a2e;
 }
 
 [data-md-color-scheme="default"] .md-header {
-    background-color: rgba(255, 255, 255, 0.96);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(211, 245, 220, 0.85);
-    box-shadow: 0 1px 4px 0 rgba(31, 90, 46, 0.05);
+    background-color: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid #d5e8da;
+    box-shadow: none;
+    color: #0f2417;
 }
 
 [data-md-color-scheme="default"] .md-header__title,
-[data-md-color-scheme="default"] .md-header__button {
-    color: var(--bh-green-900);
+[data-md-color-scheme="default"] .md-header__button,
+[data-md-color-scheme="default"] .md-source {
+    color: #1f5a2e;
+}
+
+[data-md-color-scheme="default"] .md-search__form {
+    background-color: #f3f8f4;
+    border: 1px solid #d5e8da;
+    border-radius: 6px;
+}
+
+[data-md-color-scheme="default"] .md-search__input,
+[data-md-color-scheme="default"] .md-search__input::placeholder,
+[data-md-color-scheme="default"] .md-search__icon {
+    color: #4b6353 !important;
 }
 
 [data-md-color-scheme="default"] .md-tabs {
     background-color: #ffffff;
-    border-bottom: 1px solid rgba(211, 245, 220, 0.6);
+    border-bottom: 1px solid #d5e8da;
 }
 
 [data-md-color-scheme="default"] .md-tabs__link {
-    color: #475569;
-    font-weight: 500;
+    color: #4b6353;
+    font-weight: 600;
+    font-size: 0.72rem;
+    letter-spacing: 0.01em;
+    opacity: 0.9;
 }
 
 [data-md-color-scheme="default"] .md-tabs__link--active,
 [data-md-color-scheme="default"] .md-tabs__link:hover {
-    color: var(--bh-green-900);
+    color: #1f5a2e;
+    opacity: 1;
 }
 
 /* ==========================================================================
-   TEMA ESCURO (Deep Slate com Acentos Forest Green)
+   TEMA ESCURO — Noturno Cartográfico
    ========================================================================== */
 [data-md-color-scheme="slate"] {
-    --md-default-bg-color:        #0d1712; 
-    --md-default-fg-color:        #e2e8f0; 
-    --md-default-fg-color--light: #94a3b8; 
-    --md-code-bg-color:           #14241b;
-    --md-accent-fg-color:         #43c363;
+    --md-default-bg-color:        #0a140e;
+    --md-default-fg-color:        #e6f2e9;
+    --md-default-fg-color--light: #93ad9b;
+    --md-code-bg-color:           #112117;
+    --md-typeset-a-color:         #6ede8a;
+    --md-accent-fg-color:         #6ede8a;
+
+    --bh-bg-elevated:             #0f1e15;
+    --bh-bg-subtle:               #13261b;
+    --bh-border:                  #213d2b;
+    --bh-border-strong:           #6ede8a;
+    --bh-text-main:               #e6f2e9;
+    --bh-text-muted:              #93ad9b;
+    --bh-accent-serif:            #6ede8a;
 }
 
 [data-md-color-scheme="slate"] .md-header {
-    background-color: rgba(15, 29, 22, 0.96);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(42, 127, 64, 0.35);
+    background-color: rgba(10, 20, 14, 0.94);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid #213d2b;
+    box-shadow: none;
 }
 
 [data-md-color-scheme="slate"] .md-header__title,
-[data-md-color-scheme="slate"] .md-header__button {
-    color: #43c363;
+[data-md-color-scheme="slate"] .md-header__button,
+[data-md-color-scheme="slate"] .md-source {
+    color: #acecbc;
 }
 
 [data-md-color-scheme="slate"] .md-tabs {
-    background-color: #0d1712;
-    border-bottom: 1px solid rgba(42, 127, 64, 0.3);
+    background-color: #0a140e;
+    border-bottom: 1px solid #213d2b;
 }
 
 [data-md-color-scheme="slate"] .md-tabs__link {
-    color: #94a3b8;
+    color: #93ad9b;
+    font-weight: 600;
 }
 
 [data-md-color-scheme="slate"] .md-tabs__link--active,
 [data-md-color-scheme="slate"] .md-tabs__link:hover {
-    color: #43c363;
+    color: #6ede8a;
 }
 
 /* ==========================================================================
-   TIPOGRAFIA E LAYOUT GLOBAL
+   TIPOGRAFIA & ESTRUTURA GLOBAL
    ========================================================================== */
-.md-typeset h1,
-.md-typeset h2,
-.md-typeset h3,
-.md-typeset h4,
+.md-typeset,
 .md-header__title,
 .md-nav__title,
-.md-nav__link--index {
-    font-family: "Plus Jakarta Sans", sans-serif;
-    letter-spacing: -0.015em;
+.md-tabs__link {
+    font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-.md-typeset p,
-.md-typeset li,
-.md-typeset table {
-    font-family: "Inter", sans-serif;
-    line-height: 1.65;
+.md-typeset code,
+.md-typeset pre,
+.bh-mono {
+    font-family: "JetBrains Mono", monospace;
+}
+
+.bh-serif {
+    font-family: "Instrument Serif", Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--bh-accent-serif);
+    padding-right: 0.08em;
 }
 
 .md-grid {
-    margin: auto;
-    width: 100%;
-    max-width: 1320px; 
+    max-width: 1340px;
 }
 
-.md-header {
-    height: 64px;
-}
-
-/* Tabelas */
+/* Tabelas Técnicas Globais */
 .md-typeset table:not([class]) {
-    border-radius: 10px;
+    border: 1px solid var(--bh-border);
+    border-radius: 8px;
     overflow: hidden;
-    border: 1px solid rgba(211, 245, 220, 0.8);
-    box-shadow: 0 2px 8px rgba(31, 90, 46, 0.04);
+    box-shadow: none;
+    background: var(--bh-bg-elevated);
 }
 
 .md-typeset table:not([class]) th {
-    background-color: var(--bh-green-50);
-    color: var(--bh-green-900);
-    font-family: "Plus Jakarta Sans", sans-serif;
-    font-weight: 700;
-    font-size: 0.85rem;
+    background-color: var(--bh-bg-subtle);
+    color: var(--bh-text-main);
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 600;
+    font-size: 0.73rem;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
-    border-bottom: 2px solid var(--bh-green-600);
-    padding: 10px 16px;
-}
-
-[data-md-color-scheme="slate"] .md-typeset table:not([class]) {
-    border-color: rgba(42, 127, 64, 0.35);
-}
-
-[data-md-color-scheme="slate"] .md-typeset table:not([class]) th {
-    background-color: rgba(20, 36, 27, 0.9);
-    color: #acecbc;
-    border-bottom: 2px solid #43c363;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--bh-border);
+    padding: 11px 16px;
 }
 
 .md-typeset table:not([class]) td {
-    padding: 10px 16px;
-    border-bottom: 1px solid rgba(226, 232, 240, 0.6);
-}
-
-[data-md-color-scheme="slate"] .md-typeset table:not([class]) td {
-    border-bottom: 1px solid rgba(42, 127, 64, 0.2);
-}
-
-/* Admonitions e Callouts */
-.md-typeset .admonition,
-.md-typeset details {
-    border-radius: 12px;
-    border-left-width: 4px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
-}
-
-.md-typeset pre {
-    border-radius: 12px;
-}
-
-/* ==========================================================================
-   BOTÕES MKDOCS MATERIAL (.md-button) COM A PALETA VERDE
-   ========================================================================== */
-.md-typeset .md-button {
-    border-radius: 0.65rem;
-    font-weight: 600;
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--bh-border);
     font-size: 0.85rem;
-    padding: 0.55rem 1.15rem;
-    transition: all 0.2s ease-in-out;
-    border: 1px solid rgba(172, 236, 188, 0.9);
-    color: var(--bh-green-900) !important;
-    background-color: #ffffff;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    margin: 0.25rem 0.25rem 0.25rem 0;
-}
-
-.md-typeset .md-button:hover {
-    background-color: var(--bh-green-50);
-    border-color: var(--bh-green-600);
-    transform: translateY(-2px);
-    color: #164323 !important;
-}
-
-.md-typeset .md-button--primary {
-    background-color: var(--bh-green-900) !important;
-    color: #ffffff !important;
-    border-color: var(--bh-green-900);
-    box-shadow: 0 4px 12px rgba(31, 90, 46, 0.22);
-}
-
-.md-typeset .md-button--primary:hover {
-    background-color: #164323 !important;
-    border-color: #164323;
-    box-shadow: 0 6px 16px rgba(31, 90, 46, 0.32);
-    color: #ffffff !important;
-}
-
-[data-md-color-scheme="slate"] .md-typeset .md-button {
-    background-color: #13231a;
-    border-color: rgba(42, 127, 64, 0.6);
-    color: #acecbc !important;
-}
-
-[data-md-color-scheme="slate"] .md-typeset .md-button:hover {
-    background-color: #1a3325;
-    color: #ffffff !important;
-}
-
-[data-md-color-scheme="slate"] .md-typeset .md-button--primary {
-    background-color: #1f5a2e !important;
-    border-color: #2a7f40;
-    color: #ffffff !important;
 }
 
 /* ==========================================================================
-   HERO CONTAINER DO PORTAL
+   PORTAL EDITORIAL BRASIL HUB — ARQUITETURA SWISS GRID / BENTO
    ========================================================================== */
-.md-typeset .bh-hero {
+
+/* Masthead / Barra de Coordenadas no Topo */
+.md-typeset .bh-masthead {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: 2rem;
-    padding: 2.25rem 2rem;
-    border-radius: 1.25rem;
-    background: linear-gradient(135deg, rgba(237, 251, 240, 0.75) 0%, #ffffff 50%, rgba(240, 253, 244, 0.85) 100%);
-    border: 1px solid rgba(211, 245, 220, 0.9);
-    box-shadow: 0 10px 30px -10px rgba(31, 90, 46, 0.08);
-    margin: 1.25rem 0 2rem;
+    gap: 0.75rem;
+    padding: 0.6rem 1rem;
+    border: 1px solid var(--bh-border);
+    border-bottom: none;
+    border-radius: 12px 12px 0 0;
+    background: var(--bh-bg-subtle);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.7rem;
+    color: var(--bh-text-muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-top: 0.5rem;
 }
 
-[data-md-color-scheme="slate"] .md-typeset .bh-hero {
-    background: linear-gradient(135deg, rgba(11, 31, 19, 0.85) 0%, #0d1712 50%, rgba(19, 35, 26, 0.95) 100%);
-    border: 1px solid rgba(42, 127, 64, 0.4);
-    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+.md-typeset .bh-masthead-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: var(--bh-text-main);
+    font-weight: 600;
 }
 
+.md-typeset .bh-live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: #2a7f40;
+    box-shadow: 0 0 0 3px rgba(67, 195, 99, 0.22);
+    display: inline-block;
+}
+
+/* Hero Principal (Grid Assimétrico com Divisória Hairline 1px) */
+.md-typeset .bh-hero {
+    display: grid;
+    grid-template-columns: 1.35fr 1fr;
+    border: 1px solid var(--bh-border);
+    background: var(--bh-bg-elevated);
+    position: relative;
+    margin: 0;
+}
+
+/* Coluna Esquerda do Hero */
 .md-typeset .bh-hero-text {
-    flex: 1 1 360px;
+    padding: 2.5rem 2.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 1px solid var(--bh-border);
+}
+
+.md-typeset .bh-kicker {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #2a7f40;
+    margin: 0 0 0.65rem 0 !important;
+    display: block;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .bh-kicker {
+    color: #6ede8a;
 }
 
 .md-typeset .bh-hero-text h3 {
-    margin: 0.75rem 0 0.5rem;
-    font-size: 1.45rem;
-    font-weight: 800;
-    color: var(--bh-green-900);
+    font-size: 2.25rem !important;
+    font-weight: 800 !important;
+    line-height: 1.14 !important;
+    letter-spacing: -0.03em !important;
+    color: var(--bh-text-main) !important;
+    margin: 0 0 1rem 0 !important;
 }
 
-[data-md-color-scheme="slate"] .md-typeset .bh-hero-text h3 {
-    color: #43c363;
+.md-typeset .bh-hero-text p {
+    font-size: 0.94rem !important;
+    line-height: 1.65 !important;
+    color: var(--bh-text-muted) !important;
+    margin: 0 0 1.25rem 0 !important;
 }
 
+.md-typeset .bh-hero-text p:last-child {
+    margin-bottom: 0 !important;
+}
+
+/* Botões Editoriais */
+.md-typeset .md-button {
+    border-radius: 6px !important;
+    font-weight: 600 !important;
+    font-size: 0.82rem !important;
+    padding: 0.58rem 1.1rem !important;
+    transition: all 0.18s ease !important;
+    border: 1px solid var(--bh-border) !important;
+    color: var(--bh-text-main) !important;
+    background-color: var(--bh-bg-elevated) !important;
+    margin: 0.2rem 0.35rem 0.2rem 0 !important;
+    box-shadow: none !important;
+}
+
+.md-typeset .md-button:hover {
+    border-color: var(--bh-border-strong) !important;
+    background-color: var(--bh-bg-subtle) !important;
+    transform: translateY(-1px);
+}
+
+.md-typeset .md-button--primary {
+    background-color: #1f5a2e !important;
+    border-color: #1f5a2e !important;
+    color: #ffffff !important;
+}
+
+.md-typeset .md-button--primary:hover {
+    background-color: #154220 !important;
+    border-color: #154220 !important;
+    color: #ffffff !important;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .md-button--primary {
+    background-color: #2a7f40 !important;
+    border-color: #43c363 !important;
+    color: #ffffff !important;
+}
+
+/* Coluna Direita do Hero: Painel Cartográfico */
 .md-typeset .bh-hero-image {
-    flex: 0 1 280px;
-    text-align: center;
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(211, 245, 220, 0.9);
-    border-radius: 1rem;
-    padding: 1.25rem;
-    box-shadow: 0 8px 24px rgba(31, 90, 46, 0.08);
+    padding: 1.6rem 1.85rem;
+    background-color: var(--bh-bg-subtle);
+    background-image: radial-gradient(var(--bh-border) 1px, transparent 1px);
+    background-size: 18px 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
 }
 
-[data-md-color-scheme="slate"] .md-typeset .bh-hero-image {
-    background: rgba(19, 35, 26, 0.85);
-    border-color: rgba(42, 127, 64, 0.4);
+.md-typeset .bh-hero-image p {
+    margin: 0 !important;
+}
+
+.md-typeset .bh-specimen-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.66rem;
+    color: var(--bh-text-muted);
+    border-bottom: 1px dashed var(--bh-border);
+    padding-bottom: 0.55rem;
+    width: 100%;
 }
 
 .md-typeset .bh-hero-image img {
     max-width: 220px;
     width: 100%;
     height: auto;
+    margin: 1rem auto;
     display: block;
-    margin: 0 auto;
-    filter: drop-shadow(0 10px 18px rgba(31, 90, 46, 0.18));
+    filter: drop-shadow(0 14px 24px rgba(31, 90, 46, 0.16));
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.md-typeset .bh-hero-image em {
+.md-typeset .bh-hero-image:hover img {
+    transform: scale(1.035);
+}
+
+/* Escala Coroplética Real do Projeto (5 faixas do variables.css) */
+.md-typeset .bh-choropleth-bar {
     display: block;
-    font-size: 0.72rem;
-    color: #64748b;
-    margin-top: 0.5rem;
+    background: var(--bh-bg-elevated);
+    border: 1px solid var(--bh-border);
+    border-radius: 8px;
+    padding: 0.7rem 0.85rem;
+    width: 100%;
 }
 
-/* Badge de Status */
-.md-typeset .bh-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.3rem 0.75rem;
-    border-radius: 9999px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    background: rgba(211, 245, 220, 0.7);
-    color: var(--bh-green-900);
-    border: 1px solid rgba(172, 236, 188, 0.9);
+.md-typeset .bh-choropleth-title {
+    display: flex;
+    justify-content: space-between;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.64rem;
+    color: var(--bh-text-muted);
+    margin-bottom: 0.38rem;
 }
 
-[data-md-color-scheme="slate"] .md-typeset .bh-badge {
-    background: rgba(19, 35, 26, 0.8);
-    color: #6ede8a;
-    border-color: rgba(42, 127, 64, 0.6);
-}
-
-.md-typeset .bh-badge-dot {
-    width: 8px;
+.md-typeset .bh-choropleth-scale {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
     height: 8px;
-    border-radius: 9999px;
-    background-color: #43c363;
-    display: inline-block;
+    border-radius: 4px;
+    overflow: hidden;
+    gap: 2px;
 }
 
-/* Barra de Estatísticas */
+.md-typeset .bh-scale-1 { background: #d3f5dc; display: block; }
+.md-typeset .bh-scale-2 { background: #acecbc; display: block; }
+.md-typeset .bh-scale-3 { background: #6ede8a; display: block; }
+.md-typeset .bh-scale-4 { background: #2a7f40; display: block; }
+.md-typeset .bh-scale-5 { background: #1f5a2e; display: block; }
+
+.md-typeset .bh-choropleth-labels {
+    display: flex;
+    justify-content: space-between;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.6rem;
+    color: var(--bh-text-muted);
+    margin-top: 0.32rem;
+}
+
+/* Barra Inferior de Telemetria do Hero (Tabela Markdown estilizada como Swiss Grid) */
 .md-typeset .bh-stats-bar {
-    margin: 1.5rem 0 2rem;
+    margin: 0 0 2.5rem 0;
+}
+
+.md-typeset .bh-stats-bar .md-typeset__scrollwrap,
+.md-typeset .bh-stats-bar .md-typeset__table {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100%;
+    display: block;
 }
 
 .md-typeset .bh-stats-bar table {
     width: 100%;
-    text-align: center;
-}
-
-.md-typeset .bh-stats-bar table th {
-    font-size: 1.35rem;
-    font-weight: 800;
-    color: var(--bh-green-900);
-    background: var(--bh-green-50);
-    text-align: center;
-    border-bottom: 2px solid var(--bh-green-600);
-    padding: 10px;
-}
-
-[data-md-color-scheme="slate"] .md-typeset .bh-stats-bar table th {
-    color: #43c363;
-    background: rgba(20, 36, 27, 0.8);
-}
-
-.md-typeset .bh-stats-bar table td {
-    font-size: 0.82rem;
-    color: #64748b;
-    padding: 8px 12px;
-    text-align: center;
-}
-
-/* ==========================================================================
-   CARDS DE NAVEGAÇÃO (.grid.cards DO MKDOCS MATERIAL)
-   ========================================================================== */
-.md-typeset .grid.cards > ul {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.25rem;
-    list-style: none !important;
-    padding: 0 !important;
-    margin: 1.5rem 0 2.5rem !important;
-}
-
-.md-typeset .grid.cards > ul > li {
-    background: #ffffff;
-    border: 1px solid rgba(211, 245, 220, 0.9);
-    border-radius: 1rem;
-    padding: 1.4rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 2px 8px rgba(31, 90, 46, 0.04);
+    display: table;
+    border: 1px solid var(--bh-border) !important;
+    border-top: none !important;
+    border-radius: 0 0 12px 12px !important;
+    background: var(--bh-bg-elevated);
+    border-collapse: collapse;
     margin: 0 !important;
 }
 
+.md-typeset .bh-stats-bar table th {
+    font-family: "Plus Jakarta Sans", sans-serif !important;
+    font-size: 1.4rem !important;
+    font-weight: 800 !important;
+    color: var(--bh-text-main) !important;
+    background: var(--bh-bg-elevated) !important;
+    letter-spacing: -0.02em !important;
+    border-bottom: none !important;
+    border-right: 1px solid var(--bh-border) !important;
+    padding: 1rem 1rem 0.2rem !important;
+    text-align: left !important;
+    width: 25%;
+}
+
+.md-typeset .bh-stats-bar table th:last-child,
+.md-typeset .bh-stats-bar table td:last-child {
+    border-right: none !important;
+}
+
+.md-typeset .bh-stats-bar table td {
+    font-family: "JetBrains Mono", monospace !important;
+    font-size: 0.66rem !important;
+    color: var(--bh-text-muted) !important;
+    letter-spacing: 0.04em !important;
+    border-bottom: none !important;
+    border-right: 1px solid var(--bh-border) !important;
+    padding: 0.15rem 1rem 1rem !important;
+    text-align: left !important;
+}
+
+/* ==========================================================================
+   CABEÇALHO DE SEÇÃO EDITORIAL (H2 PADRÃO)
+   ========================================================================== */
+.md-typeset h2 {
+    border-bottom: 2px solid var(--bh-text-main);
+    padding-bottom: 0.45rem;
+    margin: 2.25rem 0 1.15rem !important;
+    font-size: 1.3rem !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.02em !important;
+}
+
+/* ==========================================================================
+   MATRIZ DE NAVEGAÇÃO BENTO (.grid.cards ESTILIZADO COMO SWISS GRID)
+   ========================================================================== */
+.md-typeset .grid.cards > ul {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px !important;
+    background-color: var(--bh-border);
+    border: 1px solid var(--bh-border);
+    border-radius: 12px;
+    overflow: hidden;
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 1rem 0 2.75rem !important;
+}
+
+.md-typeset .grid.cards > ul > li {
+    background: var(--bh-bg-elevated) !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 1.65rem !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: background-color 0.2s ease !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    position: relative;
+}
+
 .md-typeset .grid.cards > ul > li:hover {
-    transform: translateY(-4px);
-    border-color: #6ede8a;
-    box-shadow: 0 14px 28px -10px rgba(31, 90, 46, 0.14);
+    background: var(--bh-bg-subtle) !important;
+    transform: none !important;
 }
 
-[data-md-color-scheme="slate"] .md-typeset .grid.cards > ul > li {
-    background: #13231a;
-    border: 1px solid rgba(42, 127, 64, 0.35);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+/* Barra superior verde que acende no hover do card */
+.md-typeset .grid.cards > ul > li::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: #1f5a2e;
+    opacity: 0;
+    transition: opacity 0.2s ease;
 }
 
-[data-md-color-scheme="slate"] .md-typeset .grid.cards > ul > li:hover {
-    border-color: #43c363;
-    box-shadow: 0 14px 28px -10px rgba(0, 0, 0, 0.6);
+[data-md-color-scheme="slate"] .md-typeset .grid.cards > ul > li::before {
+    background: #6ede8a;
+}
+
+.md-typeset .grid.cards > ul > li:hover::before {
+    opacity: 1;
+}
+
+.md-typeset .bh-card-index {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: #2a7f40;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.45rem;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .bh-card-index {
+    color: #6ede8a;
+}
+
+.md-typeset .grid.cards > ul > li h3,
+.md-typeset .bh-card-title {
+    margin: 0 !important;
+    font-size: 1.08rem !important;
+    font-weight: 700 !important;
+    color: var(--bh-text-main) !important;
+    letter-spacing: -0.015em;
+    display: block;
+    line-height: 1.3;
 }
 
 .md-typeset .grid.cards > ul > li hr {
-    margin: 0.65rem 0 0.85rem;
+    margin: 0.75rem 0 !important;
     border: 0;
-    border-top: 1px solid rgba(211, 245, 220, 0.8);
-}
-
-[data-md-color-scheme="slate"] .md-typeset .grid.cards > ul > li hr {
-    border-top: 1px solid rgba(42, 127, 64, 0.3);
-}
-
-.md-typeset .grid.cards > ul > li h3 {
-    margin: 0;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--bh-green-900);
-}
-
-[data-md-color-scheme="slate"] .md-typeset .grid.cards > ul > li h3 {
-    color: #43c363;
+    border-top: 1px solid var(--bh-border);
 }
 
 .md-typeset .grid.cards > ul > li p {
-    font-size: 0.85rem;
-    color: var(--md-default-fg-color--light);
-    line-height: 1.55;
-    margin: 0.4rem 0 1rem;
+    font-size: 0.84rem !important;
+    color: var(--bh-text-muted) !important;
+    line-height: 1.58 !important;
+    margin: 0 0 1rem 0 !important;
 }
 
 .md-typeset .grid.cards > ul > li a {
-    font-weight: 700;
-    font-size: 0.85rem;
-    color: var(--bh-green-700);
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 600;
+    font-size: 0.76rem;
+    color: var(--bh-text-main);
     text-decoration: none;
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
     margin-top: auto;
+    padding-top: 0.4rem;
 }
 
 .md-typeset .grid.cards > ul > li a:hover {
-    color: var(--bh-green-900);
-    text-decoration: underline;
+    color: #2a7f40;
 }
 
-[data-md-color-scheme="slate"] .md-typeset .grid.cards > ul > li a {
+[data-md-color-scheme="slate"] .md-typeset .grid.cards > ul > li a:hover {
     color: #6ede8a;
+}
+
+/* ==========================================================================
+   GALERIA EDITORIAL DA EQUIPE DIJKSTRA (docs/sobre.md)
+   ========================================================================== */
+.md-typeset .bh-team-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background-color: var(--bh-border);
+    border: 1px solid var(--bh-border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 1.25rem 0 2.5rem;
+}
+
+.md-typeset .bh-member-card {
+    background: var(--bh-bg-elevated);
+    padding: 1.35rem 1.2rem 1.45rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    text-decoration: none !important;
+    color: var(--bh-text-main) !important;
+    position: relative;
+    transition: background-color 0.2s ease;
+}
+
+.md-typeset .bh-member-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: #1f5a2e;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .bh-member-card::before {
+    background: #6ede8a;
+}
+
+.md-typeset .bh-member-card:hover {
+    background: var(--bh-bg-subtle);
+}
+
+.md-typeset .bh-member-card:hover::before {
+    opacity: 1;
+}
+
+.md-typeset .bh-member-meta {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.64rem;
+    color: var(--bh-text-muted);
+    letter-spacing: 0.03em;
+    margin-bottom: 1rem;
+    padding-bottom: 0.55rem;
+    border-bottom: 1px dashed var(--bh-border);
+}
+
+.md-typeset .bh-member-handle {
+    color: #2a7f40;
+    font-weight: 600;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .bh-member-handle {
+    color: #6ede8a;
+}
+
+.md-typeset .bh-member-avatar {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--bh-border);
+    padding: 3px;
+    background: var(--bh-bg-elevated);
+    margin-bottom: 0.85rem;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+}
+
+.md-typeset .bh-member-card:hover .bh-member-avatar {
+    transform: scale(1.05);
+    border-color: #2a7f40;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .bh-member-card:hover .bh-member-avatar {
+    border-color: #6ede8a;
+}
+
+.md-typeset .bh-member-name {
+    font-size: 0.96rem;
+    font-weight: 700;
+    color: var(--bh-text-main);
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+    margin-bottom: 0.45rem;
+}
+
+.md-typeset .bh-member-role {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 0.22rem 0.6rem;
+    border-radius: 4px;
+    background: var(--bh-bg-subtle);
+    border: 1px solid var(--bh-border);
+    color: var(--bh-text-muted);
+    margin-top: auto;
+}
+
+.md-typeset .bh-member-role--lead {
+    background: rgba(42, 127, 64, 0.1);
+    border-color: rgba(42, 127, 64, 0.35);
+    color: #1f5a2e;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .bh-member-role--lead {
+    background: rgba(110, 222, 138, 0.12);
+    border-color: rgba(110, 222, 138, 0.35);
+    color: #acecbc;
+}
+
+/* ==========================================================================
+   RESPONSIVIDADE
+   ========================================================================== */
+@media (max-width: 960px) {
+    .md-typeset .bh-hero {
+        grid-template-columns: 1fr;
+    }
+    .md-typeset .bh-hero-text {
+        border-right: none;
+        border-bottom: 1px solid var(--bh-border);
+        padding: 2rem 1.5rem;
+    }
+    .md-typeset .grid.cards > ul {
+        grid-template-columns: 1fr;
+    }
+    .md-typeset .bh-team-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 520px) {
+    .md-typeset .bh-team-grid {
+        grid-template-columns: 1fr;
+    }
 }
