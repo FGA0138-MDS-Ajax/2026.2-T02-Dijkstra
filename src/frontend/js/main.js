@@ -2,7 +2,7 @@ import { inicializarMapa } from "./map.js";
 import { inicializarFiltros, obterFiltros , atualizarOpcoesPeriodo} from "./filters.js";
 import { buscarIndicadores, API_BASE_URL, ErroApi, verificarSaude } from "./api_client.js";
 import { inicializarComparacao } from "./comparacao.js";
-import { exportarDadosCSV } from "./export.js";
+import { inicializarPainelExportacao } from "./export_panel.js";
 
 
 const esconder_mensagem_MS = 5000;
@@ -108,9 +108,9 @@ async function TentarNovamente() {
 function iniciar(){
     //aperta sozinho o tentar novamente pra garantir que ta funcionando
     botaoTentar.addEventListener("click", TentarNovamente);
-    botaoExportar?.addEventListener("click", () => {
-        exportarDadosCSV(dadosFiltradosAtuais, filtrosAtuais);
-    });
+    inicializarPainelExportacao({
+    botaoAbrir: botaoExportar,
+    obterFiltrosAtuais: () => filtrosAtuais,});
     inicializarFiltros(aoMudarFiltros);
     verificarConexaoApi();
     inicializarComparacao();

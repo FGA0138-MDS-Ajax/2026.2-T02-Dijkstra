@@ -23,10 +23,9 @@ function resumirListaParaArquivo(lista, sufixoPlural) {
 function gerarNomeArquivo(filtros = {}) {
     const partes = ["brasil-hub"];
 
-    if (filtros.dimensao) {
-        partes.push(filtros.dimensao);
-    }
-    
+    const dimensoes = filtros.dimensoes ?? (filtros.dimensao ? [filtros.dimensao] : []);
+const resumoDimensoes = resumirListaParaArquivo(dimensoes, "dimensoes");
+if (resumoDimensoes) partes.push(resumoDimensoes);
     //mudança para ter varios estados 
     const estados = filtros.estados ?? (filtros.estado ? [filtros.estado] : []);
     const resumoEstados = resumirListaParaArquivo(estados, "estados");
@@ -104,4 +103,15 @@ export function exportarDadosCSV(registros,filtros={}){
     //remove da memoria
     setTimeout(() => URL.revokeObjectURL(url), 100);
     return true;
+}
+
+export function filtrarParaExportacao(registros, { estados = [], periodos = [], dimensoes = [] } = {}) {
+    const ufs = new Set(estados);
+    const anos = new Set(periodos.map(String));
+    const dims = new Set(dimensoes);
+    return registros.filter((r) =>
+        (ufs.size === 0 || ufs.has(r.unidade_territorial)) &&
+        (anos.size === 0 || anos.has(String(r.periodo_referencia))) &&
+        (dims.size === 0 || dims.has(r.dimensao))
+    );
 }
