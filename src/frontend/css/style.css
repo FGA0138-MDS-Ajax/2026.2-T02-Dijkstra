@@ -8,6 +8,9 @@
 html {
     font-size: calc(100% * var(--font-scale));
     scroll-behavior: smooth;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border) transparent;
 }
 
 body {
@@ -428,7 +431,8 @@ h1, h2, h3, h4, .logo {
 .filtros__resumo { color: var(--color-text-muted); margin: var(--space-2) 0 0; }
 
 @media (max-width: 40rem) {
-    .filtros__limpar { width: 100%; }
+    .filtros__limpar,
+    .filtros__exportar { width: 100%; }
 }
 
 .filtros__exportar {
@@ -441,7 +445,138 @@ h1, h2, h3, h4, .logo {
     border: var(--border-width) solid var(--color-action);
     border-radius: var(--radius);
 }
-.filtros__exportar:hover { background: var(--color-action-soft-hover); }
+.filtros__exportar:hover { 
+    background: var(--color-action-soft-hover); 
+}
+
+/*pra ficar cinza quando ta desativado*/
+.filtros__exportar:disabled {
+    opacity: 0.55; 
+    cursor: not-allowed; 
+}
+.filtros__exportar:hover:not(:disabled) { 
+    background: var(--color-action-soft-hover);
+}
+
+.exportar {
+    width: min(40rem, calc(100% - 2rem));
+    max-height: 90vh;
+    max-height: 90dvh;
+    padding: 0;
+    overflow: hidden;
+    color: var(--color-text);
+    background: var(--color-surface);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--popup-shadow);
+}
+.exportar[open] { display: flex; flex-direction: column; }
+.exportar::backdrop { background: rgb(0 0 0 / 0.5); }
+
+
+body:has(dialog[open]) { overflow: hidden; }
+
+.exportar__cabecalho {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-2) 0 var(--space-3);
+}
+.exportar__cabecalho h2 { margin: 0; color: var(--color-primary); font-weight: 400; }
+
+.exportar__fechar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+    color: var(--color-text-muted);
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.exportar__fechar:hover { color: var(--color-link-hover); background: var(--color-surface-soft); }
+.exportar__fechar svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+}
+
+/* única área que tem a  rolagem */
+.exportar__corpo {
+    flex: 1 1 auto;
+    min-height: 0;
+    padding: 0 var(--space-3) var(--space-2);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border) transparent;
+}
+@media (prefers-reduced-motion: no-preference) {
+    .exportar__corpo { scroll-behavior: smooth; }
+}
+.exportar__corpo > .filtros__resumo { margin-top: var(--space-1); }
+
+.exportar fieldset {
+    min-width: 0;
+    margin: var(--space-2) 0 0;
+    padding: var(--space-1-5);
+    background: var(--color-surface-soft);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-sm);
+}
+.exportar legend { padding-inline: var(--space-0); font-weight: 700; }
+.exportar__opcoes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+    gap: var(--space-0) var(--space-2);
+}
+.exportar__opcoes label { display: flex; align-items: center; gap: var(--space-1); cursor: pointer; }
+
+.exportar__rodape {
+    padding: var(--space-2) var(--space-3) var(--space-3);
+    border-top: 1px solid var(--color-border-soft);
+}
+.exportar__rodape .filtros__resumo { margin: 0 0 var(--space-1-5); }
+
+.exportar__acoes { display: flex; justify-content: flex-end; gap: var(--space-2); }
+.exportar__acoes button {
+    min-height: 2.75rem;
+    padding: var(--space-1) var(--space-3);
+    font: inherit;
+    font-weight: 700;
+    text-align: center;
+}
+.exportar__acoes button:disabled { opacity: 0.55; cursor: not-allowed; }
+
+@media (max-width: 40rem) {
+    .exportar {
+        width: calc(100% - 1.5rem);
+        max-height: 80vh;
+        max-height: 80dvh;
+        border-radius: var(--radius);
+    }
+
+    .exportar__cabecalho { padding: var(--space-1-5) var(--space-1) 0 var(--space-2); }
+    .exportar__cabecalho h2 { font-size: var(--font-size-2); }
+
+    .exportar__corpo { padding: 0 var(--space-2) var(--space-1-5); }
+    .exportar fieldset { margin-top: var(--space-1-5); padding: var(--space-1); }
+    .exportar__opcoes { grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr)); }
+
+    .exportar__rodape { padding: var(--space-1-5) var(--space-2) var(--space-2); }
+    .exportar__rodape .filtros__resumo { margin-bottom: var(--space-1); font-size: var(--font-size-0); }
+
+    .exportar__acoes { display: flex; flex-direction: column; gap: var(--space-1); }
+    .exportar__acoes button { width: 100%; }
+    #exportar-baixar { order: -1; } 
+}
 
 /*rodapéee*/
 
