@@ -38,3 +38,13 @@ class LoginResponse (BaseModel):
     id: int
     usuario: str
     mensagem: str = "Autenticação foi realizada com sucesso."
+
+class PontoHistorico(BaseModel):
+    periodo: int
+    valor: float | None = None
+
+class HistoricoResponse(BaseModel):
+    indicador: Dimensao
+    uf: str 
+    unidade: str | None = None
+    serie: list[PontoHistorico]

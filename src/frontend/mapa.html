@@ -86,6 +86,31 @@
             <div id="comparacao-resultado" class="comparacao__resultado" hidden></div>
 
         </section>
+
+        <section class="linha-tempo-section map-section" aria-labelledby="linha-tempo-titulo">
+            <h2 id="linha-tempo-titulo" class="map-titulo">Linha do Tempo do IDH</h2>
+            <div class="filtros">
+                <div class="filtros__campo">
+                    <label for="linha-tempo-estado">Estado</label>
+                    <select name="estado" id="linha-tempo-estado"></select>
+                </div>
+                <div class="filtros__campo">
+                    <label for="linha-tempo-dimensao">Dimensão do IDH</label>
+                    <select name="dimensao" id="linha-tempo-dimensao"></select>
+                </div>
+                <button type="button" id="linha-tempo-limpar" class="filtros__limpar">Limpar Linha do Tempo</button>
+            </div>
+            <p id="linha-tempo-status" class="filtros__resumo" role="status" aria-live="polite">
+                Selecione um estado e uma dimensão para visualizar a evolução do IDH ao longo dos anos.
+            </p>
+
+            <div id="linha-tempo-resultado" class="linha-tempo__resultado" hidden>
+                <h3 id="linha-tempo-resultado-titulo" class="linha-tempo__grafico-titulo"></h3>
+                <div id="linha-tempo-grafico"></div>
+                <div id="linha-tempo-tabela"></div>
+            </div>
+        </section>
+
         <section class="visualizacao-section map-section" aria-labelledby="visualizacao-titulo">
             <h2 id="visualizacao-titulo" class="map-titulo">Indicadores em Tabela e Gráfico</h2>
 

@@ -788,6 +788,122 @@ html[data-theme="high-contrast"] .comparacao__card {
     }
 }
 
+/* Linha do Tempo (B-07) */
+/* Cores do gráfico por tema. Ficam aqui, e não no SVG, para o gráfico
+   acompanhar a troca de tema sem ser redesenhado. */
+.linha-tempo__resultado {
+    --grafico-linha: var(--green-700);
+    --grafico-ponto-borda: var(--white);
+    --grafico-area: var(--green-400);
+    --grafico-area-opacidade: 0.18;
+    --grafico-grade: var(--green-100);
+    --grafico-eixo: var(--green-200);
+    --grafico-texto: var(--color-text-muted);
+    --grafico-espessura: 3;
+
+    width: 100%;
+    max-width: 760px;
+    margin: var(--space-3) auto 0;
+    padding: var(--space-3);
+    background: var(--color-surface);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    box-shadow: var(--box-shadow);
+}
+
+html[data-theme="dark"] .linha-tempo__resultado {
+    --grafico-linha: var(--green-400);
+    --grafico-ponto-borda: var(--gray-800);
+    --grafico-area: var(--green-400);
+    --grafico-area-opacidade: 0.14;
+    --grafico-grade: var(--color-border-soft);
+    --grafico-eixo: var(--color-border);
+}
+
+/* Alto contraste: amarelo sobre preto, sem área translúcida e com traços mais grossos. */
+html[data-theme="high-contrast"] .linha-tempo__resultado {
+    --grafico-linha: #ffd400;
+    --grafico-ponto-borda: #000000;
+    --grafico-area: #ffd400;
+    --grafico-area-opacidade: 0;
+    --grafico-grade: #ffffff;
+    --grafico-eixo: #ffffff;
+    --grafico-texto: #ffffff;
+    --grafico-espessura: 4;
+
+    border-width: var(--border-width);
+    box-shadow: none;
+}
+
+.linha-tempo__resultado[hidden] {
+    display: none;
+}
+
+.linha-tempo__grafico-titulo {
+    margin: 0 0 var(--space-2);
+    font-size: var(--font-size-1);
+    color: var(--color-text);
+}
+
+.grafico-linha {
+    display: block;
+    width: 100%;
+    height: auto;
+    font-family: var(--font-body);
+    overflow: visible;
+}
+
+.grafico-linha__eixo text {
+    fill: var(--grafico-texto);
+    font-size: 12px;
+}
+
+.grafico-linha__eixo line {
+    stroke: var(--grafico-eixo);
+    stroke-width: 1;
+}
+
+.grafico-linha__grade {
+    stroke: var(--grafico-grade);
+    stroke-dasharray: 4 4;
+}
+
+html[data-theme="high-contrast"] .grafico-linha__grade {
+    stroke-dasharray: 2 6;
+}
+
+.grafico-linha__area {
+    fill: var(--grafico-area);
+    fill-opacity: var(--grafico-area-opacidade);
+    stroke: none;
+}
+
+.grafico-linha__linha {
+    stroke: var(--grafico-linha);
+    stroke-width: var(--grafico-espessura);
+    stroke-linejoin: round;
+    stroke-linecap: round;
+}
+
+.grafico-linha__pontos circle {
+    fill: var(--grafico-linha);
+    stroke: var(--grafico-ponto-borda);
+    stroke-width: 2;
+    cursor: pointer;
+    transition: r var(--dur-fast) var(--ease);
+}
+
+.grafico-linha__pontos circle:hover {
+    r: 6;
+}
+
+@media (max-width: 768px) {
+    .linha-tempo__resultado {
+        padding: var(--space-2);
+    }
+}
+
 /* visualizacao (grafico) */
 .visualizacao__resultado {
     display: grid;
