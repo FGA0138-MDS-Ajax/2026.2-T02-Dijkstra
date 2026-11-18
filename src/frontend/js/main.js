@@ -4,6 +4,8 @@ import { buscarIndicadores, API_BASE_URL, ErroApi, verificarSaude } from "./api_
 import { inicializarComparacao } from "./comparacao.js";
 import { inicializarPainelExportacao } from "./export_panel.js";
 
+import { inicializarLinhaTempo } from "./linha_tempo.js";
+import { inicializarVisualizacao } from "./visualizacao.js";
 
 const esconder_mensagem_MS = 5000;
 
@@ -102,6 +104,7 @@ function iniciar(){
     inicializarFiltros(aoMudarFiltros);
     verificarConexaoApi();
     inicializarComparacao();
+    inicializarLinhaTempo();
     inicializarVisualizacao();
 }
 

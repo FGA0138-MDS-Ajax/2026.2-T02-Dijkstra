@@ -10,6 +10,7 @@ from src.api.schemas import (
     IndicadorResponse,
     LoginRequest,
     LoginResponse,
+    HistoricoResponse,
 )
 from src.auth.security import PasswordHasher
 from src.database.admin_repository import AdminRepository
@@ -243,3 +244,16 @@ def upload_csv_indicadores(
 
     except ErroPersistenciaIndicadores:
         raise HTTPException(status_code=500, detail="Erro interno ao persistir os dados na base de dados.")
+
+
+@app.get("/api/indicadores/historico", response_model=HistoricoResponse)
+def consulta_historico(estado: str = Query(..., pattern=PADRAO_UF), dimensao: Dimensao = Query(...), service: IndicadorService = Depends(get_indicador_service)):
+    try:
+        return service.consultar_historico(estado=estado, dimensao=dimensao.value)
+    except EstadoInvalido as erro:
+        raise HTTPException(status_code=422, detail=str(erro)) from erro
+    except ConsultaIndicadoresIndisponivel as erro:
+        raise HTTPException(
+            status_code = 503,
+            detail = "Não foi possível identificar os indicadores no momento."
+        ) from erro

@@ -367,3 +367,43 @@ def test_consultar_sem_resultados_retorna_lista_vazia():
     resultado = service.consultar(estado="AC", periodo=1995)
 
     assert resultado == []
+
+def test_consultar_historico_ordena_periodos_e_preserva_nulos():
+    repository = Mock(spec=IndicadorRepository)
+    repository.listar.return_value = [
+        {"id": 2, "unidade_territorial": "DF", "dimensao": "idhm_geral", "valor": 0.824, "periodo_referencia": "2010", "unidade_medida": "índice"},
+        {"id": 1, "unidade_territorial": "DF", "dimensao": "idhm_geral", "valor": 0.616, "periodo_referencia": "1991", "unidade_medida": "índice"},
+        {"id": 3, "unidade_territorial": "DF", "dimensao": "idhm_geral", "valor": None,  "periodo_referencia": "2000", "unidade_medida": "índice"},
+    ]
+    service = IndicadorService(repository)
+
+    resultado = service.consultar_historico(estado="DF", dimensao="idhm_geral")
+
+    assert resultado["uf"] == "DF"
+    assert resultado["indicador"] == "idhm_geral"
+    assert resultado["unidade"] == "índice"
+    assert [p["periodo"] for p in resultado["serie"]] == [1991, 2000, 2010]
+    assert resultado["serie"][1]["valor"] is None
+
+
+def test_consultar_historico_sem_dados_retorna_serie_vazia():
+    
+    repository = Mock(spec=IndicadorRepository)
+    repository.listar.return_value = []
+    service = IndicadorService(repository)
+
+    resultado = service.consultar_historico(estado="AC", dimensao="renda")
+    
+    assert resultado["uf"] == "AC"
+    assert resultado["unidade"] is None
+    assert resultado["serie"] == []
+
+
+def test_consultar_historico_estado_invalido():
+    repository = Mock(spec=IndicadorRepository)
+    service = IndicadorService(repository)
+
+    with pytest.raises(EstadoInvalido):
+        service.consultar_historico(estado="XX", dimensao="renda")
+
+
