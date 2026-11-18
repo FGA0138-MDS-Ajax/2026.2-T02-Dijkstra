@@ -33,6 +33,7 @@ export const ESTADOS = [
 ];
 
 export const DIMENSOES = [
+    { valor: "idhm_geral", rotulo: "IDHM Geral" },
     { valor: "renda", rotulo: "Renda" },
     { valor: "educacao", rotulo: "Educação" },
     { valor: "longevidade", rotulo: "Longevidade" },
@@ -69,6 +70,7 @@ function preencherSelect(select, opcoes, rotuloTodos) {
         select.add(new Option(rotulo, valor));
     }
 }
+
 
 export function inicializarFiltros(aoMudar) {
     const selectEstado = document.getElementById(ID_ESTADO);

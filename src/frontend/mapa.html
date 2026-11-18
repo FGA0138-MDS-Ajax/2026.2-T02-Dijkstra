@@ -47,7 +47,7 @@
 
             <section class="filtros" aria-label="Filtros de indicadores">
                 <div class="filtros__campo">
-                    <label for="filtro-estado">Estado</label>
+                    <label for="filtro-estado">Estados</label>
                     <select id="filtro-estado" name="estado"></select>
                 </div>
                 <div class="filtros__campo">
@@ -55,9 +55,10 @@
                     <select id="filtro-dimensao" name="dimensao"></select>
                 </div>
                 <button type="button" id="filtro-limpar" class="filtros__limpar">Limpar filtros</button>
+                <button type="button" id="btn-exportar-csv" class="filtros__exportar">Exportar CSV</button>
             </section>
             <p id="filtros-resumo" class="filtros__resumo" role="status" aria-live="polite">
-                Escolha um estado e/ou uma dimensão para filtrar.
+                Escolha um estado, dimensão e/ou período para filtrar.
             </p>
 
             <div class="map-container" id="mapa-brasil"></div>
@@ -80,7 +81,7 @@
                 </div>
                 <button type="button" id="comparacao-limpar" class="filtros__limpar">Limpar Comparação</button>
             </div>
-                <p id="comparacao-status" class="filtros__resumo" role="status" aria-live="polite">
+            <p id="comparacao-status" class="filtros__resumo" role="status" aria-live="polite">
                 Selecione dois estados diferentes para comparar seus indicadores lado a lado.
             </p>
             <div id="comparacao-resultado" class="comparacao__resultado" hidden></div>
@@ -166,6 +167,40 @@
             <p class="footer-copy">© 2026 Brasil Hub. Projeto da disciplina MDS, UnB.</p>
         </footer>
     </div>
+
+    <dialog id="dialogo-exportar" class="exportar" aria-labelledby="exportar-titulo">
+    <header class="exportar__cabecalho">
+        <h2 id="exportar-titulo">Exportar dados em CSV</h2>
+        <button type="button" id="exportar-fechar" class="exportar__fechar" aria-label="Fechar painel de exportação">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+    </header>
+
+    <div class="exportar__corpo">
+        <p class="filtros__resumo">Marque o que deseja exportar. Um grupo sem nenhuma opção marcada exporta tudo.</p>
+
+        <fieldset id="exportar-estados">
+            <legend>Estados</legend>
+            <div class="exportar__opcoes"></div>
+        </fieldset>
+        <fieldset id="exportar-periodos">
+            <legend>Períodos</legend>
+            <div class="exportar__opcoes"></div>
+        </fieldset>
+        <fieldset id="exportar-dimensoes">
+            <legend>Dimensões</legend>
+            <div class="exportar__opcoes"></div>
+        </fieldset>
+    </div>
+
+    <footer class="exportar__rodape">
+        <p id="exportar-resumo" class="filtros__resumo" role="status" aria-live="polite"></p>
+        <div class="exportar__acoes">
+            <button type="button" id="exportar-limpar" class="filtros__limpar">Limpar seleção</button>
+            <button type="button" id="exportar-baixar" class="btn" disabled>Baixar CSV</button>
+        </div>
+    </footer>
+</dialog>
 
     <script type="module" src="js/main.js"></script>
 </body>
