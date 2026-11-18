@@ -60,7 +60,7 @@ A tabela abaixo correlaciona cada caso de teste do Documento de Visão com sua s
 | **TC-04** (Acessibilidade) | B-03 | Sistema | Manual (Interface) | Controles de escala tipográfica (`A+`/`A-`), alternância de tema escuro e modo de alto contraste homologados na barra de navegação (PR #70, #71). | `src/frontend/js/theme.js`<br>`src/frontend/css/variables.css` | **Aprovado ✅** |
 | **TC-05** (Upload de CSV) | B-04 | Sistema / Integração | Misto | **API:** `test_upload_sem_autenticacao_retorna_401()`, `test_upload_valido_retorna_sucesso()`, `test_linha_invalida_nao_grava_linhas_validas()`<br>**UI:** Envio via `painel-adm.html` (PR #60). | `tests/test_upload_indicadores.py`<br>`src/frontend/painel-adm.html` | **Aprovado ✅** |
 | **TC-06** (Desempenho ≤ 3s) | B-05 | Integração | Automatizado | `test_b05_dados_corretos_e_desempenho()` (tempo aferido < 0,5 s via `time.perf_counter()`). | `tests/test_funcionalidade_api.py` | **Aprovado ✅** |
-| **TC-07** (Dispositivos/Telas) | B-08 | Sistema | Manual (Interface) | Validação em Chrome, Firefox e Edge nas resoluções desktop (`1280x950`) e mobile (`360x800`, `414x846`, `712x1138`) na issue S6-02 (PR #63). | `src/frontend/css/style.css` | **Aprovado ✅** |
+| **TC-07** (Dispositivos/Telas) | B-08 | Sistema | Manual (Interface) | Validação em Chrome, Firefox e Edge nas resoluções desktop (`1280x950`) e mobile (`360x800`, `414x846`, `712x1138`) na issue S6-02 (PR #63). | `src/frontend/css/style.css` | **Reprovado ✅** |
 | **TC-08** (Senha com hash) | B-09 | Unitário / Integração | Automatizado | `test_autenticacao_sucesso()` (validação `bcrypt` e ocultação de hash)<br>`test_autenticacao_senha_incorreta()`<br>`test_login_com_credenciais_validas()` | `tests/test_auth_service.py`<br>`tests/test_funcionalidade_api.py` | **Aprovado ✅** |
 | **TC-09** (Comparar UFs) | B-06 | Sistema / Integração | Misto | **API/Service:** `test_comparacao_com_sucesso_anos_diferentes()`, `test_integracao_comparar_estados_iguais_mesmo_ano()`, `test_comparacao_sem_anos_encontra_mais_recente_comum()`<br>**UI:** Seleção lado a lado em `comparacao.js` (PR #76). | `tests/test_indicador_service.py`<br>`tests/test_funcionalidade_api.py`<br>`src/frontend/js/comparacao.js` | **Aprovado ✅** |
 | **TC-10** (Gráficos/Tabelas) | B-10 | Sistema / Integração | Misto | **API/Service:** `test_consultar_organizacao_dos_indicadores()`, `test_integracao_consulta_estrutura_tabela_e_grafico()`, `test_integracao_contrato_dados_para_tabela_e_grafico()`<br>**UI:** Sincronização entre gráfico e tabela (PR #78, #79). | `tests/test_indicador_service.py`<br>`tests/test_funcionalidade_api.py` | **Aprovado ✅** |
@@ -81,7 +81,7 @@ Abaixo estão registradas as evidências visuais da integração entre o Mapa In
 | **TI-04 — Tratamento visual de estado da API e resposta integrada** | ![Evidência TI-04](../assets/testes/S4-03/TI-04.png) |
 
 > **Nota para a Sprint 8 (Issue S8-04):** Os registros detalhados da bateria de homologação de sistema da Sprint 8 (`TC-03`, `TC-04`, `TC-05`, `TC-07`, `TC-09` e `TC-10`), contendo versão/commit, ambiente, dados utilizados, resultado obtido e novas capturas de tela, deverão ser anexados abaixo pelos responsáveis pela issue **S8-04**.
-
+Os registros detalhados da S8-04 (resultado, reparo, ciclo, data, commit, ambiente, responsável, dados utilizados e evidências) estão na Seção 6.2 de `docs/documentos/visao/testes.md`, e as capturas em `docs/assets/testes/sistema/`.
 ---
 
 ## 5. Como Executar a Suíte de Testes Localmente
