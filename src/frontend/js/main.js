@@ -1,5 +1,5 @@
 import { inicializarMapa } from "./map.js";
-import { inicializarFiltros, obterFiltros , atualizarOpcoesPeriodo} from "./filters.js";
+import { inicializarFiltros, obterFiltros } from "./filters.js";
 import { buscarIndicadores, API_BASE_URL, ErroApi, verificarSaude } from "./api_client.js";
 import { inicializarComparacao } from "./comparacao.js";
 import { inicializarPainelExportacao } from "./export_panel.js";
@@ -13,24 +13,12 @@ const mensagemStatus = document.getElementById("status-mensagem");
 const botaoTentar = document.getElementById("status-tentar");
 const botaoExportar = document.getElementById("btn-exportar-csv");
 
-const periodosConhecidos = new Set();
-
-function registrarPeriodos(lista) {
-    if (!Array.isArray(lista) || lista.length === 0) return;
-    for (const item of lista) {
-        if (item?.periodo_referencia !== undefined && item?.periodo_referencia !== null) {
-            periodosConhecidos.add(String(item.periodo_referencia));
-        }
-    }
-    atualizarOpcoesPeriodo([...periodosConhecidos]);
-}
 
 
 const { mapa, atualizarIndicadores } = inicializarMapa("mapa-brasil", {
     aoCarregarDadosIniciais(dados) {
         if (ultimaRequisicao > 0) return;
         dadosFiltradosAtuais = Array.isArray(dados) ? dados : [];
-        registrarPeriodos(dadosFiltradosAtuais);
         atualizarEstadoExportacao();
     },
 });
@@ -147,7 +135,6 @@ async function aoMudarFiltros(filtros) {
         console.log("[Brasil Hub] indicadores recebidos:", dados);
 
         dadosFiltradosAtuais = Array.isArray(dados) ? dados : [];
-        registrarPeriodos(dadosFiltradosAtuais);
         atualizarEstadoExportacao();
 
         if (dadosFiltradosAtuais.length === 0) {
