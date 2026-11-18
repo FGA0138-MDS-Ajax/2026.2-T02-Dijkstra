@@ -9,4 +9,4 @@ python-multipart
 
 # Testes
 pytest
-httpx # dependência usada pelo TestClient do FastAPI
+httpx2 # dependência usada pelo TestClient do FastAPI

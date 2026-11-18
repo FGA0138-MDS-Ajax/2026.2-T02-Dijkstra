@@ -437,7 +437,7 @@ def auth_com_banco_temporario(monkeypatch):
         get_auth_service,
         lambda: AuthService(repository, PasswordHasher()),
     )
-    yield
+    yield get_test_connection
 
     with psycopg.connect(database_url) as conn:
         conn.execute(sql.SQL("DROP SCHEMA {} CASCADE").format(sql.Identifier(schema)))
@@ -484,6 +484,21 @@ def test_rota_protegida_sem_autenticacao(auth_com_banco_temporario):
     data = response.json()
     assert data["detail"] == "Autenticação necessária"
     assert response.headers["WWW-Authenticate"] == "Basic"
+
+# [S8-03] teste de consulta direta faltante da TC-08
+def test_senha_administrativa_nao_fica_legivel_no_banco(auth_com_banco_temporario):
+    get_test_connection = auth_com_banco_temporario
+
+    with get_test_connection() as conn:
+        registro = conn.execute(
+            "SELECT * FROM administradores WHERE usuario = %s",  # <-- coloque aqui o nome real da tabela
+            (ADMIN_TESTE,),
+        ).fetchone()
+
+    assert registro is not None
+    valores_persistidos = [str(v) for v in registro.values() if v is not None]
+    assert SENHA_TESTE not in valores_persistidos
+    assert all(SENHA_TESTE not in valor for valor in valores_persistidos)
 
 
 def test_raiz_retorna_status_200():
@@ -584,11 +599,7 @@ def test_painel_admin_com_credenciais_validas(auth_com_banco_temporario):
     assert data["mensagem"] == f"Bem-vindo, {ADMIN_TESTE}."
     assert "admin_id" in data
 
-#espera erro, se um dia corrigirem só remover o @pytest.mark.xfail
-@pytest.mark.xfail(
-    reason="O FastAPI verifica extensões com string pura na rota. Decidir se iremos suportar .CSV em maiusculo.",
-    strict=False,
-)
+
 def test_upload_extensao_csv_maiuscula_deveria_ser_aceita(auth_com_banco_temporario, monkeypatch):
     class MockImportacaoRapida:
         def processar_upload(self, file): return 1
