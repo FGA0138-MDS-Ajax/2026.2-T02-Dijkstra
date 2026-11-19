@@ -65,9 +65,15 @@ Para garantir o atendimento pleno aos requisitos do Backlog, a Tabela 19 apresen
 - **Objetivo:** Verificar a associação entre indicador, valor e UF, incluindo legenda.
 - **Pré-condição:** Mapa Leaflet disponível; camada geográfica e fixture com códigos de UF e valores conhecidos; legenda/escala definidas.
 - **Resultado esperado:** Cada valor aparece na UF correta e corresponde à faixa indicada na legenda. A seleção ou tooltip mostra indicador, período e unidade previstos. Rejeitar se valor/UF/legenda estiverem incorretos ou se informação essencial estiver ausente.
-- **Resultado realizado:** Não executado
+- **Resultado realizado:** Aprovado. O mapa exibe cada UF com a cor da faixa correspondente na legenda, e o popup mostra o nome da UF, o ano e os valores das quatro dimensões. Os valores do Distrito Federal conferem com os CSVs: 2024 (geral 0,866; educação 0,851; longevidade 0,913; renda 0,837), 2010 (0,824; 0,742; 0,873; 0,863) e 1991 (0,616; 0,419; 0,731; 0,762). O DF aparece em “Muito alto” em 2024 e 2010 (≥ 0,800) e em “Médio” em 1991 (0,616). Ao trocar o ano, as cores do mapa e os valores do popup mudam de forma coerente: em 1991 o mapa fica quase todo em “Muito baixo”, e em 2024 quase todo em “Alto” e “Muito alto”. O filtro de dimensão “renda” mostra apenas esse indicador no popup (DF 2024 = 0,837).
 - **Reparo:** Nenhum
-- **Ciclo:** 0
+-- **Ciclo:** 1
+- **Data:** 18/11/2026
+- **Versão/Commit:** `1846655`
+- **Ambiente:** Local (WSL + Docker Compose, nginx em :3000), Chrome e Edge
+- **Responsável:** Lucas
+- **Dados utilizados:** fixture TESTE (seed 42; IDHM; 27 UFs; 1991, 2010 e 2024)
+- **Evidência:** `../../assets/testes/sistema/TC-03_mapa_geral_1991.png`, `../../assets/testes/sistema/TC-03_mapa_geral_2010.png`, `../../assets/testes/sistema/TC-03_mapa_geral_2024.png`, `../../assets/testes/sistema/TC-03_mapa_renda.png`
 
 ### TC-04 — Usar as opções de acessibilidade
 
@@ -76,9 +82,15 @@ Para garantir o atendimento pleno aos requisitos do Backlog, a Tabela 19 apresen
 - **Objetivo:** Verificar tamanho de fonte, modo noturno e alto contraste previstos no requisito.
 - **Pré-condição:** Opções implementadas; versão de homologação disponível; checklist simples de verificação aprovado pelo grupo.
 - **Resultado esperado:** Cada opção altera a apresentação conforme sua função sem ocultar filtros, mapa, legenda ou valores. Controles essenciais permanecem localizáveis e utilizáveis. Rejeitar se um recurso não funcionar ou tornar informação/controle essencial ilegível ou inacessível.
-- **Resultado realizado:** Não executado
+- **Resultado realizado:** Aprovado. O tamanho da fonte tem três níveis (padrão, grande e extra grande): o botão A− fica desabilitado no padrão e o A+ no nível máximo, e o cabeçalho, o mapa, o popup e a legenda continuam visíveis e legíveis nos três. O modo noturno aplica fundo escuro, e o popup, os seletores e a legenda continuam legíveis. O alto contraste aplica fundo preto com texto amarelo/branco e links sublinhados, e o popup e a legenda permanecem legíveis. Na navegação por teclado, o foco aparece com contorno laranja visível no botão do tema. Em nenhuma opção filtros, mapa, legenda ou valores ficaram ocultos.
 - **Reparo:** Nenhum
-- **Ciclo:** 0
+- **Ciclo:** 1
+- **Data:** 18/11/2026
+- **Versão/Commit:** `1846655`
+- **Ambiente:** Local (WSL + Docker Compose, nginx em :3000), Chrome e Edge
+- **Responsável:** Lucas
+- **Dados utilizados:** fixture TESTE (seed 42; IDHM; 27 UFs; 1991, 2010 e 2024)
+- **Evidência:** `../../assets/testes/sistema/TC-04_contraste.png`, `../../assets/testes/sistema/TC-04_foco_teclado`, `../../assets/testes/sistema/TC-04_fonte_extra_grande.png`, `../../assets/testes/sistema/TC-04_fonte_grande.png`, `../../assets/testes/sistema/TC-04_fonte_padrao.png`, `../../assets/testes/sistema/TC-04_modo_noturno.png`
 
 ### TC-05 — Permitir upload de arquivo CSV somente ao administrador
 
@@ -87,9 +99,15 @@ Para garantir o atendimento pleno aos requisitos do Backlog, a Tabela 19 apresen
 - **Objetivo:** Verificar autenticação, autorização e upload de arquivo válido.
 - **Pré-condição:** Arquivos CSV válido e inválido preparados.
 - **Resultado esperado:** Administrador autenticado envia CSV válido e a base é atualizada com os registros corretos. Visitante não acessa a função. Arquivo inválido é rejeitado com mensagem clara.
-- **Resultado realizado:** Não executado
+- **Resultado realizado:** Aprovado. O administrador autenticado acessa o painel e envia o idhm_geral_uf.csv modificado (Acre 2024 alterado de 0,754 para 0,999); o painel exibe “Dados atualizados” e “atualização concluída”. Em seguida o mapa passa a mostrar o Acre 2024 com idhm_geral = 0,999, o que confirma a gravação na base. O arquivo inválido (invalido_colunas.csv) é rejeitado com a mensagem definida.
 - **Reparo:** Nenhum
-- **Ciclo:** 0
+- **Ciclo:** 1
+- **Data:** 18/11/2026
+- **Versão/Commit:** `1846655`
+- **Ambiente:** Local (WSL + Docker Compose, nginx em :3000), Chrome e Edge
+- **Responsável:** Lucas
+- **Dados utilizados:** fixture TESTE (seed 42; IDHM; 27 UFs; 1991, 2010 e 2024)
+- **Evidência:** `../../assets/testes/sistema/TC-05_base_valida.png`, `../../assets/testes/sistema/TC-05_login_admin.png`, `../../assets/testes/sistema/TC-05_upload_invalido.png`, `../../assets/testes/sistema/TC-05_upload_valido.png`
 
 ### TC-06 — Responder à consulta de filtro em até 3 segundos
 
@@ -116,8 +134,7 @@ Para garantir o atendimento pleno aos requisitos do Backlog, a Tabela 19 apresen
 - **Versão/Commit:** `1846655`
 - **Ambiente:** Local (WSL + Docker Compose, nginx em :3000), Chrome e Edge
 - **Responsável:** Felipe
-- **Dados utilizados:** fixture TESTE (seed 42; IDHM; 27 UFs; 1991, 2000, 2010 e 2021)
-- **Evidência:** `../../assets/testes/sistema/TC-07_chrome_360px.png`, `../../assets/testes/sistema/TC-07_edge_360px.png`
+- **Evidência:** `../../assets/testes/sistema/TC-06_chrome_360px.png`, `../../assets/testes/sistema/TC-07_edge_360px.png`
 
 ### TC-08 — Proteger a senha administrativa armazenada
 
