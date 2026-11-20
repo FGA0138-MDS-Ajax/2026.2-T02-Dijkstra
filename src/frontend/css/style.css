@@ -1311,3 +1311,355 @@ html[data-theme="high-contrast"] #visualizacao-grafico .barra {
     #visualizacao-grafico .linha-eixo     { grid-template-columns: minmax(0, 1fr) var(--col-valor); }
     #visualizacao-grafico .eixo           { grid-column: 1; }
 }
+.sobre-container {
+    max-width: 70rem;
+    margin: 0 auto;
+    padding: var(--space-2) 0 var(--space-4);
+}
+
+.sobre-hero {
+    text-align: center;
+    margin-bottom: var(--space-5);
+    background-color: var(--color-surface-soft);
+    padding: var(--space-5);
+    border-radius: var(--space-3);
+}
+
+.sobre-hero h1 {
+    font-size: var(--font-size-3);
+    color: var(--color-primary);
+    margin: 0 0 var(--space-2) 0;
+    font-weight: 400;
+}
+
+.sobre-hero .lead {
+    font-size: var(--font-size-2);
+    color: var(--color-text-muted);
+    max-width: 65ch;
+    margin: 0 auto;
+    line-height: 1.5;
+}
+
+.sobre-secao {
+    margin-bottom: var(--space-5);
+    text-align: center; /* Centraliza textos soltos da seção */
+}
+
+.sobre-secao h2 {
+    font-size: var(--font-size-2);
+    color: var(--color-primary);
+    margin: 0 0 var(--space-2) 0;
+    font-weight: 400;
+    text-align: center; /* Centraliza os títulos h2 */
+}
+
+.sobre-secao > p {
+    color: var(--color-text);
+    line-height: 1.6;
+    margin: 0 auto var(--space-3) auto; /* Margem auto centraliza o bloco de texto */
+    max-width: 70ch;
+    text-align: center; /* Centraliza os parágrafos descritivos */
+}
+
+/* Grid das 3 Dimensões do IDH */
+.sobre-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-2);
+}
+.flip-card {
+    background-color: transparent;
+    width: 100%;
+    height: 240px; 
+    perspective: 1000px;
+    cursor: pointer;
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+    transform-style: preserve-3d;
+}
+
+.flip-card.flipped .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+.flip-card-front, 
+.flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center; /* Centraliza o texto interno dos cards */
+    padding: var(--space-3);
+    box-sizing: border-box;
+    background-color: var(--color-surface-soft);
+    border: max(1px, var(--border-width)) solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--box-shadow);
+}
+
+.flip-card-front .icone {
+    display: inline-block;
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-bottom: var(--space-2);
+    background-color: var(--color-primary);
+}
+
+.flip-card-front .icone-saude {
+    -webkit-mask-image: url('../assets/icons/health.svg');
+    mask-image: url('../assets/icons/health.svg');
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+}
+
+.flip-card-front .icone-educacao {
+    -webkit-mask-image: url('../assets/icons/education.svg');
+    mask-image: url('../assets/icons/education.svg');
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+}
+
+.flip-card-front .icone-renda {
+    -webkit-mask-image: url('../assets/icons/money.svg');
+    mask-image: url('../assets/icons/money.svg');
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+}
+
+.flip-card-front h3 {
+    color: var(--color-primary);
+    font-size: var(--font-size-1);
+    margin: 0;
+    font-weight: 400;
+}
+
+.flip-card-back {
+    color: var(--color-text);
+    transform: rotateY(180deg);
+    background-color: var(--color-surface-soft);
+}
+
+.flip-card-back p {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-0);
+    margin: 0;
+    line-height: 1.5;
+    text-align: center;
+}
+
+/* Caixa de destaque das fontes de dados */
+.sobre-box-destaque {
+    background-color: var(--color-surface-soft);
+    border: max(1px, var(--border-width)) solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-3);
+    box-shadow: var(--box-shadow);
+    text-align: center; /* Centraliza o texto dentro da caixa */
+}
+
+.sobre-box-destaque p {
+    margin: 0 0 var(--space-1-5) 0;
+    line-height: 1.6;
+    color: var(--color-text);
+    text-align: center;
+}
+
+.sobre-box-destaque p:last-child {
+    margin-bottom: 0;
+}
+
+.sobre-conteudo {
+    display: flex;
+    align-items: center; 
+    gap: var(--space-3);   
+}
+
+.sobre-conteudo .sobre-box-destaque {
+    flex: 1; 
+    margin: 0; 
+}
+
+.imagens-sobre {
+    display: flex;
+    justify-content: center;
+    align-items: center;  
+    gap: var(--space-5);    
+    margin-top: var(--space-4); 
+    flex-wrap: wrap;         
+}
+
+
+.logo-instituicao {
+    max-height: 3.5rem;      
+    width: auto;            
+    object-fit: contain;
+}
+
+@media (max-width: 48rem) {
+    .sobre-conteudo {
+        flex-direction: column;
+    }
+}
+
+/* Grid da Equipe */
+.sobre-grid-equipe {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-2);
+}
+
+.membro-card {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    background-color: var(--color-surface);
+    border: max(1px, var(--border-width)) solid var(--color-border);
+    border-radius: var(--radius);
+    padding: var(--space-2);
+    box-shadow: var(--box-shadow);
+    text-decoration: none;
+    transition: transform var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+
+.membro-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-primary);
+}
+
+.membro-foto {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--color-border);
+}
+
+.membro-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-0);
+    text-align: left; 
+}
+
+.membro-info strong {
+    color: var(--color-primary);
+    font-size: var(--font-size-1);
+}
+
+.membro-info span {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-0);
+}
+
+@media (max-width: 56rem) {
+    .sobre-grid-3 {
+        grid-template-columns: 1fr;
+    }
+    .sobre-grid-equipe {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 36rem) {
+    .sobre-grid-equipe {
+        grid-template-columns: 1fr;
+    }
+}
+.projeto-links-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-2);
+    max-width: 55rem;
+    margin: 0 auto;
+}
+
+.projeto-card-link {
+    display: flex;
+    align-items: center; 
+    gap: var(--space-2);
+    background-color: var(--color-surface-soft);
+    border: max(1px, var(--border-width)) solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-2) var(--space-3);
+    box-shadow: var(--box-shadow);
+    text-decoration: none;
+    transition: transform var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+
+.projeto-card-link:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-primary);
+}
+
+.projeto-card-link .icone {
+    display: inline-block;
+    width: 2.5rem;
+    height: 2.5rem;
+    flex-shrink: 0;
+    background-color: var(--color-primary);
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+}
+
+.icone-github {
+    -webkit-mask-image: url('../assets/icons/github.svg');
+    mask-image: url('../assets/icons/github.svg');
+}
+
+.icone-documento {
+    -webkit-mask-image: url('../assets/icons/document.svg');
+    mask-image: url('../assets/icons/document.svg');
+}
+
+.projeto-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-0);
+    text-align: left; 
+}
+
+.projeto-info strong {
+    font-family: 'Aclonica', sans-serif; 
+    font-weight: 700;                   
+    color: var(--color-primary);
+    font-size: var(--font-size-1);
+}
+
+.projeto-info span {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-0);
+    line-height: 1.4;
+}
+
+
+@media (max-width: 48rem) {
+    .projeto-links-grid {
+        grid-template-columns: 1fr;
+    }
+}
