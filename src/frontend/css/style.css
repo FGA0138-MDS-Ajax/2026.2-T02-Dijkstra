@@ -578,6 +578,148 @@ body:has(dialog[open]) { overflow: hidden; }
     #exportar-baixar { order: -1; } 
 }
 
+
+/*indicadores e card*/
+
+.indicators-section {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: var(--space-3) var(--space-2);
+    text-align: center;
+    margin-bottom: var(--space-4);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.indicators-section .item {
+    padding: 0 var(--space-2);
+}
+
+.indicators-section .item:not(:last-child) {
+    border-right: 2px solid var(--color-border);
+}
+
+.indicators-section strong {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: var(--font-size-2);
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: var(--space-0);
+}
+
+.indicators-section span {
+    font-size: var(--font-size-1);
+    color: var(--color-text-muted);
+}
+
+
+.titulo, 
+h2 {
+    text-align: center;
+    margin-bottom: var(--space-4); 
+}
+
+.about-call, 
+.cta-wrapper {
+    text-align: center;
+    margin-bottom: var(--space-4);
+}
+
+.about-call .btn {
+    width: 15rem;
+    font-size: var(--font-size-2);
+}
+
+@media (max-width: 48rem) {
+    .indicators-section {
+        grid-template-columns: 1fr;
+        gap: var(--space-2);
+    }
+    
+    .indicators-section .item:not(:last-child) {
+        border-right: none;
+        border-bottom: 1px solid var(--color-border);
+        padding-bottom: var(--space-2);
+    }
+}
+
+
+.cards-information {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
+}
+
+.cards-information .card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    text-decoration: none;
+    background-color: var(--color-surface);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-3) var(--space-2);
+    box-shadow: var(--box-shadow);
+    transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+
+.cards-information .card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--color-primary);
+}
+.cards-information .card .icone {
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    margin-bottom: var(--space-2);
+    background-color: var(--color-primary); /* Puxa o verde no tema claro, verde-claro no escuro e amarelo no alto contraste */
+    
+    -webkit-mask-image: var(--icon-url);
+    mask-image: var(--icon-url);
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+}
+
+/* Se no tema escuro ou alto contraste precisar de ajustar a cor  */
+html[data-theme="dark"] .cards-information .card .icone {
+    filter: brightness(0.9);
+}
+
+.cards-information .card h3 {
+    font-size: var(--font-size-1);
+    color: var(--color-primary);
+    margin: 0 0 var(--space-1) 0;
+    font-weight: 600;
+}
+
+.cards-information .card p {
+    font-size: var(--font-size-0);
+    color: var(--color-text-muted);
+    margin: 0;
+    line-height: 1.4;
+}
+
+@media (max-width: 64rem) {
+    .cards-information {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 40rem) {
+    .cards-information {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+
 /*rodapéee*/
 
 .site-footer {
