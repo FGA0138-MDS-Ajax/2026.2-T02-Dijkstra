@@ -81,6 +81,6 @@ Para assegurar qualidade técnica, propriedade coletiva do código e entregas co
 | Atributo | Descrição |
 | :--- | :--- |
 | **Instituição** | Universidade de Brasília (UnB) — Campus Gama (FGA) |
-| **Curso** | Bacharelado em Engenharia de Software |
+| **Curso** | Engenharia de Software |
 | **Disciplina** | Métodos de Desenvolvimento de Software (MDS) — Semestre 2026.2 |
 | **Professor Orientador** | Prof. Dr. Ajax |

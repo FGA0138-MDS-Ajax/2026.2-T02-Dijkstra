@@ -242,23 +242,15 @@
     display: inline-block;
 }
 
-/* Hero Principal (Grid Assimétrico com Divisória Hairline 1px) */
+/* Hero Principal (Caixa Única Editorial com Mapa Compacto Flutuante à Direita) */
 .md-typeset .bh-hero {
-    display: grid;
-    grid-template-columns: 1.35fr 1fr;
+    display: block;
+    overflow: hidden;
+    padding: 2rem 2.25rem;
     border: 1px solid var(--bh-border);
     background: var(--bh-bg-elevated);
     position: relative;
     margin: 0;
-}
-
-/* Coluna Esquerda do Hero */
-.md-typeset .bh-hero-text {
-    padding: 2.5rem 2.25rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    border-right: 1px solid var(--bh-border);
 }
 
 .md-typeset .bh-kicker {
@@ -268,7 +260,7 @@
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: #2a7f40;
-    margin: 0 0 0.65rem 0 !important;
+    margin: 0 0 0.55rem 0 !important;
     display: block;
 }
 
@@ -276,24 +268,28 @@
     color: #6ede8a;
 }
 
-.md-typeset .bh-hero-text h3 {
-    font-size: 2.25rem !important;
+.md-typeset .bh-hero h3 {
+    font-size: 2.15rem !important;
     font-weight: 800 !important;
-    line-height: 1.14 !important;
+    line-height: 1.15 !important;
     letter-spacing: -0.03em !important;
     color: var(--bh-text-main) !important;
-    margin: 0 0 1rem 0 !important;
+    margin: 0 0 0.9rem 0 !important;
 }
 
-.md-typeset .bh-hero-text p {
-    font-size: 0.94rem !important;
+.md-typeset .bh-hero p {
+    font-size: 0.92rem !important;
     line-height: 1.65 !important;
     color: var(--bh-text-muted) !important;
-    margin: 0 0 1.25rem 0 !important;
+    margin: 0 0 0.85rem 0 !important;
 }
 
-.md-typeset .bh-hero-text p:last-child {
-    margin-bottom: 0 !important;
+.md-typeset .bh-hero-actions {
+    display: block;
+    clear: both;
+    padding-top: 0.85rem;
+    margin-top: 0.5rem;
+    border-top: 1px dashed var(--bh-border);
 }
 
 /* Botões Editoriais */
@@ -301,7 +297,7 @@
     border-radius: 6px !important;
     font-weight: 600 !important;
     font-size: 0.82rem !important;
-    padding: 0.58rem 1.1rem !important;
+    padding: 0.55rem 1.1rem !important;
     transition: all 0.18s ease !important;
     border: 1px solid var(--bh-border) !important;
     color: var(--bh-text-main) !important;
@@ -334,20 +330,18 @@
     color: #ffffff !important;
 }
 
-/* Coluna Direita do Hero: Painel Cartográfico */
-.md-typeset .bh-hero-image {
-    padding: 1.6rem 1.85rem;
+/* Card Compacto do Mapa (Flutuante à Direita, sem ocupar metade da tela) */
+.md-typeset .bh-hero-map {
+    float: right;
+    width: 245px;
+    margin: 0 0 1rem 1.75rem;
+    padding: 0.85rem 1rem;
     background-color: var(--bh-bg-subtle);
     background-image: radial-gradient(var(--bh-border) 1px, transparent 1px);
-    background-size: 18px 18px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    position: relative;
-}
-
-.md-typeset .bh-hero-image p {
-    margin: 0 !important;
+    background-size: 14px 14px;
+    border: 1px solid var(--bh-border);
+    border-radius: 10px;
+    display: block;
 }
 
 .md-typeset .bh-specimen-header {
@@ -355,25 +349,25 @@
     align-items: center;
     justify-content: space-between;
     font-family: "JetBrains Mono", monospace;
-    font-size: 0.66rem;
+    font-size: 0.62rem;
     color: var(--bh-text-muted);
     border-bottom: 1px dashed var(--bh-border);
-    padding-bottom: 0.55rem;
+    padding-bottom: 0.35rem;
     width: 100%;
 }
 
-.md-typeset .bh-hero-image img {
-    max-width: 220px;
+.md-typeset .bh-hero-map img {
+    max-width: 175px;
     width: 100%;
     height: auto;
-    margin: 1rem auto;
+    margin: 0.6rem auto;
     display: block;
-    filter: drop-shadow(0 14px 24px rgba(31, 90, 46, 0.16));
+    filter: drop-shadow(0 10px 18px rgba(31, 90, 46, 0.16));
     transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.md-typeset .bh-hero-image:hover img {
-    transform: scale(1.035);
+.md-typeset .bh-hero-map:hover img {
+    transform: scale(1.04);
 }
 
 /* Escala Coroplética Real do Projeto (5 faixas do variables.css) */
@@ -736,12 +730,7 @@
    ========================================================================== */
 @media (max-width: 960px) {
     .md-typeset .bh-hero {
-        grid-template-columns: 1fr;
-    }
-    .md-typeset .bh-hero-text {
-        border-right: none;
-        border-bottom: 1px solid var(--bh-border);
-        padding: 2rem 1.5rem;
+        padding: 1.5rem;
     }
     .md-typeset .grid.cards > ul {
         grid-template-columns: 1fr;
@@ -751,7 +740,13 @@
     }
 }
 
-@media (max-width: 520px) {
+@media (max-width: 640px) {
+    .md-typeset .bh-hero-map {
+        float: none;
+        width: 100%;
+        max-width: 245px;
+        margin: 0 auto 1.25rem;
+    }
     .md-typeset .bh-team-grid {
         grid-template-columns: 1fr;
     }

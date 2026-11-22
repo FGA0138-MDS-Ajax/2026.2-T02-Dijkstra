@@ -5,29 +5,21 @@
 
 <div class="bh-hero" markdown>
 
-<div class="bh-hero-text" markdown>
+<span class="bh-hero-map"><span class="bh-specimen-header"><span>MALHA (27 UFs)</span><span>IBGE</span></span><img src="assets/brasil-map.png" alt="Malha Cartográfica Oficial do Brasil Hub"><span class="bh-choropleth-bar"><span class="bh-choropleth-title"><span>ESCALA IDHM</span><span>[0,0 — 1,0]</span></span><span class="bh-choropleth-scale"><span class="bh-scale-1"></span><span class="bh-scale-2"></span><span class="bh-scale-3"></span><span class="bh-scale-4"></span><span class="bh-scale-5"></span></span><span class="bh-choropleth-labels"><span>&lt; 0,500</span><span>0,650</span><span>&ge; 0,800</span></span></span></span>
 
 <span class="bh-kicker">OBSERVATÓRIO TERRITORIAL • IBGE & PNUD (1991–2024)</span>
 
 ### Cartografia e inteligência de dados sobre o <span class="bh-serif">desenvolvimento humano</span> brasileiro.
 
-O **Brasil Hub** estrutura séries históricas oficiais de **IDHM Geral**, **Renda**, **Educação** e **Longevidade** das 27 Unidades Federativas em uma arquitetura orientada a serviços, combinando visualização coroplética interativa, comparação interestadual e evolução temporal.
+O **Brasil Hub** estrutura séries históricas oficiais de **IDHM Geral**, **Renda**, **Educação** e **Longevidade** das 27 Unidades Federativas em uma arquitetura orientada a serviços, combinando visualização coroplética interativa via `Leaflet.js`, comparação direta lado a lado entre estados e análise de evolução temporal.
 
+Desenvolvido na disciplina de **Métodos de Desenvolvimento de Software (UnB/FGA)** pela **Equipe Dijkstra**, o projeto integra pipeline de higienização tabular com `Pandas`, API RESTful em `FastAPI`, persistência relacional transacional e suíte automatizada de integração contínua.
+
+<span class="bh-hero-actions">
 [Documento de Visão →](documentos/visao/index.md){ .md-button .md-button--primary }
 [Arquitetura de Software](documentos/arquitetura/index.md){ .md-button }
 [Ponto de Controle 1](acompanhamento/ponto-controle-1.md){ .md-button }
-
-</div>
-
-<div class="bh-hero-image" markdown>
-
-<span class="bh-specimen-header"><span>FIG. 01 — MALHA TERRITORIAL (27 UFs)</span><span>LEAFLET + GEOJSON</span></span>
-
-![Malha Cartográfica Oficial do Brasil Hub](assets/brasil-map.png)
-
-<span class="bh-choropleth-bar"><span class="bh-choropleth-title"><span>ESCALA COROPLÉTICA (IDHM)</span><span>[0,000 — 1,000]</span></span><span class="bh-choropleth-scale"><span class="bh-scale-1"></span><span class="bh-scale-2"></span><span class="bh-scale-3"></span><span class="bh-scale-4"></span><span class="bh-scale-5"></span></span><span class="bh-choropleth-labels"><span>&lt; 0,500 (Baixo)</span><span>0,650</span><span>&ge; 0,800 (Muito Alto)</span></span></span>
-
-</div>
+</span>
 
 </div>
 
