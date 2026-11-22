@@ -1,0 +1,27 @@
+{
+  "name": "2026.2-t02-dijkstra",
+  "version": "1.0.0",
+  "description": "### Plataforma de visualização de indicadores socioeconômicos do Brasil",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FGA0138-MDS-Ajax/2026.2-T02-Dijkstra.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FGA0138-MDS-Ajax/2026.2-T02-Dijkstra/issues"
+  },
+  "homepage": "https://github.com/FGA0138-MDS-Ajax/2026.2-T02-Dijkstra#readme",
+  "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "^1.65.1",
+    "@types/node": "^26.6.6"
+  }
+}

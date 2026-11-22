@@ -47,8 +47,7 @@ export function inicializarLinhaTempo() {
     const grafico = document.getElementById(ID_GRAFICO);
 
     if (!selectEstado || !selectDimensao || !botaoLimpar || !status || !resultado || !tituloResultado || !grafico) {
-        console.error("Elementos do DOM não encontrados para a linha do tempo.");
-        return;
+        return; // não inicializa se algum elemento estiver faltando
     }
     preencherSelectEstado(selectEstado, "Selecione o estado");
     preencherSelectDimensao(selectDimensao, "Selecione a dimensão");
