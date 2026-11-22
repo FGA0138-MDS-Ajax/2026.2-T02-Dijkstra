@@ -19,3 +19,6 @@ site/
 # Ignora dados locais na raiz, preservando o marcador da pasta.
 /data/*
 !/data/.gitkeep
+/node_modules/
+/playwright-report/
+/test-results/
