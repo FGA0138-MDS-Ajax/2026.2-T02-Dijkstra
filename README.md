@@ -56,7 +56,7 @@ A aplicação utiliza arquitetura em camadas desacopladas para separar interface
 | **Tratamento de dados** | Pandas | Leitura, padronização, limpeza e ingestão de planilhas CSV |
 | **Banco de dados** | PostgreSQL 17 | Persistência relacional de indicadores e credenciais |
 | **Conteinerização** | Docker e Docker Compose | Padronização e isolamento do ambiente de execução local e de CI |
-| **Testes automatizados** | Pytest | Testes unitários, de integração e de desempenho da API |
+| **Testes automatizados** | Pytest e Playwright | Testes unitários, de integração e de desempenho da API (Pytest) e testes de front-end no navegador (Playwright) |
 | **Documentação** | MkDocs Material | Centralização dos documentos de visão, arquitetura e acompanhamento |
 
 ---
@@ -181,6 +181,54 @@ python -m pytest -q
 .\.venv\Scripts\python.exe -m pytest -q
 ```
 
+### Testes de front-end (Playwright)
+
+A suíte de front-end valida, pelo navegador, os fluxos do usuário: filtros, mapa interativo, comparação entre estados, valores oficiais, área administrativa, acessibilidade e responsividade. Os testes rodam no **Chromium**, **Firefox** e **WebKit** e ficam em `tests/test_front/`.
+
+| Caso | O que valida | Arquivo |
+| :--- | :--- | :--- |
+| CT-FE-01 | Carregamento das páginas sem erros de console | `index.spec.js`, `mapa.spec.js` |
+| CT-FE-02 e 03 | Filtros por estado e por dimensão do IDH | `mapa.spec.js` |
+| CT-FE-04 | Valores exibidos iguais aos CSVs oficiais de `data/raw` | `valores-oficiais.spec.js` |
+| CT-FE-05 e 06 | Comparação entre estados e mapa interativo (Leaflet) | `mapa.spec.js` |
+| CT-FE-07 | Mensagens de erro e de estado vazio (API simulada) | `erros.spec.js` |
+| CT-FE-08 e 09 | Login e upload de CSV da área administrativa | `area-adm.spec.js` |
+| CT-FE-10 e 11 | Acessibilidade (axe-core e teclado) e responsividade | `acessibilidade.spec.js` |
+
+> Os testes de erro e de upload simulam a API com `route.fulfill`, então **nenhum teste altera o banco de dados**.
+
+**Pré-requisitos:** Node.js (versão LTS) e a aplicação rodando com os dados oficiais (Passos 3 e 4 acima).
+
+```bash
+# 1. Instalar as dependências e os navegadores (apenas na primeira vez)
+npm install
+npx playwright install
+
+# 2. Rodar todos os testes
+npx playwright test
+
+# 3. Abrir o relatório no navegador
+npx playwright show-report
+```
+
+**Comandos úteis:**
+
+```bash
+# Rodar só em um navegador (mais rápido)
+npx playwright test --project=chromium
+
+# Rodar um arquivo específico
+npx playwright test mapa.spec.js
+
+# Modo visual, com o navegador abrindo e clicando
+npx playwright test --ui
+
+# Incluir o teste de login com sucesso (usa as credenciais do seu .env)
+ADMIN_USUARIO=admin ADMIN_SENHA=sua-senha npx playwright test area-adm
+```
+
+> Sem `ADMIN_USUARIO` e `ADMIN_SENHA`, o teste de login com sucesso aparece como **pulado** no relatório. Os testes de teclado também são pulados no WebKit, porque o Safari não navega por formulários com Tab por padrão.
+
 ---
 
 ## Organização do repositório
@@ -194,7 +242,8 @@ brasil-hub/
 │   ├── auth/           # Autenticação e hash de senhas (bcrypt)
 │   ├── data/           # Scripts de tratamento e ingestão de CSV (Pandas)
 │   └── database/       # Conexão e repositórios relacionais (PostgreSQL)
-├── tests/              # Suíte de testes automatizados com Pytest
+├── tests/              # Testes automatizados (Pytest)
+│   └── test_front/     # Testes de front-end (Playwright) e page objects
 ├── data/raw/           # Planilhas CSV brutas de indicadores socioeconômicos
 ├── docs/               # Documentação técnica e acompanhamento (MkDocs)
 ├── scripts/            # Scripts utilitários de suporte e carga
@@ -202,6 +251,8 @@ brasil-hub/
 ├── Dockerfile          # Imagem de produção do serviço de back-end
 ├── requirements.txt    # Dependências de bibliotecas Python
 ├── mkdocs.yml          # Configuração do gerador de documentação
+├── playwright.config.js # Configuração dos testes de front-end
+├── package.json        # Dependências de testes de front-end (Node.js)
 └── README.md           # Apresentação do projeto
 ```
 
