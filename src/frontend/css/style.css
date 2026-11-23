@@ -960,13 +960,34 @@ html[data-theme="dark"] #seletor-ano {
     padding: 1rem;
 }
 
+.comparacao__card h3 {
+    margin: 0 0 var(--space-1);
+    color: var(--color-primary);
+    font-size: var(--font-size-1);
+}
+
+.comparacao__linha {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-2);
+    padding: var(--space-1-5) 0;
+    border-top: 1px solid var(--color-divider);
+}
+
+.comparacao__card h3 + .comparacao__linha { border-top: 0; }
+
+.comparacao__valor { 
+    font-variant-numeric: tabular-nums; }
+
+.comparacao__valor--maior {
+    color: var(--color-primary);
+    font-weight: 700;
+}
+
 html[data-theme="high-contrast"] .comparacao__card {
     border-width: var(--border-width);
 }
 
-.comparacao__item {
-    margin: 0.5rem 0;
-}
 
 /*respo comparação de estados*/
 @media (max-width: 768px) {
@@ -990,8 +1011,8 @@ html[data-theme="high-contrast"] .comparacao__card {
     --grafico-espessura: 3;
 
     width: 100%;
-    max-width: 760px;
-    margin: var(--space-3) auto 0;
+    max-width: none;
+    margin: var(--space-3) 0 0;
     padding: var(--space-3);
     background: var(--color-surface);
     color: var(--color-text);
@@ -1104,6 +1125,7 @@ html[data-theme="high-contrast"] .grafico-linha__grade {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-3);
     align-items: start;
+    margin-top: var(--space-3);
 }
 
 .visualizacao__resultado[hidden] { display: none; }
@@ -1115,10 +1137,35 @@ html[data-theme="high-contrast"] .grafico-linha__grade {
 
 
 /*visualização tabela*/
-#visualizacao-tabela { min-width: 0; overflow-x: auto; }
+#visualizacao-tabela { 
+    min-width: 0; 
+    overflow-x: auto; 
+}
+
+/*visualização tabela (linhas)*/
+#visualizacao-tabela table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--font-size-0);
+    font-variant-numeric: tabular-nums;
+}
+
+#visualizacao-tabela th {
+    padding: 0 var(--space-1) var(--space-1);
+    text-align: left;
+    font-weight: 600;
+    color: var(--color-text-muted);
+}
+
+#visualizacao-tabela td {
+    padding: var(--space-1-5) var(--space-1);
+    border-top: 1px solid var(--color-divider);
+}
 
 
 /*visualização gráfico (barras)*/
+
+#visualizacao-tabela,
 #visualizacao-grafico {
     min-width: 0;
     background: var(--color-surface);

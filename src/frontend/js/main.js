@@ -58,6 +58,49 @@ function sincronizarPeriodoVisualizacao(selectPeriodo, anoAlvo) {
     }
 }
 
+function aplicarPadraoEvolucao() {
+    const selectEstado = document.getElementById("linha-tempo-estado");
+    const selectDimensao = document.getElementById("linha-tempo-dimensao");
+    const selectVisEstado = document.getElementById("visualizacao-estado");
+    const selectPeriodo = document.getElementById("visualizacao-periodo");
+    
+    if (!selectEstado || !selectDimensao) return;
+
+    const opcaoValida = [...selectEstado.options].find(o => o.value !== "");
+    if (!opcaoValida) return;
+
+    selectEstado.value = opcaoValida.value;
+    selectDimensao.value = "idhm_geral";
+    selectEstado.dispatchEvent(new Event("change"));
+
+    if (selectVisEstado) {
+        selectVisEstado.value = opcaoValida.value;
+        selectVisEstado.dispatchEvent(new Event("change"));
+    }
+
+    if (selectPeriodo) {
+        const escolherAnoMaisRecente = () => {
+            const anos = [...selectPeriodo.options].map(o => Number(o.value)).filter(a => a > 0);
+            if (anos.length) {
+                sincronizarPeriodoVisualizacao(selectPeriodo, Math.max(...anos));
+            }
+        };
+        setTimeout(escolherAnoMaisRecente, 200);
+    }
+}
+
+function espelharEstadoNaVisualizacao() {
+    const selectEstado = document.getElementById("linha-tempo-estado");
+    const selectVisEstado = document.getElementById("visualizacao-estado");
+    if (!selectEstado || !selectVisEstado) return;
+
+    selectEstado.addEventListener("change", (evento) => {
+        if (!evento.isTrusted) return; // mudanças feitas pelo código (mapa, padrão) já se cuidam
+        selectVisEstado.value = selectEstado.value;
+        selectVisEstado.dispatchEvent(new Event("change"));
+    });
+}
+
 function preencherSecoesDoEstado(uf, ano, dimensao = "idhm_geral") {
     if (!uf) return;
 
@@ -113,7 +156,7 @@ function descreverErro(erro) {
     if (!(erro instanceof ErroApi)) {
         return "Ocorreu um erro inesperado. Tente novamente em instantes.";
     }
- 
+
     switch (erro.tipo) {
         case "tempo_esgotado":
             return "O servidor demorou demais para responder. Tente novamente em instantes.";
@@ -157,13 +200,24 @@ function iniciar(){
     //aperta sozinho o tentar novamente pra garantir que ta funcionando
     botaoTentar.addEventListener("click", TentarNovamente);
     inicializarPainelExportacao({
-    botaoAbrir: botaoExportar,
-    obterFiltrosAtuais: () => filtrosAtuais,});
+        botaoAbrir: botaoExportar,
+        obterFiltrosAtuais: () => filtrosAtuais,
+    });
     inicializarFiltros(aoMudarFiltros);
     verificarConexaoApi();
     inicializarComparacao();
     inicializarLinhaTempo();
     inicializarVisualizacao();
+    espelharEstadoNaVisualizacao();
+    
+    document.getElementById("linha-tempo-limpar")?.addEventListener("click", (e) => {
+        e.preventDefault();
+        aplicarPadraoEvolucao();
+    });    
+    
+    setTimeout(() => {
+        aplicarPadraoEvolucao();
+    }, 300);
 }
 
 let dadosFiltradosAtuais = [];
