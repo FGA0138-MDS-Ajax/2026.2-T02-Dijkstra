@@ -1853,7 +1853,7 @@ body:has(dialog[open]) { overflow: hidden; }
 }
 
 .admin-sidebar .logo {
-    font-size: 2rem;
+    font-size: 1.5rem;
     color: var(--color-primary);
     line-height: 1.1;
 }
@@ -1937,9 +1937,21 @@ body:has(dialog[open]) { overflow: hidden; }
     gap: var(--space-3);
 }
 
+#upload-form .btn{
+    width: 100%;
+}
+
 /*respo painel grid*/
 @media (max-width: 56rem) {
     .admin-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+/*painel botão enviar (upload)*/
+@media (max-width: 40rem) {
+    #upload-form .btn {
+        display: block;
+        width: 100%;
     }
 }
