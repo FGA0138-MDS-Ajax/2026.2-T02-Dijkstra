@@ -245,10 +245,15 @@ h2 {
     stroke-linejoin: round;
 }
 
+html[data-theme="dark"] .main-image img {
+    filter: invert(77%) sepia(26%) saturate(1045%) hue-rotate(85deg) brightness(95%) contrast(90%);
+}
+
 /* claro: mostra a lua (vai para escuro); escuro: mostra o sol (vai para claro) */
 .theme-toggle .icon-sun { display: none; }
 html[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
 html[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+
 
 
 /*card (base, usado na página inicial, login e painel)*/
