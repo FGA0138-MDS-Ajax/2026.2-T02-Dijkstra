@@ -1,4 +1,5 @@
-export const API_BASE_URL ="http://127.0.0.1:8000";
+const isLocal = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+export const API_BASE_URL = isLocal ? "http://127.0.0.1:8000" : "";
 
 const TEMPO_LIMITE_MS = 8000;
 const TEMPO_LIMITE_SAUDE = 3000;
