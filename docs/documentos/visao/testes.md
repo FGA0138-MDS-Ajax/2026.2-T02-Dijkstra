@@ -20,7 +20,7 @@ O código segue a política de branches: a branch `develop` guarda a versão est
 
 ## 6.2. Roteiro de teste
 
-Os casos TC-01 a TC-08 cobrem os itens classificados como MUST no backlog atual. Os casos TC-09 a TC-12 correspondem a itens SHOULD/COULD e só se aplicam se essas funcionalidades forem implementadas. “Resultado realizado” permanece não executado até que a equipe realize e registre cada teste.
+Os casos TC-01 a TC-08 cobrem os itens classificados como MUST no backlog atual. Os casos TC-09 a TC-12 correspondem a itens SHOULD/COULD; TC-09 e TC-10 foram executados na S8-04, e TC-11 e TC-12 (B-07 e B-11, implementados na Sprint 8) ainda não foram executados. “Resultado realizado” permanece não executado até que a equipe realize e registre cada teste.
 
 ### Regras para preencher “Resultado realizado”, “Reparo” e “Ciclo”
 
@@ -67,7 +67,7 @@ Para garantir o atendimento pleno aos requisitos do Backlog, a Tabela 19 apresen
 - **Resultado esperado:** Cada valor aparece na UF correta e corresponde à faixa indicada na legenda. A seleção ou tooltip mostra indicador, período e unidade previstos. Rejeitar se valor/UF/legenda estiverem incorretos ou se informação essencial estiver ausente.
 - **Resultado realizado:** Aprovado. O mapa exibe cada UF com a cor da faixa correspondente na legenda, e o popup mostra o nome da UF, o ano e os valores das quatro dimensões. Os valores do Distrito Federal conferem com os CSVs: 2024 (geral 0,866; educação 0,851; longevidade 0,913; renda 0,837), 2010 (0,824; 0,742; 0,873; 0,863) e 1991 (0,616; 0,419; 0,731; 0,762). O DF aparece em “Muito alto” em 2024 e 2010 (≥ 0,800) e em “Médio” em 1991 (0,616). Ao trocar o ano, as cores do mapa e os valores do popup mudam de forma coerente: em 1991 o mapa fica quase todo em “Muito baixo”, e em 2024 quase todo em “Alto” e “Muito alto”. O filtro de dimensão “renda” mostra apenas esse indicador no popup (DF 2024 = 0,837).
 - **Reparo:** Nenhum
--- **Ciclo:** 1
+- **Ciclo:** 1
 - **Data:** 18/11/2026
 - **Versão/Commit:** `1846655`
 - **Ambiente:** Local (WSL + Docker Compose, nginx em :3000), Chrome e Edge
@@ -90,7 +90,7 @@ Para garantir o atendimento pleno aos requisitos do Backlog, a Tabela 19 apresen
 - **Ambiente:** Local (WSL + Docker Compose, nginx em :3000), Chrome e Edge
 - **Responsável:** Lucas
 - **Dados utilizados:** fixture TESTE (seed 42; IDHM; 27 UFs; 1991, 2010 e 2024)
-- **Evidência:** `../../assets/testes/sistema/TC-04_contraste.png`, `../../assets/testes/sistema/TC-04_foco_teclado`, `../../assets/testes/sistema/TC-04_fonte_extra_grande.png`, `../../assets/testes/sistema/TC-04_fonte_grande.png`, `../../assets/testes/sistema/TC-04_fonte_padrao.png`, `../../assets/testes/sistema/TC-04_modo_noturno.png`
+- **Evidência:** `../../assets/testes/sistema/TC-04_contraste.png`, `../../assets/testes/sistema/TC-04_foco_teclado.png`, `../../assets/testes/sistema/TC-04_fonte_extra_grande.png`, `../../assets/testes/sistema/TC-04_fonte_grande.png`, `../../assets/testes/sistema/TC-04_fonte_padrao.png`, `../../assets/testes/sistema/TC-04_modo_noturno.png`
 
 ### TC-05 — Permitir upload de arquivo CSV somente ao administrador
 

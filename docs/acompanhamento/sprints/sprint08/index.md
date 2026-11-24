@@ -1,6 +1,6 @@
-**# Sprint 8 — Linha do Tempo, Exportação de Dados e Qualidade**
+# Sprint 8 — Linha do Tempo, Exportação de Dados e Qualidade
 
-**## 1. Identificação**
+## 1. Identificação
 
 | Informação | Descrição |
 |---|---|
@@ -12,28 +12,28 @@
 
 ---
 
-**## 2. Planejamento e Objetivos**
+## 2. Planejamento e Objetivos
 
 A Sprint 8 teve como foco a implementação de funcionalidades complementares do Brasil Hub e o fortalecimento da qualidade do sistema.
 
 Foram desenvolvidas a visualização da evolução temporal dos indicadores (**B-07**) e a exportação de dados em CSV (**B-11**), além da ampliação dos testes automatizados e de integração da API.
 
-Das quatro issues planejadas, três foram concluídas e integradas à branch `developer`. A issue **S8-04 (#83)**, referente à execução dos testes de sistema pela interface e ao registro de evidências, permaneceu pendente e deverá ser acompanhada na Sprint 9.
+Das quatro issues planejadas, três foram concluídas e integradas à branch `developer`. A issue **S8-04 (#83)**, referente à execução dos testes de sistema pela interface e ao registro de evidências, não foi concluída dentro do período da Sprint; os testes foram executados em 18/11/2026 (commit `1846655`), com TC-03, TC-04, TC-05, TC-09 e TC-10 aprovados e TC-07 reprovado (cabeçalho fixo cobre conteúdo em 360 px), conforme registrado em `docs/documentos/visao/testes.md`.
 
 ---
 
-**## 3. Issues Planejadas e Situação Final**
+## 3. Issues Planejadas e Situação Final
 
 | Issue | Requisito | Entrega Planejada | Área | Responsáveis | PR / Commit | Situação |
 |---|:---:|---|:---:|---|---|:---:|
 | **#80 (S8-01)** | B-07 | Implementar visualização da evolução temporal dos indicadores (linha do tempo) | Back-end / Front-end | Ágatha Natasha e Josef Wojtyla | PR #87 (`a09e311`) | Concluída |
 | **#81 (S8-02)** | B-11 | Implementar exportação dos indicadores filtrados em formato CSV | Front-end | Fabiana Reis e César Augusto | PR #86 (`fbe3b5d`) | Concluída |
 | **#82 (S8-03)** | Qualidade | Ampliar e revisar os testes automatizados e de integração da API | Back-end | Eduardo Brito e Paulo Eduardo | PR #85 (`1846655`) | Concluída |
-| **#83 (S8-04)** | Qualidade | Executar testes de sistema pela interface e registrar evidências (TC-03, TC-04, TC-05, TC-07, TC-09 e TC-10) | Front-end | Lucas Abdalla e Felipe George | — | Pendente |
+| **#83 (S8-04)** | Qualidade | Executar testes de sistema pela interface e registrar evidências (TC-03, TC-04, TC-05, TC-07, TC-09 e TC-10) | Front-end | Lucas Abdalla e Felipe George | — | Executada em 18/11/2026 (após o fim da Sprint) |
 
 ---
 
-**## 4. Métricas da Sprint**
+## 4. Métricas da Sprint
 
 | Métrica | Definição / Fórmula (GQM) | Meta | Resultado da Sprint | Análise do Resultado |
 |---|---|:---:|:---:|---|
@@ -43,7 +43,7 @@ Das quatro issues planejadas, três foram concluídas e integradas à branch `de
 
 ---
 
-**## 5. Testes Implementados e Garantia da Qualidade**
+## 5. Testes Implementados e Garantia da Qualidade
 
 A Sprint 8 adicionou testes automatizados relacionados à linha do tempo, à segurança da senha administrativa e ao envio de arquivos CSV. Ao final do levantamento, o repositório contabilizava **108 funções de teste automatizado** (`def test_...`) no Pytest.
 
@@ -59,11 +59,11 @@ A Sprint 8 adicionou testes automatizados relacionados à linha do tempo, à seg
 | **TC-11 (Evolução Temporal)** | Sistema | B-07 | `mapa.html` / `linha_tempo.js` / `grafico_linha.js` | Verificação da visualização do gráfico de linha, ordenação cronológica e tratamento de lacunas de dados (PR #87). |
 | **TC-12 (Exportação CSV)** | Sistema | B-11 | `mapa.html` / `export.js` / `export_panel.js` | Verificação da exportação dos indicadores filtrados em arquivo CSV, incluindo estados, períodos e dimensões (PR #86). |
 
-A execução e aprovação dos casos de sistema devem ser registradas mediante evidências correspondentes. Os testes de sistema previstos na S8-04 (TC-03, TC-04, TC-05, TC-07, TC-09 e TC-10) permaneceram pendentes.
+A execução e aprovação dos casos de sistema devem ser registradas mediante evidências correspondentes. Os testes de sistema previstos na S8-04 (TC-03, TC-04, TC-05, TC-07, TC-09 e TC-10) permaneceram pendentes até o fim da Sprint e foram executados em 18/11/2026. TC-11 e TC-12 ainda não tiveram teste de sistema executado.
 
 ---
 
-**## 6. Retrospectiva, Dificuldades e Aprendizados**
+## 6. Retrospectiva, Dificuldades e Aprendizados
 
 | Aspecto | Análise da Sprint |
 |---|---|

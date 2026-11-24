@@ -64,8 +64,8 @@ A tabela abaixo correlaciona cada caso de teste do Documento de Visão com sua s
 | **TC-08** (Senha com hash) | B-09 | Unitário / Integração | Automatizado | `test_autenticacao_sucesso()` (validação `bcrypt` e ocultação de hash)<br>`test_autenticacao_senha_incorreta()`<br>`test_login_com_credenciais_validas()` | `tests/test_auth_service.py`<br>`tests/test_funcionalidade_api.py` | **Aprovado ✅** |
 | **TC-09** (Comparar UFs) | B-06 | Sistema / Integração | Misto | **API/Service:** `test_comparacao_com_sucesso_anos_diferentes()`, `test_integracao_comparar_estados_iguais_mesmo_ano()`, `test_comparacao_sem_anos_encontra_mais_recente_comum()`<br>**UI:** Seleção lado a lado em `comparacao.js` (PR #76). | `tests/test_indicador_service.py`<br>`tests/test_funcionalidade_api.py`<br>`src/frontend/js/comparacao.js` | **Aprovado ✅** |
 | **TC-10** (Gráficos/Tabelas) | B-10 | Sistema / Integração | Misto | **API/Service:** `test_consultar_organizacao_dos_indicadores()`, `test_integracao_consulta_estrutura_tabela_e_grafico()`, `test_integracao_contrato_dados_para_tabela_e_grafico()`<br>**UI:** Sincronização entre gráfico e tabela (PR #78, #79). | `tests/test_indicador_service.py`<br>`tests/test_funcionalidade_api.py` | **Aprovado ✅** |
-| **TC-11** (Linha do tempo) | B-07 | Sistema / Unitário | Em execução (S8) | Planejado na issue **S8-01** (Sprint 8 — requisito COULD). | — | **Em execução (S8) ⏳** |
-| **TC-12** (Exportação CSV) | B-11 | Sistema | Em execução (S8) | Planejado na issue **S8-02** (Sprint 8 — requisito COULD). | — | **Em execução (S8) ⏳** |
+| **TC-11** (Linha do tempo) | B-07 | Sistema / Unitário | Implementado (S8) | Funcionalidade entregue na issue **S8-01** (PR #87); testes unitários e de integração da rota de histórico automatizados. Teste de sistema pela interface ainda não executado. | `tests/test_indicador_service.py`<br>`tests/test_funcionalidade_api.py` | **Não executado ⏳** |
+| **TC-12** (Exportação CSV) | B-11 | Sistema | Implementado (S8) | Funcionalidade entregue na issue **S8-02** (PR #86). Teste de sistema pela interface ainda não executado. | `src/frontend/js/export.js` | **Não executado ⏳** |
 
 ---
 
@@ -80,8 +80,8 @@ Abaixo estão registradas as evidências visuais da integração entre o Mapa In
 | **TI-03 — Filtragem por Dimensão do IDHM e atualização da legenda** | ![Evidência TI-03](../assets/testes/S4-03/TI-03.png) |
 | **TI-04 — Tratamento visual de estado da API e resposta integrada** | ![Evidência TI-04](../assets/testes/S4-03/TI-04.png) |
 
-> **Nota para a Sprint 8 (Issue S8-04):** Os registros detalhados da bateria de homologação de sistema da Sprint 8 (`TC-03`, `TC-04`, `TC-05`, `TC-07`, `TC-09` e `TC-10`), contendo versão/commit, ambiente, dados utilizados, resultado obtido e novas capturas de tela, deverão ser anexados abaixo pelos responsáveis pela issue **S8-04**.
-Os registros detalhados da S8-04 (resultado, reparo, ciclo, data, commit, ambiente, responsável, dados utilizados e evidências) estão na Seção 6.2 de `docs/documentos/visao/testes.md`, e as capturas em `docs/assets/testes/sistema/`.
+> **Nota para a Sprint 8 (Issue S8-04):** Os registros detalhados da bateria de homologação de sistema da Sprint 8 (`TC-03`, `TC-04`, `TC-05`, `TC-07`, `TC-09` e `TC-10`), contendo versão/commit, ambiente, dados utilizados, resultado obtido e novas capturas de tela, foram registrados pelos responsáveis pela issue **S8-04**. Os registros detalhados da S8-04 (resultado, reparo, ciclo, data, commit, ambiente, responsável, dados utilizados e evidências) estão na Seção 6.2 de `docs/documentos/visao/testes.md`, e as capturas em `docs/assets/testes/sistema/`.
+
 ---
 
 ## 5. Como Executar a Suíte de Testes Localmente
