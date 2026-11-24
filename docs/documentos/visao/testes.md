@@ -43,9 +43,26 @@ Para garantir o atendimento pleno aos requisitos do Backlog, a Tabela 19 apresen
 - **Objetivo:** Verificar se a lógica de filtro retorna somente os registros selecionados.
 - **Pré-condição:** Função de filtro implementada; fixture pequena com pelo menos duas UFs, mais de um indicador e resultados esperados definidos.
 - **Resultado esperado:** Para cada combinação de localidade/indicador, a função retorna exatamente os registros da fixture que atendem aos filtros; limpar filtros devolve o conjunto previsto. Valores ausentes não são tratados como zero. Rejeitar se houver registro extra, faltante ou valor alterado.
-- **Resultado realizado:** Não executado
+- **Resultado realizado:** 
+- - Ciclo 1 – Aprovado. 7 passed (python -m pytest tests/test_indicador_service.py -k consultar -v).
+```bash
+============================= test session starts ==============================
+platform linux -- Python 3.13.18, pytest-9.2.0, pluggy-1.7.0 -- /tmp/claude-0/-home-claude/4c38308b-c92f-5f8c-99ff-0698480414e2/scratchpad/venv/bin/python
+rootdir: /home/claude/fga0138-mds-ajax/2026.2-t02-dijkstra
+plugins: anyio-4.16.0
+collecting ... collected 24 items / 17 deselected / 7 selected
+tests/test_indicador_service.py::test_consultar_repassa_filtros_ao_repositorio PASSED [ 14%]
+tests/test_indicador_service.py::test_consultar_organizacao_dos_indicadores PASSED [ 28%]
+tests/test_indicador_service.py::test_consultar_organizacao_multiplos_periodos_e_estados PASSED [ 42%]
+tests/test_indicador_service.py::test_consultar_preservacao_de_valores_e_periodos PASSED [ 57%]
+tests/test_indicador_service.py::test_consultar_tratamento_valores_ausentes_e_zero PASSED [ 71%]
+tests/test_indicador_service.py::test_consultar_com_dados_conhecidos_de_teste PASSED [ 85%]
+tests/test_indicador_service.py::test_consultar_sem_resultados_retorna_lista_vazia PASSED [100%]
+======================= 7 passed, 17 deselected in 0.55s =======================
+
+```
 - **Reparo:** Nenhum
-- **Ciclo:** 0
+- **Ciclo:** 1
 
 ### TC-02 — Consultar filtros pela API
 
@@ -54,9 +71,82 @@ Para garantir o atendimento pleno aos requisitos do Backlog, a Tabela 19 apresen
 - **Objetivo:** Verificar a integração entre parâmetro enviado e resultado do endpoint FastAPI.
 - **Pré-condição:** Endpoint e filtros implementados; fixture carregada; cliente de teste configurado; parâmetros válidos e inválidos definidos.
 - **Resultado esperado:** Requisição válida retorna status e estrutura esperados e somente os registros filtrados. Parâmetro inválido gera erro controlado conforme a API, sem retornar resultado enganoso. Rejeitar se resposta, registros ou tratamento de erro divergirem do esperado.
-- **Resultado realizado:** Não executado
+- **Resultado realizado:**
+- - Ciclo 1 – Aprovado. 58 passed. (python -m pytest tests/test_funcionalidade_api.py -v -k "integracao_consulta or integracao_preservacao or integracao_contrato or filtros_validos or sem_resultados or parametros_invalidos or validacao_ or filtros_combinados or sucesso_busca or estrutura_exata or parametro_desconhecido or todas_as_dimensoes or periodo_nos_limites or requisicao_sem_parametros")
+```bash
+============================= test session starts ==============================
+platform linux -- Python 3.13.18, pytest-9.2.0, pluggy-1.7.0 -- /tmp/claude-0/-home-claude/4c38308b-c92f-5f8c-99ff-0698480414e2/scratchpad/venv/bin/python
+rootdir: /home/claude/fga0138-mds-ajax/2026.2-t02-dijkstra
+plugins: anyio-4.16.0
+collecting ... collected 96 items / 38 deselected / 58 selected
+tests/test_funcionalidade_api.py::test_validacao_estado_vazio PASSED     [  1%]
+tests/test_funcionalidade_api.py::test_validacao_dimensao_invalida_ou_vazia PASSED [  3%]
+tests/test_funcionalidade_api.py::test_validacao_periodo_nao_inteiro PASSED [  5%]
+tests/test_funcionalidade_api.py::test_validacao_periodo_maior PASSED    [  6%]
+tests/test_funcionalidade_api.py::test_validacao_multiplos_erros_estado_e_periodo PASSED [  8%]
+tests/test_funcionalidade_api.py::test_validacao_estado_minusculo_rejeitado PASSED [ 10%]
+tests/test_funcionalidade_api.py::test_requisicao_sem_parametros_retorna_200 PASSED [ 12%]
+tests/test_funcionalidade_api.py::test_sucesso_busca_indicadores_via_http PASSED [ 13%]
+tests/test_funcionalidade_api.py::test_b05_filtros_validos[estado=AC-filtros0] PASSED [ 15%]
+tests/test_funcionalidade_api.py::test_b05_filtros_validos[estado=SP&dimensao=idhm_geral-filtros1] PASSED [ 17%]
+tests/test_funcionalidade_api.py::test_b05_filtros_validos[estado=DF&periodo=2010-filtros2] PASSED [ 18%]
+tests/test_funcionalidade_api.py::test_b05_filtros_validos[dimensao=educacao&periodo=2000-filtros3] PASSED [ 20%]
+tests/test_funcionalidade_api.py::test_b05_filtros_validos[estado=AC&dimensao=educacao&periodo=1991-filtros4] PASSED [ 22%]
+tests/test_funcionalidade_api.py::test_b05_consulta_sem_resultados[estado=AC&dimensao=educacao&periodo=2026] PASSED [ 24%]
+tests/test_funcionalidade_api.py::test_b05_consulta_sem_resultados[estado=AC&periodo=1995] PASSED [ 25%]
+tests/test_funcionalidade_api.py::test_b05_parametros_invalidos_retornam_422_sem_consultar[estado=] PASSED [ 27%]
+tests/test_funcionalidade_api.py::test_b05_parametros_invalidos_retornam_422_sem_consultar[estado=sp] PASSED [ 29%]
+tests/test_funcionalidade_api.py::test_b05_parametros_invalidos_retornam_422_sem_consultar[estado=CA] PASSED [ 31%]
+tests/test_funcionalidade_api.py::test_b05_parametros_invalidos_retornam_422_sem_consultar[dimensao=] PASSED [ 32%]
+tests/test_funcionalidade_api.py::test_b05_parametros_invalidos_retornam_422_sem_consultar[periodo=ab] PASSED [ 34%]
+tests/test_funcionalidade_api.py::test_b05_parametros_invalidos_retornam_422_sem_consultar[periodo=2029] PASSED [ 36%]
+tests/test_funcionalidade_api.py::test_b05_parametros_invalidos_retornam_422_sem_consultar[periodo=1850] PASSED [ 37%]
+tests/test_funcionalidade_api.py::test_validacao_estado_formatos_invalidos[A] PASSED [ 39%]
+tests/test_funcionalidade_api.py::test_validacao_estado_formatos_invalidos[ACX] PASSED [ 41%]
+tests/test_funcionalidade_api.py::test_validacao_estado_formatos_invalidos[XX] PASSED [ 43%]
+tests/test_funcionalidade_api.py::test_validacao_estado_formatos_invalidos[ac] PASSED [ 44%]
+tests/test_funcionalidade_api.py::test_validacao_estado_formatos_invalidos[Ac] PASSED [ 46%]
+tests/test_funcionalidade_api.py::test_validacao_estado_formatos_invalidos[ AC] PASSED [ 48%]
+tests/test_funcionalidade_api.py::test_validacao_estado_formatos_invalidos[AC ] PASSED [ 50%]
+tests/test_funcionalidade_api.py::test_validacao_estado_formatos_invalidos[12] PASSED [ 51%]
+tests/test_funcionalidade_api.py::test_validacao_estado_formatos_invalidos[A C] PASSED [ 53%]
+tests/test_funcionalidade_api.py::test_validacao_estado_formatos_invalidos[BR] PASSED [ 55%]
+tests/test_funcionalidade_api.py::test_validacao_periodo_limites_e_tipos_invalidos[1990-greater_than_equal] PASSED [ 56%]
+tests/test_funcionalidade_api.py::test_validacao_periodo_limites_e_tipos_invalidos[2027-less_than_equal] PASSED [ 58%]
+tests/test_funcionalidade_api.py::test_validacao_periodo_limites_e_tipos_invalidos[0-greater_than_equal] PASSED [ 60%]
+tests/test_funcionalidade_api.py::test_validacao_periodo_limites_e_tipos_invalidos[-1991-greater_than_equal] PASSED [ 62%]
+tests/test_funcionalidade_api.py::test_validacao_periodo_limites_e_tipos_invalidos[1991.5-int_parsing] PASSED [ 63%]
+tests/test_funcionalidade_api.py::test_validacao_periodo_limites_e_tipos_invalidos[abc-int_parsing] PASSED [ 65%]
+tests/test_funcionalidade_api.py::test_indicadores_parametro_desconhecido_e_ignorado PASSED [ 67%]
+tests/test_funcionalidade_api.py::test_indicadores_sem_resultados_retorna_lista_vazia[estado=RR] PASSED [ 68%]
+tests/test_funcionalidade_api.py::test_indicadores_sem_resultados_retorna_lista_vazia[estado=AC&dimensao=educacao&periodo=2026] PASSED [ 70%]
+tests/test_funcionalidade_api.py::test_estrutura_exata_da_resposta_indicadores PASSED [ 72%]
+tests/test_funcionalidade_api.py::test_periodo_nos_limites_e_aceito[1991] PASSED [ 74%]
+tests/test_funcionalidade_api.py::test_periodo_nos_limites_e_aceito[2026] PASSED [ 75%]
+tests/test_funcionalidade_api.py::test_todas_as_dimensoes_validas_sao_aceitas[idhm_geral] PASSED [ 77%]
+tests/test_funcionalidade_api.py::test_todas_as_dimensoes_validas_sao_aceitas[educacao] PASSED [ 79%]
+tests/test_funcionalidade_api.py::test_todas_as_dimensoes_validas_sao_aceitas[longevidade] PASSED [ 81%]
+tests/test_funcionalidade_api.py::test_todas_as_dimensoes_validas_sao_aceitas[renda] PASSED [ 82%]
+tests/test_funcionalidade_api.py::test_filtros_combinados_chegam_ao_servico_com_tipos_corretos PASSED [ 84%]
+tests/test_funcionalidade_api.py::test_integracao_consulta_estrutura_tabela_e_grafico PASSED [ 86%]
+tests/test_funcionalidade_api.py::test_integracao_consulta_filtros_disponiveis[estado=SP-4-dimensoes_esperadas0] PASSED [ 87%]
+tests/test_funcionalidade_api.py::test_integracao_consulta_filtros_disponiveis[dimensao=renda-2-dimensoes_esperadas1] PASSED [ 89%]
+tests/test_funcionalidade_api.py::test_integracao_consulta_filtros_disponiveis[periodo=2021-4-dimensoes_esperadas2] PASSED [ 91%]
+tests/test_funcionalidade_api.py::test_integracao_consulta_filtros_disponiveis[estado=SP&periodo=2021-4-dimensoes_esperadas3] PASSED [ 93%]
+tests/test_funcionalidade_api.py::test_integracao_consulta_filtros_disponiveis[estado=SP&dimensao=renda&periodo=2021-1-dimensoes_esperadas4] PASSED [ 94%]
+tests/test_funcionalidade_api.py::test_integracao_preservacao_valores_ausentes_e_zero PASSED [ 96%]
+tests/test_funcionalidade_api.py::test_integracao_consulta_sem_resultados_retorna_200_lista_vazia PASSED [ 98%]
+tests/test_funcionalidade_api.py::test_integracao_contrato_dados_para_tabela_e_grafico PASSED [100%]
+=============================== warnings summary ===============================
+../../../../tmp/claude-0/-home-claude/4c38308b-c92f-5f8c-99ff-0698480414e2/scratchpad/venv/lib/python3.13/site-packages/fastapi/testclient.py:1
+  /tmp/claude-0/-home-claude/4c38308b-c92f-5f8c-99ff-0698480414e2/scratchpad/venv/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================= 58 passed, 38 deselected, 1 warning in 1.04s =================
+
+```
 - **Reparo:** Nenhum
-- **Ciclo:** 0
+- **Ciclo:** 1
 
 ### TC-03 — Exibir corretamente os dados no mapa
 
@@ -98,9 +188,49 @@ Para garantir o atendimento pleno aos requisitos do Backlog, a Tabela 19 apresen
 - **Objetivo:** Verificar o limite de desempenho declarado no backlog.
 - **Pré-condição:** Endpoint de filtro implementado; ambiente, commit, tamanho da base de teste e condições da medição registrados; ponto inicial e final da medição definido.
 - **Resultado esperado:** Para uma requisição de filtro com o conjunto de teste definido, o tempo de resposta da API é ≤ 3 segundos. Registrar as medições em condições iguais. Rejeitar se o limite for ultrapassado ou se a resposta rápida contiver dados incorretos.
-- **Resultado realizado:** Não executado
+- **Resultado realizado:**
+- - Ciclo 1 – Aprovado. 15/15 casos aprovados (pytest -k "test_b05" -s -v).
+```bash
+(.venv) [eduardo@arch 2026.2-T02-Dijkstra]$ python -m pytest -k "test_b05" -s -v
+============================================================ test session starts ============================================================
+platform linux -- Python 3.14.10, pytest-9.2.0, pluggy-1.7.0 -- /home/eduardo/Programing/MDS/2026.2-T02-Dijkstra/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/eduardo/Programing/MDS/2026.2-T02-Dijkstra
+plugins: anyio-4.16.0
+collected 153 items / 138 deselected / 15 selected
+
+tests/test_funcionalidade_api.py::test_b05_dados_corretos_e_desempenho
+[B-05] commit=df2fc41 registros=50000 mediana=0.0055s max=0.0058s limite=3.0s
+| Commit | Ambiente | Registros | Operação | Mediana | Máximo | Esperado | Obtido |
+|---|---|---|---|---|---|---|---|
+| df2fc41 | Linux 7.3.4-arch1-2 / Python 3.14.10 | 50000 | `GET /api/indicadores?estado=AC&dimensao=educacao&periodo=1991` | 0.0055s | 0.0058s | 310 registros, <= 3.0s | 310 registros, 0.0058s |
+PASSED
+tests/test_funcionalidade_api.py::test_b05_filtros_validos[estado=AC-filtros0] PASSED
+tests/test_funcionalidade_api.py::test_b05_filtros_validos[estado=SP&dimensao=idhm_geral-filtros1] PASSED
+tests/test_funcionalidade_api.py::test_b05_filtros_validos[estado=DF&periodo=2010-filtros2] PASSED
+tests/test_funcionalidade_api.py::test_b05_filtros_validos[dimensao=educacao&periodo=2000-filtros3] PASSED
+tests/test_funcionalidade_api.py::test_b05_filtros_validos[estado=AC&dimensao=educacao&periodo=1991-filtros4] PASSED
+tests/test_funcionalidade_api.py::test_b05_consulta_sem_resultados[estado=AC&dimensao=educacao&periodo=2026] PASSED
+tests/test_funcionalidade_api.py::test_b05_consulta_sem_resultados[estado=AC&periodo=1995] PASSED
+tests/test_funcionalidade_api.py::test_b05_parametros_invalidos_retornam_422_sem_consultar[estado=] PASSED
+tests/test_funcionalidade_api.py::test_b05_parametros_invalidos_retornam_422_sem_consultar[estado=sp] PASSED
+tests/test_funcionalidade_api.py::test_b05_parametros_invalidos_retornam_422_sem_consultar[estado=CA] PASSED
+tests/test_funcionalidade_api.py::test_b05_parametros_invalidos_retornam_422_sem_consultar[dimensao=] PASSED
+tests/test_funcionalidade_api.py::test_b05_parametros_invalidos_retornam_422_sem_consultar[periodo=ab] PASSED
+tests/test_funcionalidade_api.py::test_b05_parametros_invalidos_retornam_422_sem_consultar[periodo=2029] PASSED
+tests/test_funcionalidade_api.py::test_b05_parametros_invalidos_retornam_422_sem_consultar[periodo=1850] PASSED
+
+============================================================= warnings summary ==============================================================
+.venv/lib/python3.14/site-packages/fastapi/testclient.py:1
+  /home/eduardo/Programing/MDS/2026.2-T02-Dijkstra/.venv/lib/python3.14/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=============================================== 15 passed, 138 deselected, 1 warning in 0.87s ===============================================
+
+```
 - **Reparo:** Nenhum
-- **Ciclo:** 0
+- **Ciclo:** 1
 
 ### TC-07 — Usar o dashboard em navegadores e telas suportadas
 
@@ -120,9 +250,143 @@ Para garantir o atendimento pleno aos requisitos do Backlog, a Tabela 19 apresen
 - **Objetivo:** Verificar que a senha não fica legível no armazenamento.
 - **Pré-condição:** Autenticação implementada em ambiente de teste; conta fictícia; método de proteção escolhido e acesso de teste ao registro persistido.
 - **Resultado esperado:** A senha original não pode ser lida diretamente no banco/armazenamento, e a autenticação continua funcionando. Rejeitar se a senha estiver em texto aberto ou se o login válido falhar.
-- **Resultado realizado:** Não executado
-- **Reparo:** Nenhum
-- **Ciclo:** 0
+- **Resultado realizado:**
+- - Ciclo 1 – Reprovado (python -m pytest -k "test_login" -s -v)
+    (python -m pytest -k "test_rota_protegida" -s -v)
+    (python -m pytest -k "test_autenticacao" -s -v).
+```bash
+(.venv) [eduardo@arch 2026.2-T02-Dijkstra]$ python -m pytest -k "test_login" -s -v
+============================================================ test session starts ============================================================
+platform linux -- Python 3.14.10, pytest-9.2.0, pluggy-1.7.0 -- /home/eduardo/Programing/MDS/2026.2-T02-Dijkstra/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/eduardo/Programing/MDS/2026.2-T02-Dijkstra
+plugins: anyio-4.16.0
+collected 153 items / 142 deselected / 11 selected
+
+tests/test_funcionalidade_api.py::test_login_com_credenciais_validas PASSED
+tests/test_funcionalidade_api.py::test_login_com_credenciais_invalidas[admin-senha_incorreta] PASSED
+tests/test_funcionalidade_api.py::test_login_com_credenciais_invalidas[usuario_inexistente-senha-de-teste] PASSED
+tests/test_funcionalidade_api.py::test_login_com_corpo_json_malformado_retorna_422[corpo0] PASSED
+tests/test_funcionalidade_api.py::test_login_com_corpo_json_malformado_retorna_422[corpo1] PASSED
+tests/test_funcionalidade_api.py::test_login_com_corpo_json_malformado_retorna_422[corpo2] PASSED
+tests/test_funcionalidade_api.py::test_login_com_corpo_json_malformado_retorna_422[corpo3] PASSED
+tests/test_funcionalidade_api.py::test_login_com_corpo_json_malformado_retorna_422[corpo4] PASSED
+tests/test_funcionalidade_api.py::test_login_com_campos_vazios_retorna_401[-senha-de-teste] PASSED
+tests/test_funcionalidade_api.py::test_login_com_campos_vazios_retorna_401[admin-] PASSED
+tests/test_funcionalidade_api.py::test_login_com_campos_vazios_retorna_401[   -   ] PASSED
+
+============================================================= warnings summary ==============================================================
+.venv/lib/python3.14/site-packages/fastapi/testclient.py:1
+  /home/eduardo/Programing/MDS/2026.2-T02-Dijkstra/.venv/lib/python3.14/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=============================================== 11 passed, 142 deselected, 1 warning in 3.96s ===============================================
+(.venv) [eduardo@arch 2026.2-T02-Dijkstra]$ python -m pytest -k "test_rota_protegida" -s -v
+============================================================ test session starts ============================================================
+platform linux -- Python 3.14.10, pytest-9.2.0, pluggy-1.7.0 -- /home/eduardo/Programing/MDS/2026.2-T02-Dijkstra/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/eduardo/Programing/MDS/2026.2-T02-Dijkstra
+plugins: anyio-4.16.0
+collected 153 items / 152 deselected / 1 selected
+
+tests/test_funcionalidade_api.py::test_rota_protegida_sem_autenticacao PASSED
+
+============================================================= warnings summary ==============================================================
+.venv/lib/python3.14/site-packages/fastapi/testclient.py:1
+  /home/eduardo/Programing/MDS/2026.2-T02-Dijkstra/.venv/lib/python3.14/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=============================================== 1 passed, 152 deselected, 1 warning in 0.81s ================================================
+(.venv) [eduardo@arch 2026.2-T02-Dijkstra]$ python -m pytest -k "test_autenticacao" -s -v
+============================================================ test session starts ============================================================
+platform linux -- Python 3.14.10, pytest-9.2.0, pluggy-1.7.0 -- /home/eduardo/Programing/MDS/2026.2-T02-Dijkstra/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/eduardo/Programing/MDS/2026.2-T02-Dijkstra
+plugins: anyio-4.16.0
+collected 153 items / 150 deselected / 3 selected
+
+tests/test_auth_service.py::test_autenticacao_sucesso PASSED
+tests/test_auth_service.py::test_autenticacao_senha_incorreta PASSED
+tests/test_auth_service.py::test_autenticacao_usuario_inexistente PASSED
+
+============================================================= warnings summary ==============================================================
+.venv/lib/python3.14/site-packages/fastapi/testclient.py:1
+  /home/eduardo/Programing/MDS/2026.2-T02-Dijkstra/.venv/lib/python3.14/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=============================================== 3 passed, 150 deselected, 1 warning in 1.43s ================================================
+
+```
+- - Ciclo 2 – Aprovado. A execução automatizada via pytest aprovou 16/16 testes (python -m pytest -k "test_login" -s -v)
+    (python -m pytest -k "test_rota_protegida" -s -v)
+    (python -m pytest -k "test_autenticacao" -s -v)
+    (python -m pytest -k "test_senha_administrativa" -s -v).
+```bash
+(.venv) [eduardo@arch 2026.2-T02-Dijkstra]$ python -m pytest -k "test_login" -s -v
+============================================================ test session starts ============================================================
+platform linux -- Python 3.14.10, pytest-9.2.0, pluggy-1.7.0 -- /home/eduardo/Programing/MDS/2026.2-T02-Dijkstra/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/eduardo/Programing/MDS/2026.2-T02-Dijkstra
+plugins: anyio-4.16.0
+collected 154 items / 143 deselected / 11 selected
+
+tests/test_funcionalidade_api.py::test_login_com_credenciais_validas PASSED
+tests/test_funcionalidade_api.py::test_login_com_credenciais_invalidas[admin-senha_incorreta] PASSED
+tests/test_funcionalidade_api.py::test_login_com_credenciais_invalidas[usuario_inexistente-senha-de-teste] PASSED
+tests/test_funcionalidade_api.py::test_login_com_corpo_json_malformado_retorna_422[corpo0] PASSED
+tests/test_funcionalidade_api.py::test_login_com_corpo_json_malformado_retorna_422[corpo1] PASSED
+tests/test_funcionalidade_api.py::test_login_com_corpo_json_malformado_retorna_422[corpo2] PASSED
+tests/test_funcionalidade_api.py::test_login_com_corpo_json_malformado_retorna_422[corpo3] PASSED
+tests/test_funcionalidade_api.py::test_login_com_corpo_json_malformado_retorna_422[corpo4] PASSED
+tests/test_funcionalidade_api.py::test_login_com_campos_vazios_retorna_401[-senha-de-teste] PASSED
+tests/test_funcionalidade_api.py::test_login_com_campos_vazios_retorna_401[admin-] PASSED
+tests/test_funcionalidade_api.py::test_login_com_campos_vazios_retorna_401[   -   ] PASSED
+
+==================================================== 11 passed, 143 deselected in 4.07s =====================================================
+(.venv) [eduardo@arch 2026.2-T02-Dijkstra]$ python -m pytest -k "test_rota_protegida" -s -v
+============================================================ test session starts ============================================================
+platform linux -- Python 3.14.10, pytest-9.2.0, pluggy-1.7.0 -- /home/eduardo/Programing/MDS/2026.2-T02-Dijkstra/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/eduardo/Programing/MDS/2026.2-T02-Dijkstra
+plugins: anyio-4.16.0
+collected 154 items / 153 deselected / 1 selected
+
+tests/test_funcionalidade_api.py::test_rota_protegida_sem_autenticacao PASSED
+
+===================================================== 1 passed, 153 deselected in 0.81s =====================================================
+(.venv) [eduardo@arch 2026.2-T02-Dijkstra]$ python -m pytest -k "test_autenticacao" -s -v
+============================================================ test session starts ============================================================
+platform linux -- Python 3.14.10, pytest-9.2.0, pluggy-1.7.0 -- /home/eduardo/Programing/MDS/2026.2-T02-Dijkstra/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/eduardo/Programing/MDS/2026.2-T02-Dijkstra
+plugins: anyio-4.16.0
+collected 154 items / 151 deselected / 3 selected
+
+tests/test_auth_service.py::test_autenticacao_sucesso PASSED
+tests/test_auth_service.py::test_autenticacao_senha_incorreta PASSED
+tests/test_auth_service.py::test_autenticacao_usuario_inexistente PASSED
+
+===================================================== 3 passed, 151 deselected in 1.43s =====================================================
+(.venv) [eduardo@arch 2026.2-T02-Dijkstra]$ python -m pytest -k "test_senha_administrativa" -s -v
+============================================================ test session starts ============================================================
+platform linux -- Python 3.14.10, pytest-9.2.0, pluggy-1.7.0 -- /home/eduardo/Programing/MDS/2026.2-T02-Dijkstra/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/eduardo/Programing/MDS/2026.2-T02-Dijkstra
+plugins: anyio-4.16.0
+collected 154 items / 153 deselected / 1 selected
+
+tests/test_funcionalidade_api.py::test_senha_administrativa_nao_fica_legivel_no_banco PASSED
+
+===================================================== 1 passed, 153 deselected in 0.81s =====================================================
+
+```
+- **Reparo:** 
+- - Faltou consulta SQL direta (SELECT) ao registro persistido no schema temporário do PostgreSQL para comprovar que a senha não fica legível em texto aberto no banco, conforme exigido no TC-08. Pendência registrada na Issue #82.
+- - - Concluído: teste de leitura direta no PostgreSQL implementado no commit 9e27515.
+- **Ciclo:** 2
 
 ### TC-09 — Comparar duas UFs
 
