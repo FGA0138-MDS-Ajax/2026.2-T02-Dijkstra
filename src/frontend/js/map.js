@@ -36,12 +36,13 @@ function formatarValor(valor) {
 
 
 //Inicializador do mapa
-export function inicializarMapa(idContainer, {aoCarregarDadosIniciais}={}) {
+export function inicializarMapa(idContainer, { aoCarregarDadosIniciais, aoClicarEstado } = {}) {
     const isMobile = window.innerWidth < 768;
+    const CENTRO_INICIAL = [-14,-54];
     const zoomInicial = isMobile ? 3 : 4;
     const zoomMin = isMobile ? 3 : 4;
 
-    const mapa = L.map(idContainer).setView([-14,-54],zoomInicial);
+    const mapa = L.map(idContainer).setView(CENTRO_INICIAL, zoomInicial);
     mapa.setMaxBounds([[-45,-90],[15,-25]]);
     mapa.setMinZoom(zoomMin);
 
@@ -61,6 +62,24 @@ export function inicializarMapa(idContainer, {aoCarregarDadosIniciais}={}) {
     // função para retonar indicadores do estado da mesma uf do que foi passado
     function indicadoresDoEstado(feature){
         return indicadoresporUf[feature.properties.sigla] || [];
+    }
+
+    //pra dar zoom no estado ao escolher ele
+    function focarEstado(estadoUF){
+        if(!camadaEstados) return;
+        if(estadoUF){
+            const camada = camadaEstados.getLayers().find(
+                layer => layer.feature.properties.sigla === estadoUF
+            );
+            if(camada){
+                mapa.fitBounds(camada.getBounds(), {
+                    padding: [30, 30],
+                    maxZoom: 6 // Respeita o maxZoom do tileLayer
+                });
+                return;
+            }
+        }
+        mapa.setView(CENTRO_INICIAL,zoomInicial);
     }
 
     function atualizarIndicadores(lista, dimensao, estadoUF){
@@ -105,6 +124,7 @@ export function inicializarMapa(idContainer, {aoCarregarDadosIniciais}={}) {
             else{
                 estadoSelecionado = null;
             }
+            focarEstado(estadoUF);
         }
 
         if (infoEstado._div){
@@ -126,7 +146,7 @@ export function inicializarMapa(idContainer, {aoCarregarDadosIniciais}={}) {
     //monta popup ao clicar, procura o ano especifico.E vai mostrando as informações, 1° nome e ano. Ai depois passa por cada dimensão do ano e imprime o valor
     function montarPopup(feature) {
     const doAno = indicadoresDoEstado(feature).filter(
-        ind => ind.periodo_referencia === anoSelecionado
+        ind => String(ind.periodo_referencia) === String(anoSelecionado)
     );
 
     let html = `<div class="popup-card">`;
@@ -137,6 +157,10 @@ export function inicializarMapa(idContainer, {aoCarregarDadosIniciais}={}) {
             html += `<div class="popup-row"><span>${ind.dimensao}</span><span class="popup-val">${ind.valor ?? 'N/D'}</span></div>`;
         });
         html += `</div>`;
+        const fontes = [...new Set(doAno.map(ind => ind.fonte).filter(Boolean))];
+        if(fontes.length>0){
+            html += `<p class="popup-fonte">Fonte: ${fontes.join(", ")}</p>`;
+        }
     } else {
         html += `<p class="popup-vazio">Sem dados disponíveis para este estado neste ano.</p>`;
     }
@@ -206,7 +230,8 @@ export function inicializarMapa(idContainer, {aoCarregarDadosIniciais}={}) {
                 layer.on('click', () => {
                 estadoSelecionado = feature;
                 infoEstado.update();
-});
+                aoClicarEstado?.(feature.properties.sigla, anoSelecionado);
+                });
             }
         }).addTo(mapa);
 
@@ -217,23 +242,6 @@ export function inicializarMapa(idContainer, {aoCarregarDadosIniciais}={}) {
     })
     .catch(error => console.error('Erro ao carregar o GeoJSON:', error));
 
-    //legenda no canto, com as faixas de IDHM
-    /*
-    const legenda = L.control({ position: 'bottomright' });
-    legenda.onAdd = function () {
-        const div = L.DomUtil.create('div', 'info-legenda');
-        const itens = [...FAIXAS_IDHM, { cor: COR_SEM_DADOS, rotulo: "Sem dados" }]
-            .map(f => `
-                <div class="legenda-item">
-                    <span class="cor-amostra" style="background:${f.cor}; opacity:0.7;"></span>
-                    <span>${f.rotulo}</span>
-                </div>`)
-            .join('');
-        div.innerHTML = `<h2>IDHM</h2>${itens}`;
-        return div;
-    };
-    legenda.addTo(mapa);
-    */
 
     // Legenda fora do div do mapa
     function renderLegendaExterna(ContainerID){

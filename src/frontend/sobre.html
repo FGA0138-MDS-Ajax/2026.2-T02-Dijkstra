@@ -3,25 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-    crossorigin=""/>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="./css/style.css">
     <script src="js/theme.js"></script>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-    crossorigin=""></script>
     <title>Sobre - Brasil Hub</title>
     <link rel="icon" href="assets/brasil-map.png" type="image/png">
 </head>
 <body>
-
-    <div class="page-wrapper">
+    <div class="page-wrapper"> 
         <header class="floating-header">
             <div class="logo">Brasil Hub</div>
-            <nav class="links" aria-label="Principal">
+            <nav class="links">
                 <a href="./index.html" >Página Inicial</a>
-                <a href="./sobre.html" class="active" aria-current="page">Sobre</a>
+                <a href="./sobre.html" class="active">Sobre</a>
                 <a href="./mapa.html">Mapa</a>
                 <a class="btn" href="./area-adm.html">Área do administrador</a>
                 <button type="button" id="btAumentar" aria-label="Aumentar fonte">A+</button>
@@ -33,34 +26,187 @@
             </nav>
         </header>
 
-        <main id="conteudo">
+<main id="conteudo" class="sobre-container">
 
+    <!-- Apresentação Principal -->
+    <section class="sobre-hero">
+        <h1>Sobre o Brasil Hub</h1>
+        <p class="lead">
+            Uma plataforma web interativa de visualização de dados socioeconômicos desenvolvida para centralizar, 
+            padronizar e democratizar o acesso aos indicadores de desenvolvimento humano dos estados brasileiros.
+        </p>
+    </section>
 
+    <!-- Seção 1: O que é o IDH / IDHM (Reutilizando a estrutura de grid de cards) -->
+    <section class="sobre-secao">
+        <h2>O que é o IDHM?</h2>
+        <p>
+            O Índice de Desenvolvimento Humano Municipal (IDHM) adaptado para as Unidades Federativas avalia o progresso 
+            social por meio da média geométrica de três dimensões fundamentais, variando de 0 a 1 (quanto mais próximo de 1, 
+            maior o desenvolvimento):
+        </p>
 
-        <section class="main-text">
-            <h1>Sobre o Brasil Hub</h1>
-            <p>Texto de apresentação do projeto.</p>
-        </section>
+        <div class="sobre-grid-3">
+        <!-- Card 1: Longevidade -->
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <span class="icone icone-saude" aria-hidden="true"></span>
+                    <h3>LONGEVIDADE</h3>
+                </div>
+                <div class="flip-card-back">
+                    <p>Mede a oportunidade de viver uma vida longa e saudável, calculada a partir da esperança de vida ao nascer.</p>
+                </div>
+            </div>
+        </div>
 
-        <section>
-            <h2>O que é o IDH</h2>
-            <p>Texto explicando o IDH e suas dimensões: renda, educação e longevidade.</p>
-        </section>
+        <!-- Card 2: Educação -->
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <span class="icone icone-educacao" aria-hidden="true"></span>
+                    <h3>EDUCAÇÃO</h3>
+                </div>
+                <div class="flip-card-back">
+                    <p>Avalia o acesso ao conhecimento por meio da escolaridade da população adulta e do fluxo escolar da população jovem.</p>
+                </div>
+            </div>
+        </div>
 
-        <section>
-            <h2>De onde vêm os dados</h2>
-            <p>Texto sobre a fonte dos dados (IBGE) e a atualização.</p>
-        </section>
+        <!-- Card 3: Renda -->
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <span class="icone icone-renda" aria-hidden="true"></span>
+                    <h3>RENDA</h3>
+                </div>
+                <div class="flip-card-back">
+                    <p>Essencial não apenas para acessar necessidades básicas como água, comida e abrigo, mas para transcender rumo a uma vida de escolhas genuínas.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    </section>
 
-        <section>
-            <h2>Quem faz</h2>
-            <p>Texto sobre a equipe e a disciplina.</p>
-        </section>
-    </main>
+    <!-- Seção 2: Metodologia e Origem dos Dados -->
+    <section class="sobre-secao">
+        <h2>De onde vêm os dados?</h2>
+        <div class="sobre-box-destaque">
+            <p>
+                Os indicadores exibidos no Brasil Hub são extraídos de bases públicas oficiais do <strong>IBGE</strong> 
+                (Censo Demográfico e PNAD Contínua) e consolidados a partir do <strong>Atlas do Desenvolvimento Humano no Brasil</strong> 
+                (produzido por PNUD, Ipea e Fundação João Pinheiro).
+            </p>
+            <p>
+                Nossa arquitetura realiza a coleta, limpeza, padronização e validação automática dos arquivos CSV governamentais 
+                para cobrir as <strong>27 Unidades Federativas</strong> ao longo da série histórica de <strong>1991 a 2024</strong>.
+            </p>
 
+            <div class="imagens-sobre">
+                <img src="./assets/atlas-logo.svg" alt="Logo Atlas Brasil" class="logo-instituicao">
+                <img src="./assets/ibge-logo.webp" alt="Logo IBGE" class="logo-instituicao">
+            </div>
+        </div>
+    </section>
 
+    <section class="sobre-secao">
+        <h2>Quem faz o Brasil Hub acontecer?</h2>
+        <p>
+            Este projeto foi desenvolvido pelo <strong>Time Dijkstra</strong> durante o segundo semestre de 2026 na disciplina 
+            de <strong>Métodos de Desenvolvimento de Software</strong> ministrada na Faculdade de Ciências e Tecnologias em Engenharia da Universidade de Brasília (UnB).
+        </p>
 
+        <div class="sobre-grid-equipe">
+        
+        <a href="https://github.com/Nataxshaa" target="_blank" rel="noopener" class="membro-card">
+            <img src="assets/members/agatha.jpg" alt="Foto de Ágatha Natasha" class="membro-foto">
+            <div class="membro-info">
+                <strong>Ágatha Natasha</strong>
+                <span>Back-end e Infraestrutura</span>
+            </div>
+        </a>
 
+        <a href="https://github.com/CesarL3gal" target="_blank" rel="noopener" class="membro-card">
+            <img src="assets/members/cesar.png" alt="Foto de César Augusto" class="membro-foto">
+            <div class="membro-info">
+                <strong>César Augusto</strong>
+                <span>Front-end</span>
+            </div>
+        </a>
+
+        <a href="https://github.com/EduardoSauber" target="_blank" rel="noopener" class="membro-card">
+            <img src="assets/members/eduardo.jpg" alt="Foto de Eduardo de Sousa" class="membro-foto">
+            <div class="membro-info">
+                <strong>Eduardo de Sousa</strong>
+                <span>Back-end e Infraestrutura</span>
+            </div>
+        </a>
+
+        <a href="https://github.com/fabysoouza" target="_blank" rel="noopener" class="membro-card">
+            <img src="assets/members/fabiana.jpg" alt="Foto de Fabiana Reis" class="membro-foto">
+            <div class="membro-info">
+                <strong>Fabiana Reis</strong>
+                <span>Product Owner e Front-end</span>
+            </div>
+        </a>
+
+        <a href="https://github.com/fgeorge07" target="_blank" rel="noopener" class="membro-card">
+            <img src="assets/members/felipe.jpg" alt="Foto de Felipe George" class="membro-foto">
+            <div class="membro-info">
+                <strong>Felipe George</strong>
+                <span>Front-end</span>
+            </div>
+        </a>
+
+        <a href="https://github.com/JosefWojtyla" target="_blank" rel="noopener" class="membro-card">
+            <img src="assets/members/josef.jpg" alt="Foto de Josef Wojtyla" class="membro-foto">
+            <div class="membro-info">
+                <strong>Josef Wojtyla</strong>
+                <span>Scrum Master e Back-end</span>
+            </div>
+        </a>
+
+        <a href="https://github.com/nerylucas" target="_blank" rel="noopener" class="membro-card">
+            <img src="assets/members/lucas.jpg" alt="Foto de Lucas Abdalla" class="membro-foto">
+            <div class="membro-info">
+                <strong>Lucas Abdalla</strong>
+                <span>Front-end</span>
+            </div>
+        </a>
+
+        <a href="https://github.com/pefidelis" target="_blank" rel="noopener" class="membro-card">
+            <img src="assets/members/paulo.jpg" alt="Foto de Paulo Eduardo" class="membro-foto">
+            <div class="membro-info">
+                <strong>Paulo Eduardo</strong>
+                <span>Back-end e Infraestrutura</span>
+            </div>
+        </a>
+    </div>
+    </section>
+
+    <section class="sobre-secao">
+        <h2>Repositório e Documentação</h2>
+        <p>Acompanhe o código-fonte aberto, o histórico de desenvolvimento e a documentação técnica completa do projeto.</p>
+        
+        <div class="projeto-links-grid">
+            <a href="https://github.com/FGA0138-MDS-Ajax/2026.2-T02-Dijkstra" target="_blank" rel="noopener" class="projeto-card-link">
+                <span class="icone icone-github" aria-hidden="true"></span>
+                <div class="projeto-info">
+                    <strong>Repositório no GitHub</strong>
+                    <span>Acesse o código-fonte, issues e contribua com o projeto</span>
+                </div>
+            </a>
+
+            <a href="https://fga0138-mds-ajax.github.io/2026.2-T02-Dijkstra/" target="_blank" rel="noopener" class="projeto-card-link">
+                <span class="icone icone-documento" aria-hidden="true"></span>
+                <div class="projeto-info">
+                    <strong>Documentação Técnica</strong>
+                    <span>Consulte o Documento de Visão, Arquitetura e roteiro de testes</span>
+                </div>
+            </a>
+        </div>
+    </section>
+</main>
     <footer class="site-footer">
             <div class="footer-grid">
                 <div class="footer-brand">
@@ -81,15 +227,15 @@
                     <h2>Dados e código</h2>
                     <ul>
                         <li><a href="https://www.ibge.gov.br" target="_blank" rel="noopener">IBGE</a></li>
+                        <li><a href="http://www.ipeadata.gov.br" target="_blank" rel="noopener">IPEA (Ipeadata)</a></li>
                         <li><a href="https://github.com/FGA0138-MDS-Ajax/2026.2-T02-Dijkstra" target="_blank" rel="noopener">Repositório no GitHub</a></li>
                     </ul>
                 </div>
             </div>
 
             <p class="footer-copy">© 2026 Brasil Hub. Projeto da disciplina MDS, UnB.</p>
-        </footer>
+    </footer>
     </div>
-
     <script type="module" src="js/main.js"></script>
 </body>
 </html>

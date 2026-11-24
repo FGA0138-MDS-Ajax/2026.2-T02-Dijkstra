@@ -69,6 +69,7 @@
     --color-text-muted: var(--green-700);
     --color-border: var(--green-200);
     --color-border-soft: var(--green-200);
+    --color-divider: color-mix(in srgb, var(--color-border) 50%, transparent);
 
     --color-primary: var(--green-900);
     --color-primary-hover: var(--green-700);
@@ -178,6 +179,7 @@ html[data-theme="high-contrast"] {
     --color-text-muted: #ffffff;
     --color-border: #ffffff;
     --color-border-soft: #ffffff;
+    --color-divider: var(--color-border);
 
     --color-primary: #ffd400;
     --color-primary-hover: #ffffff;

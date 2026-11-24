@@ -1,9 +1,6 @@
-import { fazerLogin, buscarPainelAdmin } from "./api_client.js";
+import { fazerLogin, buscarPainelAdmin, API_BASE_URL } from "./api_client.js";
 
-//REVISAR ESSE CÓDIGO
-
-// Ajuste estes três valores conforme o back-end (S5-02 e S5-03).
-const API_URL = "http://localhost:8000";
+const API_URL = API_BASE_URL;
 const ENDPOINT_LOGIN = "/api/admin/login";
 const ENDPOINT_UPLOAD = "/api/admin/indicadores/upload";
 

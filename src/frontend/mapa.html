@@ -64,32 +64,10 @@
             <div class="map-container" id="mapa-brasil"></div>
             <div id="legenda-externa-mapa"></div>
         </section>
-        <section class="comparacao-section map-section" aria-labelledby="comparacao-titulo">
-            <h2 id="comparacao-titulo" class="map-titulo">Comparar Estados Lado a Lado</h2>
-            <div class="filtros">
-                <div class="filtros__campo">
 
-                    <label for="comparacao-estado-a">1º Estado</label>
-                    <select name="estado_a" id="comparacao-estado-a"></select>
+        <section class="evolucao-section map-section" aria-labelledby="evolucao-titulo">
+            <h2 id="evolucao-titulo" class="map-titulo">Evolução e Indicadores</h2>
 
-                </div>
-                <div class="filtros__campo">
-
-                    <label for="comparacao-estado-b">2º Estado</label>
-                    <select name="estado_b" id="comparacao-estado-b"></select>
-
-                </div>
-                <button type="button" id="comparacao-limpar" class="filtros__limpar">Limpar Comparação</button>
-            </div>
-            <p id="comparacao-status" class="filtros__resumo" role="status" aria-live="polite">
-                Selecione dois estados diferentes para comparar seus indicadores lado a lado.
-            </p>
-            <div id="comparacao-resultado" class="comparacao__resultado" hidden></div>
-
-        </section>
-
-        <section class="linha-tempo-section map-section" aria-labelledby="linha-tempo-titulo">
-            <h2 id="linha-tempo-titulo" class="map-titulo">Linha do Tempo do IDH</h2>
             <div class="filtros">
                 <div class="filtros__campo">
                     <label for="linha-tempo-estado">Estado</label>
@@ -99,10 +77,26 @@
                     <label for="linha-tempo-dimensao">Dimensão do IDH</label>
                     <select name="dimensao" id="linha-tempo-dimensao"></select>
                 </div>
-                <button type="button" id="linha-tempo-limpar" class="filtros__limpar">Limpar Linha do Tempo</button>
+                <div class="filtros__campo">
+                    <label for="visualizacao-periodo">Ano de referência</label>
+                    <select name="periodo" id="visualizacao-periodo" disabled></select>
+                </div>
+                <button type="button" id="linha-tempo-limpar" class="filtros__limpar">Restaurar padrão</button>
+            </div>            
+
+            <p id="visualizacao-status" class="filtros__resumo" role="status" aria-live="polite"></p>
+            <p id="visualizacao-erro" class="visualizacao__erro" role="alert" hidden></p>
+
+            <div id="visualizacao-resultado" class="visualizacao__resultado" hidden>
+                <div id="visualizacao-grafico"></div>
+                <div id="visualizacao-tabela"></div>
             </div>
+            <div hidden>
+                <select name="estado" id="visualizacao-estado"></select>
+            </div>
+
             <p id="linha-tempo-status" class="filtros__resumo" role="status" aria-live="polite">
-                Selecione um estado e uma dimensão para visualizar a evolução do IDH ao longo dos anos.
+                Carregando a evolução do IDH...
             </p>
 
             <div id="linha-tempo-resultado" class="linha-tempo__resultado" hidden>
@@ -112,31 +106,28 @@
             </div>
         </section>
 
-        <section class="visualizacao-section map-section" aria-labelledby="visualizacao-titulo">
-            <h2 id="visualizacao-titulo" class="map-titulo">Indicadores em Tabela e Gráfico</h2>
-
+        <section class="comparacao-section map-section" aria-labelledby="comparacao-titulo">
+            <h2 id="comparacao-titulo" class="map-titulo">Comparar Estados Lado a Lado</h2>
             <div class="filtros">
                 <div class="filtros__campo">
-                    <label for="visualizacao-estado">Estado</label>
-                    <select name="estado" id="visualizacao-estado"></select>
+                    <label for="comparacao-estado-a">1º Estado</label>
+                    <select name="estado_a" id="comparacao-estado-a"></select>
                 </div>
                 <div class="filtros__campo">
-                    <label for="visualizacao-periodo">Período de referência</label>
-                    <select name="periodo" id="visualizacao-periodo" disabled></select>
+                    <label for="comparacao-estado-b">2º Estado</label>
+                    <select name="estado_b" id="comparacao-estado-b"></select>
                 </div>
+                <div class="filtros__campo">
+                    <label for="comparacao-ano">Ano</label>
+                    <select name="ano" id="comparacao-ano"></select>
+                </div>
+                <button type="button" id="comparacao-limpar" class="filtros__limpar">Limpar Comparação</button>
             </div>
-
-            <p id="visualizacao-status" class="filtros__resumo" role="status" aria-live="polite">
-                Selecione um estado para ver seus indicadores em tabela e gráfico.
+            <p id="comparacao-status" class="filtros__resumo" role="status" aria-live="polite">
+                Selecione dois estados diferentes para comparar seus indicadores lado a lado.
             </p>
-            <p id="visualizacao-erro" class="visualizacao__erro" role="alert" hidden></p>
-
-            <div id="visualizacao-resultado" class="visualizacao__resultado" hidden>
-                <div id="visualizacao-tabela"></div>
-                <div id="visualizacao-grafico"></div>
-            </div>
+            <div id="comparacao-resultado" class="comparacao__resultado" hidden></div>
         </section>
-        </main>
 
 
         <footer class="site-footer">
@@ -159,6 +150,7 @@
                     <h2>Dados e código</h2>
                     <ul>
                         <li><a href="https://www.ibge.gov.br" target="_blank" rel="noopener">IBGE</a></li>
+                        <li><a href="http://www.ipeadata.gov.br" target="_blank" rel="noopener">IPEA (Ipeadata)</a></li>
                         <li><a href="https://github.com/FGA0138-MDS-Ajax/2026.2-T02-Dijkstra" target="_blank" rel="noopener">Repositório no GitHub</a></li>
                     </ul>
                 </div>
