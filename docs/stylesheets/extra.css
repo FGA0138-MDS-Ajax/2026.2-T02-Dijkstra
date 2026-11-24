@@ -1,106 +1,753 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
+/* ==========================================================================
+   BRASIL HUB — DESIGN SYSTEM EDITORIAL & CARTOGRÁFICO (VERDE & BRANCO)
+   Alinhado com as variáveis reais do produto (src/frontend/css/variables.css)
+   ========================================================================== */
 :root {
-    --brand-primary:        #00bfa5;
-    --brand-primary-light:  #33ccb8;
-    --brand-primary-dark:   #009984;
+    --bh-green-950: #091910;
+    --bh-green-900: #1f5a2e;
+    --bh-green-800: #236b36;
+    --bh-green-700: #2a7f40;
+    --bh-green-600: #43c363;
+    --bh-green-400: #6ede8a;
+    --bh-green-200: #acecbc;
+    --bh-green-100: #d3f5dc;
+    --bh-green-50:  #edfbf0;
+    --bh-white:     #ffffff;
+
+    --bh-ink:       #0f2417;
+    --bh-ink-muted: #4b6353;
+    --bh-hairline:  #d5e8da;
+    --bh-surface:   #f7fbf8;
+
+    --brand-primary:        #1f5a2e;
+    --brand-primary-light:  #2a7f40;
+    --brand-primary-dark:   #091910;
 
     --md-primary-fg-color:        var(--brand-primary);
     --md-primary-fg-color--light: var(--brand-primary-light);
     --md-primary-fg-color--dark:  var(--brand-primary-dark);
-    --md-accent-fg-color:         var(--brand-primary);
+    --md-accent-fg-color:         var(--bh-green-700);
 }
 
+/* ==========================================================================
+   TEMA CLARO — Editorial Clean (Branco Puro, Papel Técnico & Verde Floresta)
+   ========================================================================== */
 [data-md-color-scheme="default"] {
-    --md-default-bg-color:        #fafaff;
-    --md-default-fg-color:        #1a1a2e;
-    --md-default-fg-color--light: #4a4a5e;
-    --md-code-bg-color:           #f8f0e5;
-    --md-typeset-mark-color:      rgba(0, 191, 165, 0.25);
+    --md-default-bg-color:        #ffffff;
+    --md-default-fg-color:        #0f2417;
+    --md-default-fg-color--light: #4b6353;
+    --md-code-bg-color:           #f3f8f4;
+    --md-typeset-a-color:         #1f5a2e;
+    --md-typeset-mark-color:      rgba(67, 195, 99, 0.22);
+
+    --bh-bg-elevated:             #ffffff;
+    --bh-bg-subtle:               #f6fbf7;
+    --bh-border:                  #d5e8da;
+    --bh-border-strong:           #1f5a2e;
+    --bh-text-main:               #0f2417;
+    --bh-text-muted:              #4b6353;
+    --bh-accent-serif:            #1f5a2e;
 }
 
+[data-md-color-scheme="default"] .md-header {
+    background-color: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid #d5e8da;
+    box-shadow: none;
+    color: #0f2417;
+}
+
+[data-md-color-scheme="default"] .md-header__title,
+[data-md-color-scheme="default"] .md-header__button,
+[data-md-color-scheme="default"] .md-source {
+    color: #1f5a2e;
+}
+
+[data-md-color-scheme="default"] .md-search__form {
+    background-color: #f3f8f4;
+    border: 1px solid #d5e8da;
+    border-radius: 6px;
+}
+
+[data-md-color-scheme="default"] .md-search__input,
+[data-md-color-scheme="default"] .md-search__input::placeholder,
+[data-md-color-scheme="default"] .md-search__icon {
+    color: #4b6353 !important;
+}
+
+[data-md-color-scheme="default"] .md-tabs {
+    background-color: #ffffff;
+    border-bottom: 1px solid #d5e8da;
+}
+
+[data-md-color-scheme="default"] .md-tabs__link {
+    color: #4b6353;
+    font-weight: 600;
+    font-size: 0.72rem;
+    letter-spacing: 0.01em;
+    opacity: 0.9;
+}
+
+[data-md-color-scheme="default"] .md-tabs__link--active,
+[data-md-color-scheme="default"] .md-tabs__link:hover {
+    color: #1f5a2e;
+    opacity: 1;
+}
+
+/* ==========================================================================
+   TEMA ESCURO — Noturno Cartográfico
+   ========================================================================== */
 [data-md-color-scheme="slate"] {
-    --md-default-bg-color:        #1e1e2f; 
-    --md-default-fg-color:        #e4e4eb; 
-    --md-default-fg-color--light: #fafaff; 
-    --md-code-bg-color:           #14141c;
-    --md-accent-fg-color:         var(--brand-primary-light);
+    --md-default-bg-color:        #0a140e;
+    --md-default-fg-color:        #e6f2e9;
+    --md-default-fg-color--light: #93ad9b;
+    --md-code-bg-color:           #112117;
+    --md-typeset-a-color:         #6ede8a;
+    --md-accent-fg-color:         #6ede8a;
+
+    --bh-bg-elevated:             #0f1e15;
+    --bh-bg-subtle:               #13261b;
+    --bh-border:                  #213d2b;
+    --bh-border-strong:           #6ede8a;
+    --bh-text-main:               #e6f2e9;
+    --bh-text-muted:              #93ad9b;
+    --bh-accent-serif:            #6ede8a;
 }
 
-.md-typeset h1,
-.md-typeset h2,
-.md-typeset h3,
-.md-typeset h4,
+[data-md-color-scheme="slate"] .md-header {
+    background-color: rgba(10, 20, 14, 0.94);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid #213d2b;
+    box-shadow: none;
+}
+
+[data-md-color-scheme="slate"] .md-header__title,
+[data-md-color-scheme="slate"] .md-header__button,
+[data-md-color-scheme="slate"] .md-source {
+    color: #acecbc;
+}
+
+[data-md-color-scheme="slate"] .md-tabs {
+    background-color: #0a140e;
+    border-bottom: 1px solid #213d2b;
+}
+
+[data-md-color-scheme="slate"] .md-tabs__link {
+    color: #93ad9b;
+    font-weight: 600;
+}
+
+[data-md-color-scheme="slate"] .md-tabs__link--active,
+[data-md-color-scheme="slate"] .md-tabs__link:hover {
+    color: #6ede8a;
+}
+
+/* ==========================================================================
+   TIPOGRAFIA & ESTRUTURA GLOBAL
+   ========================================================================== */
+.md-typeset,
 .md-header__title,
 .md-nav__title,
-.md-nav__link--index {
-    font-family: "Poppins", sans-serif;
-    letter-spacing: -0.01em;
+.md-tabs__link {
+    font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-.md-typeset p,
-.md-typeset li,
-.md-typeset table {
-    font-family: "Inter", sans-serif;
+.md-typeset code,
+.md-typeset pre,
+.bh-mono {
+    font-family: "JetBrains Mono", monospace;
 }
 
-.md-typeset table:not([class]) th {
-    background-color: rgba(0, 191, 165, 0.1);
-    font-family: "Poppins", sans-serif;
-    font-weight: 600;
-    border-bottom: 2px solid var(--md-primary-fg-color);
+.bh-serif {
+    font-family: "Instrument Serif", Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--bh-accent-serif);
+    padding-right: 0.08em;
 }
 
 .md-grid {
-    margin: auto;
-    width: 100%;
-    max-width: 1280px; 
+    max-width: 1340px;
 }
 
-
-.md-header {
-    height: 64px;
-    box-shadow: none;
-}
-
-
-.md-typeset h1 {
-    margin: 0 0 16px; 
-    font-weight: 700;
-    font-size: 40px;  
-}
-
-.md-typeset h2 {
-    margin: 24px 0 8px;
-    font-weight: 600;
-    font-size: 24px;  
-}
-
-.md-typeset h3 {
-    margin: 16px 0 8px; 
-    font-weight: 600;
-    font-size: 20px; 
-}
-
-.md-typeset p,
-.md-typeset ul,
-.md-typeset ol {
-    margin: 8px 0;
-    font-size: 16px;
-}
-
-.md-typeset table:not([class]) td,
-.md-typeset table:not([class]) th {
-    padding: 8px 16px;
-}
-
-.md-typeset .admonition,
-.md-typeset pre {
+/* Tabelas Técnicas Globais */
+.md-typeset table:not([class]) {
+    border: 1px solid var(--bh-border);
     border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    box-shadow: none;
+    background: var(--bh-bg-elevated);
 }
 
-.md-sidebar {
-    box-shadow: none;
+.md-typeset table:not([class]) th {
+    background-color: var(--bh-bg-subtle);
+    color: var(--bh-text-main);
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 600;
+    font-size: 0.73rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--bh-border);
+    padding: 11px 16px;
+}
+
+.md-typeset table:not([class]) td {
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--bh-border);
+    font-size: 0.85rem;
+}
+
+/* ==========================================================================
+   PORTAL EDITORIAL BRASIL HUB — ARQUITETURA SWISS GRID / BENTO
+   ========================================================================== */
+
+/* Masthead / Barra de Coordenadas no Topo */
+.md-typeset .bh-masthead {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.6rem 1rem;
+    border: 1px solid var(--bh-border);
+    border-bottom: none;
+    border-radius: 12px 12px 0 0;
+    background: var(--bh-bg-subtle);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.7rem;
+    color: var(--bh-text-muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-top: 0.5rem;
+}
+
+.md-typeset .bh-masthead-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: var(--bh-text-main);
+    font-weight: 600;
+}
+
+.md-typeset .bh-live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: #2a7f40;
+    box-shadow: 0 0 0 3px rgba(67, 195, 99, 0.22);
+    display: inline-block;
+}
+
+/* Hero Principal (Caixa Única Editorial com Mapa Compacto Flutuante à Direita) */
+.md-typeset .bh-hero {
+    display: block;
+    overflow: hidden;
+    padding: 2rem 2.25rem;
+    border: 1px solid var(--bh-border);
+    background: var(--bh-bg-elevated);
+    position: relative;
+    margin: 0;
+}
+
+.md-typeset .bh-kicker {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #2a7f40;
+    margin: 0 0 0.55rem 0 !important;
+    display: block;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .bh-kicker {
+    color: #6ede8a;
+}
+
+.md-typeset .bh-hero h3 {
+    font-size: 2.15rem !important;
+    font-weight: 800 !important;
+    line-height: 1.15 !important;
+    letter-spacing: -0.03em !important;
+    color: var(--bh-text-main) !important;
+    margin: 0 0 0.9rem 0 !important;
+}
+
+.md-typeset .bh-hero p {
+    font-size: 0.92rem !important;
+    line-height: 1.65 !important;
+    color: var(--bh-text-muted) !important;
+    margin: 0 0 0.85rem 0 !important;
+}
+
+.md-typeset .bh-hero-actions {
+    display: block;
+    clear: both;
+    padding-top: 0.85rem;
+    margin-top: 0.5rem;
+    border-top: 1px dashed var(--bh-border);
+}
+
+/* Botões Editoriais */
+.md-typeset .md-button {
+    border-radius: 6px !important;
+    font-weight: 600 !important;
+    font-size: 0.82rem !important;
+    padding: 0.55rem 1.1rem !important;
+    transition: all 0.18s ease !important;
+    border: 1px solid var(--bh-border) !important;
+    color: var(--bh-text-main) !important;
+    background-color: var(--bh-bg-elevated) !important;
+    margin: 0.2rem 0.35rem 0.2rem 0 !important;
+    box-shadow: none !important;
+}
+
+.md-typeset .md-button:hover {
+    border-color: var(--bh-border-strong) !important;
+    background-color: var(--bh-bg-subtle) !important;
+    transform: translateY(-1px);
+}
+
+.md-typeset .md-button--primary {
+    background-color: #1f5a2e !important;
+    border-color: #1f5a2e !important;
+    color: #ffffff !important;
+}
+
+.md-typeset .md-button--primary:hover {
+    background-color: #154220 !important;
+    border-color: #154220 !important;
+    color: #ffffff !important;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .md-button--primary {
+    background-color: #2a7f40 !important;
+    border-color: #43c363 !important;
+    color: #ffffff !important;
+}
+
+/* Card Compacto do Mapa (Flutuante à Direita, sem ocupar metade da tela) */
+.md-typeset .bh-hero-map {
+    float: right;
+    width: 245px;
+    margin: 0 0 1rem 1.75rem;
+    padding: 0.85rem 1rem;
+    background-color: var(--bh-bg-subtle);
+    background-image: radial-gradient(var(--bh-border) 1px, transparent 1px);
+    background-size: 14px 14px;
+    border: 1px solid var(--bh-border);
+    border-radius: 10px;
+    display: block;
+}
+
+.md-typeset .bh-specimen-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.62rem;
+    color: var(--bh-text-muted);
+    border-bottom: 1px dashed var(--bh-border);
+    padding-bottom: 0.35rem;
+    width: 100%;
+}
+
+.md-typeset .bh-hero-map img {
+    max-width: 175px;
+    width: 100%;
+    height: auto;
+    margin: 0.6rem auto;
+    display: block;
+    filter: drop-shadow(0 10px 18px rgba(31, 90, 46, 0.16));
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.md-typeset .bh-hero-map:hover img {
+    transform: scale(1.04);
+}
+
+/* Escala Coroplética Real do Projeto (5 faixas do variables.css) */
+.md-typeset .bh-choropleth-bar {
+    display: block;
+    background: var(--bh-bg-elevated);
+    border: 1px solid var(--bh-border);
+    border-radius: 8px;
+    padding: 0.7rem 0.85rem;
+    width: 100%;
+}
+
+.md-typeset .bh-choropleth-title {
+    display: flex;
+    justify-content: space-between;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.64rem;
+    color: var(--bh-text-muted);
+    margin-bottom: 0.38rem;
+}
+
+.md-typeset .bh-choropleth-scale {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    gap: 2px;
+}
+
+.md-typeset .bh-scale-1 { background: #d3f5dc; display: block; }
+.md-typeset .bh-scale-2 { background: #acecbc; display: block; }
+.md-typeset .bh-scale-3 { background: #6ede8a; display: block; }
+.md-typeset .bh-scale-4 { background: #2a7f40; display: block; }
+.md-typeset .bh-scale-5 { background: #1f5a2e; display: block; }
+
+.md-typeset .bh-choropleth-labels {
+    display: flex;
+    justify-content: space-between;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.6rem;
+    color: var(--bh-text-muted);
+    margin-top: 0.32rem;
+}
+
+/* Barra Inferior de Telemetria do Hero (Tabela Markdown estilizada como Swiss Grid) */
+.md-typeset .bh-stats-bar {
+    margin: 0 0 2.5rem 0;
+}
+
+.md-typeset .bh-stats-bar .md-typeset__scrollwrap,
+.md-typeset .bh-stats-bar .md-typeset__table {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100%;
+    display: block;
+}
+
+.md-typeset .bh-stats-bar table {
+    width: 100%;
+    display: table;
+    border: 1px solid var(--bh-border) !important;
+    border-top: none !important;
+    border-radius: 0 0 12px 12px !important;
+    background: var(--bh-bg-elevated);
+    border-collapse: collapse;
+    margin: 0 !important;
+}
+
+.md-typeset .bh-stats-bar table th {
+    font-family: "Plus Jakarta Sans", sans-serif !important;
+    font-size: 1.4rem !important;
+    font-weight: 800 !important;
+    color: var(--bh-text-main) !important;
+    background: var(--bh-bg-elevated) !important;
+    letter-spacing: -0.02em !important;
+    border-bottom: none !important;
+    border-right: 1px solid var(--bh-border) !important;
+    padding: 1rem 1rem 0.2rem !important;
+    text-align: left !important;
+    width: 25%;
+}
+
+.md-typeset .bh-stats-bar table th:last-child,
+.md-typeset .bh-stats-bar table td:last-child {
+    border-right: none !important;
+}
+
+.md-typeset .bh-stats-bar table td {
+    font-family: "JetBrains Mono", monospace !important;
+    font-size: 0.66rem !important;
+    color: var(--bh-text-muted) !important;
+    letter-spacing: 0.04em !important;
+    border-bottom: none !important;
+    border-right: 1px solid var(--bh-border) !important;
+    padding: 0.15rem 1rem 1rem !important;
+    text-align: left !important;
+}
+
+/* ==========================================================================
+   CABEÇALHO DE SEÇÃO EDITORIAL (H2 PADRÃO)
+   ========================================================================== */
+.md-typeset h2 {
+    border-bottom: 2px solid var(--bh-text-main);
+    padding-bottom: 0.45rem;
+    margin: 2.25rem 0 1.15rem !important;
+    font-size: 1.3rem !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.02em !important;
+}
+
+/* ==========================================================================
+   MATRIZ DE NAVEGAÇÃO BENTO (.grid.cards ESTILIZADO COMO SWISS GRID)
+   ========================================================================== */
+.md-typeset .grid.cards > ul {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px !important;
+    background-color: var(--bh-border);
+    border: 1px solid var(--bh-border);
+    border-radius: 12px;
+    overflow: hidden;
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 1rem 0 2.75rem !important;
+}
+
+.md-typeset .grid.cards > ul > li {
+    background: var(--bh-bg-elevated) !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 1.65rem !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: background-color 0.2s ease !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    position: relative;
+}
+
+.md-typeset .grid.cards > ul > li:hover {
+    background: var(--bh-bg-subtle) !important;
+    transform: none !important;
+}
+
+/* Barra superior verde que acende no hover do card */
+.md-typeset .grid.cards > ul > li::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: #1f5a2e;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .grid.cards > ul > li::before {
+    background: #6ede8a;
+}
+
+.md-typeset .grid.cards > ul > li:hover::before {
+    opacity: 1;
+}
+
+.md-typeset .bh-card-index {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: #2a7f40;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.45rem;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .bh-card-index {
+    color: #6ede8a;
+}
+
+.md-typeset .grid.cards > ul > li h3,
+.md-typeset .bh-card-title {
+    margin: 0 !important;
+    font-size: 1.08rem !important;
+    font-weight: 700 !important;
+    color: var(--bh-text-main) !important;
+    letter-spacing: -0.015em;
+    display: block;
+    line-height: 1.3;
+}
+
+.md-typeset .grid.cards > ul > li hr {
+    margin: 0.75rem 0 !important;
+    border: 0;
+    border-top: 1px solid var(--bh-border);
+}
+
+.md-typeset .grid.cards > ul > li p {
+    font-size: 0.84rem !important;
+    color: var(--bh-text-muted) !important;
+    line-height: 1.58 !important;
+    margin: 0 0 1rem 0 !important;
+}
+
+.md-typeset .grid.cards > ul > li a {
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 600;
+    font-size: 0.76rem;
+    color: var(--bh-text-main);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: auto;
+    padding-top: 0.4rem;
+}
+
+.md-typeset .grid.cards > ul > li a:hover {
+    color: #2a7f40;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .grid.cards > ul > li a:hover {
+    color: #6ede8a;
+}
+
+/* ==========================================================================
+   GALERIA EDITORIAL DA EQUIPE DIJKSTRA (docs/sobre.md)
+   ========================================================================== */
+.md-typeset .bh-team-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background-color: var(--bh-border);
+    border: 1px solid var(--bh-border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 1.25rem 0 2.5rem;
+}
+
+.md-typeset .bh-member-card {
+    background: var(--bh-bg-elevated);
+    padding: 1.35rem 1.2rem 1.45rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    text-decoration: none !important;
+    color: var(--bh-text-main) !important;
+    position: relative;
+    transition: background-color 0.2s ease;
+}
+
+.md-typeset .bh-member-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: #1f5a2e;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .bh-member-card::before {
+    background: #6ede8a;
+}
+
+.md-typeset .bh-member-card:hover {
+    background: var(--bh-bg-subtle);
+}
+
+.md-typeset .bh-member-card:hover::before {
+    opacity: 1;
+}
+
+.md-typeset .bh-member-meta {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.64rem;
+    color: var(--bh-text-muted);
+    letter-spacing: 0.03em;
+    margin-bottom: 1rem;
+    padding-bottom: 0.55rem;
+    border-bottom: 1px dashed var(--bh-border);
+}
+
+.md-typeset .bh-member-handle {
+    color: #2a7f40;
+    font-weight: 600;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .bh-member-handle {
+    color: #6ede8a;
+}
+
+.md-typeset .bh-member-avatar {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--bh-border);
+    padding: 3px;
+    background: var(--bh-bg-elevated);
+    margin-bottom: 0.85rem;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+}
+
+.md-typeset .bh-member-card:hover .bh-member-avatar {
+    transform: scale(1.05);
+    border-color: #2a7f40;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .bh-member-card:hover .bh-member-avatar {
+    border-color: #6ede8a;
+}
+
+.md-typeset .bh-member-name {
+    font-size: 0.96rem;
+    font-weight: 700;
+    color: var(--bh-text-main);
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+    margin-bottom: 0.45rem;
+}
+
+.md-typeset .bh-member-role {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 0.22rem 0.6rem;
+    border-radius: 4px;
+    background: var(--bh-bg-subtle);
+    border: 1px solid var(--bh-border);
+    color: var(--bh-text-muted);
+    margin-top: auto;
+}
+
+.md-typeset .bh-member-role--lead {
+    background: rgba(42, 127, 64, 0.1);
+    border-color: rgba(42, 127, 64, 0.35);
+    color: #1f5a2e;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .bh-member-role--lead {
+    background: rgba(110, 222, 138, 0.12);
+    border-color: rgba(110, 222, 138, 0.35);
+    color: #acecbc;
+}
+
+/* ==========================================================================
+   RESPONSIVIDADE
+   ========================================================================== */
+@media (max-width: 960px) {
+    .md-typeset .bh-hero {
+        padding: 1.5rem;
+    }
+    .md-typeset .grid.cards > ul {
+        grid-template-columns: 1fr;
+    }
+    .md-typeset .bh-team-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .md-typeset .bh-hero-map {
+        float: none;
+        width: 100%;
+        max-width: 245px;
+        margin: 0 auto 1.25rem;
+    }
+    .md-typeset .bh-team-grid {
+        grid-template-columns: 1fr;
+    }
 }
