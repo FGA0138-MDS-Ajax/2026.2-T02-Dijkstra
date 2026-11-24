@@ -13,21 +13,21 @@
 
 O **Brasil Hub** estrutura séries históricas oficiais de **IDHM Geral**, **Renda**, **Educação** e **Longevidade** das 27 Unidades Federativas em uma arquitetura orientada a serviços, combinando visualização coroplética interativa via `Leaflet.js`, comparação direta lado a lado entre estados e análise de evolução temporal.
 
-Desenvolvido na disciplina de **Métodos de Desenvolvimento de Software (UnB/FGA)** pela **Equipe Dijkstra**, o projeto integra pipeline de higienização tabular com `Pandas`, API RESTful em `FastAPI`, persistência relacional transacional e suíte automatizada de integração contínua.
+Desenvolvido na disciplina de **Métodos de Desenvolvimento de Software (UnB/FGA)** pela **Equipe Dijkstra**, o projeto integra pipeline de higienização tabular com `Pandas`, API RESTful em `FastAPI`, persistência relacional no **PostgreSQL (Supabase)** e suíte automatizada de integração contínua.
 
 <span class="bh-hero-actions">
-[Documento de Visão →](documentos/visao/index.md){ .md-button .md-button--primary }
+[Acessar Aplicação Online (Vercel) ↗](https://brasil-hub-mu.vercel.app){ .md-button .md-button--primary target="_blank" }
+[Documento de Visão →](documentos/visao/index.md){ .md-button }
 [Arquitetura de Software](documentos/arquitetura/index.md){ .md-button }
-[Ponto de Controle 1](acompanhamento/ponto-controle-1.md){ .md-button }
 </span>
 
 </div>
 
 <div class="bh-stats-bar" markdown>
 
-| 27 UFs | 1.728 REGISTROS | 11/11 (B-01..B-11) | 108 TESTES + CI |
+| 27 UFs | 1.728 REGISTROS | 11/11 (B-01..B-11) | 142 TESTES + CI |
 | :---: | :---: | :---: | :---: |
-| **COBERTURA TERRITORIAL (1991–2024)** | **4 DIMENSÕES × 16 PERÍODOS** | **REQUISITOS IMPLEMENTADOS** | **PYTEST & ROTEIRO TC-01..12** |
+| **COBERTURA TERRITORIAL (1991–2024)** | **4 DIMENSÕES × 16 PERÍODOS** | **REQUISITOS IMPLEMENTADOS** | **108 PYTEST + 34 PLAYWRIGHT** |
 
 </div>
 
@@ -76,7 +76,7 @@ Desenvolvido na disciplina de **Métodos de Desenvolvimento de Software (UnB/FGA
 
     ---
 
-    Estratégia em três níveis (Unitário, Integração e Sistema), suíte automatizada no GitHub Actions e evidências de homologação.
+    Estratégia em três níveis (108 testes Pytest + 34 testes E2E Playwright), pipeline no GitHub Actions e evidências de homologação.
 
     [Ver Matriz de Qualidade →](acompanhamento/testes.md)
 
@@ -95,9 +95,9 @@ Desenvolvido na disciplina de **Métodos de Desenvolvimento de Software (UnB/FGA
 
 | Camada Arquitetural | Stack & Módulos | Contrato e Responsabilidade Técnica |
 | :--- | :--- | :--- |
-| **01. Apresentação (Client-Side)** | `HTML5` · `CSS3 Custom Properties` · `ES6 Modules` · `Leaflet.js` · `SVG` | Renderização coroplética das 27 UFs, comparação lado a lado (`B-06`), série temporal em gráfico de linha (`B-07`), gráficos/tabelas (`B-10`), exportação CSV (`B-11`) e acessibilidade (`B-03`). |
+| **01. Apresentação (Client-Side)** | `HTML5` · `CSS3 Custom Properties` · `ES6 Modules` · `Leaflet.js` · `SVG` | Renderização coroplética das 27 UFs com zoom automático, comparação lado a lado (`B-06`), série temporal (`B-07`), gráficos/tabelas (`B-10`), exportação CSV (`B-11`) e acessibilidade (`B-03`). |
 | **02. Aplicação & Serviços (API)** | `Python 3.12` · `FastAPI` · `Pydantic v2` · `Pandas` · `bcrypt` | Validação de contratos REST (`/api/indicadores`, `/comparar`, `/historico`, `/admin`), higienização tabular de CSVs (`B-04`) e autenticação com derivação criptográfica (`B-09`). |
-| **03. Persistência & Qualidade** | `SQLite / Relacional` · `Pytest` · `Docker Compose` · `GitHub Actions` | Armazenamento transacional atômico dos 1.728 registros históricos, isolamento de ambiente em contêineres e pipeline de integração contínua validando tempo de resposta ≤ 3s (`B-05`). |
+| **03. Persistência & Qualidade** | `PostgreSQL (Supabase)` · `Pytest` · `Playwright` · `Docker` · `GitHub Actions` | Armazenamento transacional dos 1.728 registros históricos em nuvem, implantação serverless na **Vercel** e pipeline CI validando 142 testes e latência ≤ 3s (`B-05`). |
 
 ## Ficha Institucional
 
@@ -105,5 +105,6 @@ Desenvolvido na disciplina de **Métodos de Desenvolvimento de Software (UnB/FGA
 | :--- | :--- |
 | **Instituição & Unidade** | Universidade de Brasília (UnB) — Faculdade do Gama (FGA) |
 | **Disciplina & Orientação** | FGA0138 — Métodos de Desenvolvimento de Software (2026.2) • Prof. Dr. Ajax |
+| **Aplicação em Produção** | [https://brasil-hub-mu.vercel.app ↗](https://brasil-hub-mu.vercel.app) |
 | **Equipe de Engenharia** | **Equipe Dijkstra** — [Conhecer integrantes e papéis →](sobre.md) |
 | **Código-Fonte & Governança** | [Repositório GitHub Oficial (`FGA0138-MDS-Ajax/2026.2-T02-Dijkstra`)](https://github.com/FGA0138-MDS-Ajax/2026.2-T02-Dijkstra) • [Padrões de Branches e PRs →](padroes/branches.md) |

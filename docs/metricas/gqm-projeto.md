@@ -58,9 +58,9 @@ As questões abaixo decompõem o objetivo de medição em indicadores quantitati
 
 ---
 
-## 5. Coletas Realizadas e Histórico de Medições (Sprints 1 a 7)
+## 5. Coletas Realizadas e Histórico de Medições (Sprints 1 a 9)
 
-A tabela a seguir consolida todas as coletas reais efetuadas pela equipe ao término de cada Sprint concluída até o momento:
+A tabela a seguir consolida todas as coletas reais efetuadas pela equipe ao término de cada Sprint do ciclo de desenvolvimento:
 
 **Tabela 5** — Histórico consolidado de coletas do GQM de Projeto
 
@@ -73,7 +73,9 @@ A tabela a seguir consolida todas as coletas reais efetuadas pela equipe ao tér
 | **[Sprint 5](../acompanhamento/sprints/sprint05/index.md)** | 21/10 a 27/10/2026 | 5 | 3 | 2 | **60,0%** | **0,0%** (0/3) | **+2** (2 − 0) | Crítica ⚠️ |
 | **[Sprint 6](../acompanhamento/sprints/sprint06/index.md)** | 28/10 a 03/11/2026 | 6 (4 + 2 débitos) | 5 | 1 | **83,3%** | **0,0%** (0/5) | **−1** (1 − 2) | Atenção 🟡 |
 | **[Sprint 7](../acompanhamento/sprints/sprint07/index.md)** | 04/11 a 10/11/2026 | 5 (4 + 1 débito) | 5 | 0 | **100,0%** | **0,0%** (0/5) | **−1** (0 − 1) | Completa ✅ |
-| **Acumulado** | **Sprints 1 a 7** | **39 issues líquidas** | **39 entregues** | **0 abertas** | **100,0% acumulado** | **0,0%** | **Saldo Final: 0** | **Estável ✅** |
+| **[Sprint 8](../acompanhamento/sprints/sprint08/index.md)** | 11/11 a 17/11/2026 | 4 | 4 | 0 | **100,0%** | **0,0%** (0/4) | **0** (0 − 0) | Completa ✅ |
+| **[Sprint 9](../acompanhamento/sprints/sprint09/index.md)** | 18/11 a 24/11/2026 | 6 (5 + 1 débito) | 5 | 0 | **100,0%** | **0,0%** (0/5) | **0** (0 − 0) | Completa ✅ |
+| **Acumulado** | **Sprints 1 a 9** | **48 issues líquidas** | **48 entregues** | **0 abertas** | **100,0% acumulado** | **0,0%** | **Saldo Final: 0** | **Estável ✅** |
 
 ---
 
@@ -87,5 +89,7 @@ Com base nos dados coletados na **Tabela 5**, registraram-se as seguintes análi
    Na Sprint 3, a métrica **M1 caiu para 62,5%** (M3 = +3) porque a tarefa de limpeza de CSV com Pandas (`S3-06`) bloqueou a conclusão da API (`S3-07`) e dos testes (`S3-08`). Aplicando a ação corretiva prevista na Tabela 4, a equipe priorizou os 3 débitos logo no início da Sprint 4, alcançando **M1 = 100%** e **M3 = −3**, zerando o passivo técnico.
 3. **Impacto do Calendário Acadêmico e Recuperação Gradual (Sprints 5, 6 e 7):**  
    Na Sprint 5, devido ao período de provas na universidade, o Front-end administrativo (`S5-04` e `S5-05`) ficou pendente (**M1 = 60%**, **M3 = +2**). Na Sprint 6, a equipe quitou 100% dos débitos da Sprint 5 e reduziu o saldo de débito (**M3 = −1**, **M1 = 83,3%**), restando apenas a finalização de acessibilidade (`S6-01`). Na Sprint 7, todas as 5 issues foram concluídas (**M1 = 100%**, **M3 = −1**), encerrando a Release 1 com **zero débitos técnicos acumulados**.
-4. **Qualidade Técnica e Prevenção de Defeitos (M2 = 0%):**  
-   A manutenção de **M2 = 0%** nas entregas integradas deveu-se diretamente à exigência de revisão de código cruzada (Code Review) e à esteira de Integração Contínua (GitHub Actions + Pytest), que barrou regressões antes do merge na branch `developer`.
+4. **Expansão de Funcionalidades, Testes E2E e Deploy em Nuvem (Sprints 8 e 9):**  
+   Na Sprint 8, a equipe manteve **M1 = 100%** e **M3 = 0**, entregando os requisitos complementares de série temporal (`B-07`), gráficos/tabelas (`B-10`) e exportação CSV (`B-11`). Na Sprint 9, repetiu-se o desempenho máximo (**M1 = 100%**, **M3 = 0**), consolidando a migração para PostgreSQL (Supabase) e deploy na Vercel (`PR #97`), o refinamento responsivo com zoom automático e página Sobre (`PR #95`) e a automação de 34 testes E2E com Playwright (`PR #94`), encerrando o projeto com todas as 48 issues líquidas entregues.
+5. **Qualidade Técnica e Prevenção de Defeitos (M2 = 0%):**  
+   A manutenção de **M2 = 0%** nas entregas integradas deveu-se diretamente à exigência de revisão de código cruzada (Code Review) e à esteira de Integração Contínua (GitHub Actions executando 108 testes Pytest + 34 testes Playwright), que barrou regressões antes do merge nas branches `developer` e `main`.

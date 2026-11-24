@@ -4,6 +4,19 @@ Foi estruturada uma estratégia contínua de testes que acompanhou cada entrega 
 
 Esta página consolida o que testamos até o encerramento da **Sprint 7 (Release 1)**, como executamos cada nível de verificação, o mapeamento completo dos casos de teste (**TC-01 a TC-12**) definidos no [Documento de Visão](../documentos/visao/testes.md) e as evidências registradas.
 
+## Resumo da Suíte Automatizada (Ciclo 1 — Homologação)
+
+A verificação e validação do **Brasil Hub** totalizam **142 testes automatizados** executados continuamente via GitHub Actions e homologados na versão de produção:
+
+- **Back-end e API (Pytest — 108 testes):** Testes unitários e de integração cobrindo ingestão/higienização de CSV com Pandas, regras de negócio, repositório PostgreSQL/SQLite, contratos REST, hash `bcrypt` e tempo de resposta (`B-05`).
+- **Front-end e Sistema E2E (Playwright — 34 testes):** Testes ponta a ponta em navegador real distribuídos em 6 arquivos de especificação:
+  - `tests/e2e/acessibilidade.spec.js`
+  - `tests/e2e/area-adm.spec.js`
+  - `tests/e2e/erros.spec.js`
+  - `tests/e2e/index.spec.js`
+  - `tests/e2e/mapa.spec.js`
+  - `tests/e2e/valores-oficiais.spec.js`
+  
 ---
 
 ## 1. Arquitetura de Testes na Prática

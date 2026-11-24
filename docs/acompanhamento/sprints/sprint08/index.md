@@ -1,6 +1,6 @@
-**# Sprint 8 — Linha do Tempo, Exportação de Dados e Qualidade**
+# Sprint 8 — Linha do Tempo, Exportação de Dados e Qualidade
 
-**## 1. Identificação**
+## 1. Identificação
 
 | Informação | Descrição |
 |---|---|
@@ -12,7 +12,7 @@
 
 ---
 
-**## 2. Planejamento e Objetivos**
+## 2. Planejamento e Objetivos
 
 A Sprint 8 teve como foco a implementação de funcionalidades complementares do Brasil Hub e o fortalecimento da qualidade do sistema.
 
@@ -22,7 +22,7 @@ Das quatro issues planejadas, três foram concluídas e integradas à branch `de
 
 ---
 
-**## 3. Issues Planejadas e Situação Final**
+## 3. Issues Planejadas e Situação Final
 
 | Issue | Requisito | Entrega Planejada | Área | Responsáveis | PR / Commit | Situação |
 |---|:---:|---|:---:|---|---|:---:|
@@ -33,7 +33,7 @@ Das quatro issues planejadas, três foram concluídas e integradas à branch `de
 
 ---
 
-**## 4. Métricas da Sprint**
+## 4. Métricas da Sprint
 
 | Métrica | Definição / Fórmula (GQM) | Meta | Resultado da Sprint | Análise do Resultado |
 |---|---|:---:|:---:|---|
@@ -43,7 +43,7 @@ Das quatro issues planejadas, três foram concluídas e integradas à branch `de
 
 ---
 
-**## 5. Testes Implementados e Garantia da Qualidade**
+## 5. Testes Implementados e Garantia da Qualidade
 
 A Sprint 8 adicionou testes automatizados relacionados à linha do tempo, à segurança da senha administrativa e ao envio de arquivos CSV. Ao final do levantamento, o repositório contabilizava **108 funções de teste automatizado** (`def test_...`) no Pytest.
 
@@ -63,7 +63,7 @@ A execução e aprovação dos casos de sistema devem ser registradas mediante e
 
 ---
 
-**## 6. Retrospectiva, Dificuldades e Aprendizados**
+## 6. Retrospectiva, Dificuldades e Aprendizados
 
 | Aspecto | Análise da Sprint |
 |---|---|
