@@ -134,7 +134,7 @@ Para garantir o atendimento pleno aos requisitos do Backlog, a Tabela 19 apresen
 - **Versão/Commit:** `1846655`
 - **Ambiente:** Local (WSL + Docker Compose, nginx em :3000), Chrome e Edge
 - **Responsável:** Felipe
-- **Evidência:** `../../assets/testes/sistema/TC-06_chrome_360px.png`, `../../assets/testes/sistema/TC-07_edge_360px.png`
+- **Evidência:** `../../assets/testes/sistema/TC-07_chrome_360px.png`, `../../assets/testes/sistema/TC-07_edge_360px.png`
 
 ### TC-08 — Proteger a senha administrativa armazenada
 
