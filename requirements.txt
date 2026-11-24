@@ -1,4 +1,4 @@
-﻿# Backend
+# Backend
 pandas
 fastapi
 psycopg[binary]
