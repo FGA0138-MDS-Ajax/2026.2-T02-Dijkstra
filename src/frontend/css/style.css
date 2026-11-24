@@ -960,6 +960,14 @@ html[data-theme="dark"] #seletor-ano {
     gap: var(--space-0);
 }
 
+.popup-fonte {
+    margin: var(--space-1) 0 0;
+    padding-top: var(--space-0);
+    border-top: 1px solid var(--color-divider);
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+}
+
 .popup-row {
     display: flex;
     justify-content: space-between;

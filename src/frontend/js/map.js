@@ -157,6 +157,10 @@ export function inicializarMapa(idContainer, { aoCarregarDadosIniciais, aoClicar
             html += `<div class="popup-row"><span>${ind.dimensao}</span><span class="popup-val">${ind.valor ?? 'N/D'}</span></div>`;
         });
         html += `</div>`;
+        const fontes = [...new Set(doAno.map(ind => ind.fonte).filter(Boolean))];
+        if(fontes.length>0){
+            html += `<p class="popup-fonte">Fonte: ${fontes.join(", ")}</p>`;
+        }
     } else {
         html += `<p class="popup-vazio">Sem dados disponíveis para este estado neste ano.</p>`;
     }
