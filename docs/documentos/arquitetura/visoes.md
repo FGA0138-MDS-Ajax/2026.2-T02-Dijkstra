@@ -75,6 +75,7 @@ Posiciona-se como camada intermediária entre as rotas HTTP e o tratamento de da
 #### `src/data` — Pandas
 
 Responsável pelo ciclo de vida e qualidade dos dados dos indicadores socioeconômicos:
+
 - `ingestion.py`: realiza a leitura dos arquivos brutos em formato CSV;
 - `validation.py`: verifica o esquema tabular, tipos e restrições de nulidade;
 - `processing.py`: executa a higienização, normalização e cálculo de médias;
@@ -85,6 +86,7 @@ Isolar o tratamento em um módulo especializado assegura que apenas dados ínteg
 #### `src/auth`
 
 Centraliza a segurança e o controle de acesso à área administrativa:
+
 - `authentication.py`: verifica a autenticidade do usuário no processo de login;
 - `permissions.py`: valida autorizações para execução de operações administrativas restritas;
 - `password_hash.py`: executa a geração e verificação de hashes de senhas via `bcrypt`.

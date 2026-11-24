@@ -35,9 +35,9 @@ Todas as duplas atuarão de forma coordenada para garantir que o software entreg
 
 | Métrica | Definição / Fórmula (GQM) | Meta | Planejado para o Fechamento | Análise Esperada |
 |---|---|:---:|:---:|---|
-| **M1: Conclusão de Issues** | $\frac{\text{Issues Concluídas}}{\text{Issues Planejadas}} \times 100$ | > 90% | **Meta: 100%** (4/4) | Conclusão rigorosa de todas as tarefas de finalização do produto. |
-| **M2: Proporção de Defeitos** | $\frac{\text{Bugs Reportados}}{\text{Issues Entregues}} \times 100$ | < 10% | **Meta: 0%** | Resolução imediata de qualquer inconsistência encontrada nos testes finais. |
-| **M3: Saldo de Débito Técnico** | $\text{Novos Débitos} - \text{Débitos Resolvidos}$ | $\le$ 0 | **Meta: Saldo $\le$ 0** | Encerramento formal do semestre acadêmico com débito técnico zerado. |
+| **M1: Conclusão de Issues** | (Issues Concluídas ÷ Issues Planejadas) × 100 | > 90% | **Meta: 100%** (4/4) | Conclusão rigorosa de todas as tarefas de finalização do produto. |
+| **M2: Proporção de Defeitos** | (Bugs Reportados ÷ Issues Entregues) × 100 | < 10% | **Meta: 0%** | Resolução imediata de qualquer inconsistência encontrada nos testes finais. |
+| **M3: Saldo de Débito Técnico** | Novos Débitos − Débitos Resolvidos | ≤ 0 | **Meta: Saldo ≤ 0** | Encerramento formal do semestre acadêmico com débito técnico zerado. |
 
 ---
 

@@ -89,6 +89,10 @@ nav:
     - Solução Proposta: gestao/solucao.md
     - Requisitos: gestao/requisitos.md
     - Especificações: gestao/especificacoes.md
+  - Métricas: 
+    - GQM negocial: metricas/gqm-negocial
+    - GQM projeto: metricas/gqm-projeto
+
   - Acompanhamento:
     - Ponto de Controle 1: acompanhamento/ponto-controle-1.md
     - Testes Realizados: acompanhamento/testes.md

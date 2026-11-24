@@ -38,10 +38,10 @@ Logo no início do ciclo, os débitos herdados da Sprint 3 (tratamento de dados 
 
 | Métrica | Definição / Fórmula (GQM) | Meta | Resultado da Sprint | Análise do Resultado |
 |---|---|:---:|:---:|---|
-| **M1: Conclusão de Issues** | $\frac{\text{Issues Concluídas}}{\text{Issues Planejadas}} \times 100$ | > 90% | **100%** (7/7) | Meta atingida. Todas as 4 novas issues e os 3 débitos técnicos foram 100% entregues. |
-| **M2: Proporção de Defeitos** | $\frac{\text{Bugs Reportados}}{\text{Issues Entregues}} \times 100$ | < 10% | **0%** (0/7) | Meta atingida. Nenhum defeito crítico registrado na integração com a branch estável. |
-| **M3: Saldo de Débito Técnico** | $\text{Novos Débitos} - \text{Débitos Resolvidos}$ | $\le$ 0 | **Saldo: -3** (0 - 3) | Meta atingida com excelência. Todas as pendências da Sprint 3 foram quitadas. |
-| **Desempenho B-05** | Tempo de resposta da API nas consultas $\le$ 3 s | $\le$ 3 s | **Aprovado (< 0,5 s)** | Validado por medição automatizada com `test_b05_dados_corretos_e_desempenho`. |
+| **M1: Conclusão de Issues** | (Issues Concluídas ÷ Issues Planejadas) × 100 | > 90% | **100%** (7/7) | Meta atingida. Todas as 4 novas issues e os 3 débitos técnicos foram 100% entregues. |
+| **M2: Proporção de Defeitos** | (Bugs Reportados ÷ Issues Entregues) × 100 | < 10% | **0%** (0/7) | Meta atingida. Nenhum defeito crítico registrado na integração com a branch estável. |
+| **M3: Saldo de Débito Técnico** | Novos Débitos − Débitos Resolvidos | ≤ 0 | **Saldo: -3** (0 - 3) | Meta atingida com excelência. Todas as pendências da Sprint 3 foram quitadas. |
+| **Desempenho B-05** | Tempo de resposta da API nas consultas ≤ 3 s | ≤ 3 s | **Aprovado (< 0,5 s)** | Validado por medição automatizada com `test_b05_dados_corretos_e_desempenho`. |
 
 ---
 
@@ -57,7 +57,7 @@ A suíte automatizada de testes foi formalmente criada nesta Sprint, totalizando
 | `test_processamento_e_idh` | Unitário | B-04 | `test_processamento_csv.py` | Valida cálculos e normalização do índice. |
 | `test_sigla_ou_estado_vazios` | Unitário | B-04 | `test_processamento_csv.py` | Valida integridade territorial dos dados. |
 | `test_codigo_uf` | Unitário | B-04 | `test_processamento_csv.py` | Valida conformidade com códigos IBGE (11 a 53). |
-| `test_b05_dados_corretos_e_desempenho` | Integração | B-05 / TC-06 | `test_funcionalidade_api.py` | Mede tempo de resposta da API ($\le$ 3s). |
+| `test_b05_dados_corretos_e_desempenho` | Integração | B-05 / TC-06 | `test_funcionalidade_api.py` | Mede tempo de resposta da API (≤ 3s). |
 | `test_sucesso_busca_indicadores_via_http` | Integração | B-02 / TC-02 | `test_funcionalidade_api.py` | Valida contrato HTTP da consulta de filtros. |
 | `test_validacao_estado_minusculo_rejeitado` | Integração | B-02 / TC-02 | `test_funcionalidade_api.py` | Rejeita siglas fora do padrão em caixa alta. |
 | `test_b05_parametros_invalidos_retornam_422` | Integração | B-05 | `test_funcionalidade_api.py` | Retorno rápido sem onerar o processador. |

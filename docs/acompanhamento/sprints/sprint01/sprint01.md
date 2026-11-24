@@ -9,6 +9,7 @@
 | **Situação da Sprint** | Concluída com sucesso. |
 | **Atividades Planejadas** | 6 atividades documentais |
 | **Taxa de Conclusão** | 100% |
+| **Registro de Reunião / Acompanhamento** | [Ata de Reunião 01 (22/09/2026)](../../reunioes/ata01.md) |
 
 ---
 
@@ -37,9 +38,9 @@ As atividades foram distribuídas entre os integrantes para cobrir a declaraçã
 
 | Métrica | Definição / Fórmula (GQM) | Meta | Resultado da Sprint | Análise do Resultado |
 |---|---|:---:|:---:|---|
-| **M1: Conclusão de Issues** | $\frac{\text{Atividades Concluídas}}{\text{Atividades Planejadas}} \times 100$ | > 90% | **100%** (6/6) | Meta atingida. O Documento de Visão v1.0 foi finalizado e aprovado pela equipe. |
-| **M2: Proporção de Defeitos** | $\frac{\text{Bugs Reportados}}{\text{Entregas Realizadas}} \times 100$ | < 10% | **0%** (0/6) | Meta atingida. Nenhuma inconformidade estrutural identificada na entrega documental. |
-| **M3: Saldo de Débito Técnico** | $\text{Novos Débitos} - \text{Débitos Resolvidos}$ | $\le$ 0 | **Saldo: 0** (0 - 0) | Meta atingida. Não foram gerados débitos técnicos para os ciclos seguintes. |
+| **M1: Conclusão de Issues** | (Atividades Concluídas ÷ Atividades Planejadas) × 100 | > 90% | **100%** (6/6) | Meta atingida. O Documento de Visão v1.0 foi finalizado e aprovado pela equipe. |
+| **M2: Proporção de Defeitos** | (Bugs Reportados ÷ Entregas Realizadas) × 100 | < 10% | **0%** (0/6) | Meta atingida. Nenhuma inconformidade estrutural identificada na entrega documental. |
+| **M3: Saldo de Débito Técnico** | Novos Débitos − Débitos Resolvidos | ≤ 0 | **Saldo: 0** (0 - 0) | Meta atingida. Não foram gerados débitos técnicos para os ciclos seguintes. |
 
 ---
 

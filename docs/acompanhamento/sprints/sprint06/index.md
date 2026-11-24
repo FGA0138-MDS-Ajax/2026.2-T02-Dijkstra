@@ -37,9 +37,9 @@ Simultaneamente, foram abertas frentes de **Compatibilidade e Responsividade (B-
 
 | Métrica | Definição / Fórmula (GQM) | Meta | Resultado da Sprint | Análise do Resultado |
 |---|---|:---:|:---:|---|
-| **M1: Conclusão de Issues** | $\frac{\text{Issues Concluídas}}{\text{Issues Consideradas}} \times 100$ | > 90% | **83,3%** (5/6) | Meta quase atingida. 100% dos débitos da Sprint 5 foram eliminados e 3 de 4 novas issues foram entregues. |
-| **M2: Proporção de Defeitos** | $\frac{\text{Bugs Reportados}}{\text{Issues Entregues}} \times 100$ | < 10% | **0%** (0/5) | Meta atingida. O rigor no Code Review preveniu merge de código instável. |
-| **M3: Saldo de Débito Técnico** | $\text{Novos Débitos} - \text{Débitos Resolvidos}$ | $\le$ 0 | **Saldo: -1** (1 - 2) | Meta atingida com sucesso. O volume de débito técnico da equipe diminuiu. |
+| **M1: Conclusão de Issues** | (Issues Concluídas ÷ Issues Consideradas) × 100 | > 90% | **83,3%** (5/6) | Meta quase atingida. 100% dos débitos da Sprint 5 foram eliminados e 3 de 4 novas issues foram entregues. |
+| **M2: Proporção de Defeitos** | (Bugs Reportados ÷ Issues Entregues) × 100 | < 10% | **0%** (0/5) | Meta atingida. O rigor no Code Review preveniu merge de código instável. |
+| **M3: Saldo de Débito Técnico** | Novos Débitos − Débitos Resolvidos | ≤ 0 | **Saldo: -1** (1 - 2) | Meta atingida com sucesso. O volume de débito técnico da equipe diminuiu. |
 
 ---
 
