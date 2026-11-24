@@ -42,7 +42,12 @@ export function inicializarMapa(idContainer, { aoCarregarDadosIniciais, aoClicar
     const zoomInicial = isMobile ? 3 : 4;
     const zoomMin = isMobile ? 3 : 4;
 
-    const mapa = L.map(idContainer).setView(CENTRO_INICIAL, zoomInicial);
+const isTouch = window.matchMedia("(pointer: coarse)").matches;
+
+    const mapa = L.map(idContainer, {
+        dragging: !isTouch,   // toque com 1 dedo rola a página em vez de arrastar o mapa no mobile
+    }).setView([-14,-54],zoomInicial);
+
     mapa.setMaxBounds([[-45,-90],[15,-25]]);
     mapa.setMinZoom(zoomMin);
 

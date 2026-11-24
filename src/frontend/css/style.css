@@ -87,6 +87,7 @@ h2 {
         margin-bottom: var(--space-2);
         border-radius: var(--radius-lg);
         display: flex;
+        position: static;
         flex-direction: column;
         align-items: center;
         gap: var(--space-2);
@@ -843,6 +844,29 @@ html[data-theme="dark"] .cards-information .card .icone {
     overflow: hidden;
     color: var(--color-text-muted);
     margin-top: var(--space-4);
+}
+
+.map-dica {
+    display: none;
+    margin: var(--space-1) 0 0;
+    text-align: center;
+    font-size: var(--font-size-0);
+    color: var(--color-text-muted);
+}
+
+@media (pointer: coarse) {
+    .map-dica { display: block; }
+}
+
+/*respo mapa (container)*/
+@media (max-width: 40rem) {
+    .map-container {
+        width: calc(100% - 2 * var(--space-3));
+        margin-inline: auto;
+        height: 60vh;
+        min-height: 20rem;
+        margin-top: var(--space-2);
+    }
 }
 
 
