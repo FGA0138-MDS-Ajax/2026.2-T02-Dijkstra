@@ -2,7 +2,7 @@
 
 ## 1.1 Propósito
 
-Este documento descreve a arquitetura do sistema Brasil Hub, desenvolvido na disciplina de Métodos de Desenvolvimento de Software (MDS), no segundo semestre de 2026, tendo como base os direcionadores definidos no Documento de Visão e Projeto v1.1 (GRUPO DIJKSTRA, 2026). Seu propósito é apresentar, de forma técnica e estruturada, as principais decisões arquiteturais adotadas pela equipe, os componentes que constituem o sistema, suas responsabilidades, as interfaces de comunicação e a infraestrutura necessária para sua execução.
+Este documento descreve a arquitetura do sistema Brasil Hub, desenvolvido na disciplina de Métodos de Desenvolvimento de Software (MDS), no segundo semestre de 2026, tendo como base os direcionadores definidos no Documento de Visão e do Projeto (GRUPO DIJKSTRA, 2026). Seu propósito é apresentar, de forma técnica e estruturada, as principais decisões arquiteturais adotadas pela equipe, os componentes que constituem o sistema, suas responsabilidades, as interfaces de comunicação e a infraestrutura necessária para sua execução.
 
 O documento tem como finalidade orientar o desenvolvimento, a integração e a manutenção do software, fornecendo uma referência comum para os integrantes da equipe, bem como para professores, monitores e demais interessados na solução.
 
@@ -10,7 +10,7 @@ São apresentados o estilo arquitetural adotado, a organização lógica dos mó
 
 ## 1.2 Escopo
 
-O escopo detalhado do produto está definido no Documento de Visão e Projeto v1.1 (GRUPO DIJKSTRA, 2026), em especial nas Tabelas 10 a 13, que estabelecem o backlog de requisitos funcionais e não funcionais priorizados pelo método MoSCoW. Em termos arquiteturais, o Brasil Hub compreende uma plataforma web interativa para centralização, tratamento e visualização de dados socioeconômicos brasileiros, com foco em informações estaduais relacionadas às dimensões de renda, educação e longevidade.
+O escopo detalhado do produto está definido no Documento de Visão e do Projeto (GRUPO DIJKSTRA, 2026), em especial nas Tabelas 10 a 13, que estabelecem o backlog de requisitos funcionais e não funcionais priorizados pelo método MoSCoW. Em termos arquiteturais, o Brasil Hub compreende uma plataforma web interativa para centralização, tratamento e visualização de dados socioeconômicos brasileiros, com foco em informações estaduais relacionadas às dimensões de renda, educação e longevidade.
 
 O sistema é composto por uma interface web acessível a visitantes e administradores, uma API responsável pelo processamento das requisições e regras da aplicação, módulos destinados à validação e ao tratamento dos dados e uma camada de persistência estruturada.
 
