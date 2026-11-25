@@ -8,6 +8,16 @@ A plataforma busca tornar esses dados mais acessíveis por meio de uma interface
 
 ---
 
+## Acesso rápido: como testar a aplicação
+
+| Forma de acesso | Como testar | Link / Atalho |
+| :--- | :--- | :--- |
+| **Online (Vercel — sem instalação)** | Acesse a aplicação hospedada em nuvem (Front-end + API FastAPI + PostgreSQL no Supabase) diretamente pelo navegador. | **[Abrir Brasil Hub Online ↗](https://brasil-hub-mu.vercel.app)** |
+| **Localmente (Docker Compose)** | Execute o ambiente completo na sua máquina (PostgreSQL + Back-end + Front-end) seguindo o passo a passo abaixo. | **[Ir para o guia de execução local ↓](#como-executar-o-projeto-em-qualquer-computador)** |
+| **Documentação (GitHub Pages)** | Consulte Documento de Visão, Arquitetura, Sprints e Casos de Teste. | **[Abrir Documentação ↗](https://fga0138-mds-ajax.github.io/2026.2-T02-Dijkstra/)** |
+
+---
+
 ## Sobre o projeto
 
 O acesso a informações socioeconômicas é importante para compreender as diferenças entre as regiões brasileiras e apoiar análises sobre as condições de vida da população.
@@ -62,6 +72,23 @@ A aplicação utiliza arquitetura em camadas desacopladas para separar interface
 ---
 
 ## Como executar o projeto em qualquer computador
+
+Você pode testar o **Brasil Hub** de duas maneiras: **diretamente pelo link em nuvem (sem instalar nada)** ou **localmente na sua máquina com Docker Compose**.
+
+### Opção 1: Testar online pelo link (Vercel)
+
+A versão em produção está disponível com a base oficial já populada (1.728 registros):
+
+| Interface / Serviço | Endereço online | Descrição |
+| :--- | :--- | :--- |
+| **Página Inicial** | [https://brasil-hub-mu.vercel.app](https://brasil-hub-mu.vercel.app) | Visão geral da plataforma |
+| **Mapa Interativo** | [https://brasil-hub-mu.vercel.app/mapa.html](https://brasil-hub-mu.vercel.app/mapa.html) | Mapa coroplético com filtros por UF e dimensão do IDHM |
+| **Área do Administrador** | [https://brasil-hub-mu.vercel.app/area-adm.html](https://brasil-hub-mu.vercel.app/area-adm.html) | Tela de login restrito para upload de novos CSVs |
+| **Status da API (Health)** | [https://brasil-hub-mu.vercel.app/health](https://brasil-hub-mu.vercel.app/health) | Verificação de saúde da API FastAPI em produção |
+
+---
+
+### Opção 2: Testar localmente via Docker Compose
 
 O projeto foi totalmente configurado para rodar de forma padronizada via **Docker Compose**, tanto no **Linux/macOS** quanto no **Windows**, sem necessidade de instalar Python ou PostgreSQL diretamente no sistema operacional do host.
 
