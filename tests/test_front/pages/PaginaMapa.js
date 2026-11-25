@@ -32,21 +32,24 @@ export class PaginaMapa {
     this.statusComparacao = this.comparacao.getByRole('status');
     this.cardsComparacao = this.comparacao.locator('.comparacao__card');
 
+    // seção unificada de evolução (linha do tempo) e indicadores (tabela e gráfico)
+    this.evolucao = page.getByRole('region', { name: 'Evolução e Indicadores' });
+
     // linha do tempo
-    this.linhaTempo = page.getByRole('region', { name: 'Linha do Tempo do IDH' });
-    this.selectEstadoLinhaTempo = this.linhaTempo.getByLabel('Estado');
-    this.selectDimensaoLinhaTempo = this.linhaTempo.getByLabel('Dimensão do IDH');
-    this.statusLinhaTempo = this.linhaTempo.getByRole('status');
-    this.graficoLinhaTempo = this.linhaTempo.locator('#linha-tempo-grafico svg');
+    this.linhaTempo = this.evolucao;
+    this.selectEstadoLinhaTempo = this.evolucao.getByLabel('Estado');
+    this.selectDimensaoLinhaTempo = this.evolucao.getByLabel('Dimensão do IDH');
+    this.statusLinhaTempo = this.evolucao.locator('#linha-tempo-status');
+    this.graficoLinhaTempo = this.evolucao.locator('#linha-tempo-grafico svg');
 
     // tabela e gráfico de um estado
-    this.visualizacao = page.getByRole('region', { name: 'Indicadores em Tabela e Gráfico' });
-    this.selectEstadoVisualizacao = this.visualizacao.getByLabel('Estado');
-    this.selectPeriodo = this.visualizacao.getByLabel('Período de referência');
-    this.statusVisualizacao = this.visualizacao.getByRole('status');
-    this.erroVisualizacao = this.visualizacao.getByRole('alert');
-    this.tabela = this.visualizacao.getByRole('table');
-    this.grafico = this.visualizacao.getByRole('img');
+    this.visualizacao = this.evolucao;
+    this.selectEstadoVisualizacao = this.evolucao.getByLabel('Estado');
+    this.selectPeriodo = this.evolucao.getByLabel('Ano de referência');
+    this.statusVisualizacao = this.evolucao.locator('#visualizacao-status');
+    this.erroVisualizacao = this.evolucao.locator('#visualizacao-erro');
+    this.tabela = this.evolucao.locator('#visualizacao-tabela').getByRole('table');
+    this.grafico = this.evolucao.locator('#visualizacao-grafico').getByRole('img');
   }
 
   async abrir() {

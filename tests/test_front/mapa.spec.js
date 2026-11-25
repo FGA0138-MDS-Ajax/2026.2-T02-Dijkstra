@@ -79,10 +79,10 @@ test.describe('CT-FE-05 · Comparação entre estados', () => {
 
     await expect(mapa.statusComparacao).toContainText('Comparando DF e SP');
     await expect(mapa.cardsComparacao).toHaveCount(2);
-    await expect(mapa.cardDoEstado('DF').getByRole('heading')).toHaveText('Distrito Federal (DF)');
-    await expect(mapa.cardDoEstado('SP').getByRole('heading')).toHaveText('São Paulo (SP)');
+    await expect(mapa.cardDoEstado('DF').getByRole('heading')).toHaveText(/^Distrito Federal \(DF\) · \d{4}$/);
+    await expect(mapa.cardDoEstado('SP').getByRole('heading')).toHaveText(/^São Paulo \(SP\) · \d{4}$/);
     for (const uf of ['DF', 'SP']) {
-      await expect(mapa.cardDoEstado(uf).locator('.comparacao__item')).toHaveCount(4);
+      await expect(mapa.cardDoEstado(uf).locator('.comparacao__linha')).toHaveCount(4);
     }
   });
 
@@ -94,8 +94,9 @@ test.describe('CT-FE-05 · Comparação entre estados', () => {
     await expect(mapa.tabela).toBeVisible();
 
     for (const indicador of ['IDHM Geral', 'IDHM Renda', 'IDHM Educação', 'IDHM Longevidade']) {
-      const valorTabela = (await mapa.valorNaTabela(indicador).textContent())?.trim();
-      await expect(mapa.cardDoEstado('DF')).toContainText(`${indicador}: ${valorTabela}`);
+      const valorTabela = (await mapa.valorNaTabela(indicador).textContent())?.trim() ?? '';
+      await expect(mapa.cardDoEstado('DF').locator('.comparacao__linha', { hasText: indicador }))
+        .toContainText(valorTabela);
     }
   });
 
