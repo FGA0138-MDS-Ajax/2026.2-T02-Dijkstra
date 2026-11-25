@@ -26,7 +26,7 @@ Esse fluxo operacional é detalhado na **Figura 3**, que apresenta o diagrama de
 
 **Figura 3 — Diagrama de Atividades: Painel do Administrador**
 
-<img src="../assets/atividades.png" alt="Diagrama de Atividades" style="max-width: 16cm; width: 100%; border: 1px solid #ddd; border-radius: 4px;" />
+![Diagrama de Atividades](assets/atividades.png)
 
 *Fonte: Elaborado por Fabiana Reis (2026).*
 
@@ -62,38 +62,43 @@ A **Tabela 4** sintetiza as responsabilidades e a camada de cada módulo na arqu
 
 #### `src/frontend` — JavaScript e Leaflet
 
-Concentra a interface gráfica manipulada pelo usuário. Organiza o código separando as páginas (`pages/`), os componentes reutilizáveis de mapa e filtros (`components/`), os recursos de acessibilidade de fonte e alto contraste (`accessibility/`), o cliente HTTP de envio de requisições (`api_client/`) e os estilos e recursos estáticos (`assets/`). Dessa forma, a interface pode evoluir esteticamente sem impactar as regras da aplicação.
+Concentra a camada de apresentação e todos os elementos de interface com os quais o usuário interage diretamente. Organiza as páginas HTML na raiz, separando-as das folhas de estilo (`css/`), dos scripts de comportamento e comunicação com a API (`js/`) e dos recursos gráficos e geográficos em (`assets/`). Dessa forma, a interface pode evoluir sem afetar as regras de negócio.
 
 #### `src/api` — FastAPI
 
-Constitui o ponto de entrada do Back-end, recebendo as requisições HTTP do cliente e devolvendo respostas estruturadas. Cada rota atende a uma responsabilidade específica: consulta de indicadores (`indicators.py`), upload de arquivos pelo administrador (`admin.py`) e autenticação (`auth.py`). Os esquemas do Pydantic em `schemas/` formalizam os contratos de dados na borda do sistema, assegurando que apenas requisições válidas atinjam a lógica interna.
+É a fronteira do back-end: recebe as requisições do navegador e devolve as respostas. Cada rota tem uma responsabilidade: consultas de indicadores , upload de CSV pela administração e login. O módulo `schemas.py` define os contratos de entrada e saída, de modo que a validação do formato fica na borda do sistema e a lógica interna não depende dela.
 
 #### `src/services`
 
-Posiciona-se como camada intermediária entre as rotas HTTP e o tratamento de dados. O módulo `indicators.py` coordena as consultas e os filtros temáticos, enquanto `updates.py` gerencia o fluxo de atualização da base de dados. Com isso, os endpoints HTTP atuam como controladores leves, permitindo testar e manter a lógica de negócio independentemente do framework web.
+Atua como camada intermediária entre as rotas da API e o módulo de tratamento de dados. O módulo `indicador_service.py` define duas classes principais:
+- IndicadorService, responsável por coordenar as consultas e os filtros por estado e pelas dimensões do IDH e do IDHM;
+- ImportacaoService, encarregada de coordenar a atualização da base de dados. Dessa forma, as rotas restringem-se a delegar as requisições, permitindo que as regras de negócio sejam alteradas ou testadas de maneira independente do protocolo HTTP.
 
 #### `src/data` — Pandas
 
-Responsável pelo ciclo de vida e qualidade dos dados dos indicadores socioeconômicos:
+Concentra o ciclo de ingestão, validação, transformação, mapeamento e carga inicial dos indicadores socioeconômicos, estruturado em três arquivos principais: 
+- `processamento_csv.py`: responsável por realizar a leitura dos arquivos CSV, normalizar os identificadores das Unidades da Federação, reestruturar as colunas anuais em registros tabulares e descartar valores fora do intervalo válido; 
+- `mapeamento_indicadores.py`: encarregado de adequar o DataFrame tratado ao esquema lógico exigido pela camada de persistência, incorporando metadados como unidade de medida e fonte; 
+- `importar_csv.py`: que orquestra o processamento em lote das bases brutas, verifica a existência prévia de registros para evitar duplicações e aciona a gravação dos dados consolidados no PostgreSQL.
 
-- `ingestion.py`: realiza a leitura dos arquivos brutos em formato CSV;
-- `validation.py`: verifica o esquema tabular, tipos e restrições de nulidade;
-- `processing.py`: executa a higienização, normalização e cálculo de médias;
-- `storage.py`: gerencia as coleções de indicadores consolidados.
-
-Isolar o tratamento em um módulo especializado assegura que apenas dados íntegros e consistentes sejam disponibilizados para exibição.
+Isolar esse fluxo assegura a qualidade e a padronização das informações antes do armazenamento, impedindo que dados inválidos cheguem ao dashboard.
 
 #### `src/auth`
 
-Centraliza a segurança e o controle de acesso à área administrativa:
+É responsável pela proteção da área administrativa e pelo controle de acesso às operações restritas do sistema:
 
-- `authentication.py`: verifica a autenticidade do usuário no processo de login;
-- `permissions.py`: valida autorizações para execução de operações administrativas restritas;
-- `password_hash.py`: executa a geração e verificação de hashes de senhas via `bcrypt`.
+- `security.py` define a classe PasswordHasher, encarregada de aplicar algoritmos de hash criptográfico às senhas antes de seu armazenamento e de validar as credenciais submetidas durante o processo de autenticação (login).
 
 #### `src/database`
 
-Encapsula o acesso ao banco de dados SQLite. O módulo `connection.py` gerencia a conexão com o arquivo de banco de dados e as operações transacionais, enquanto os repositórios (`admin_repository.py` e `indicator_repository.py`) executam as instruções SQL para persistir e recuperar tanto as credenciais administrativas quanto a totalidade dos registros de indicadores socioeconômicos tratados. Dessa forma, nenhuma regra de persistência vaza para as camadas de apresentação ou serviços.
+Encapsula a conexão em rede e as operações de persistência no banco de dados relacional, centralizando tanto o armazenamento dos indicadores socioeconômicos consolidados quanto das credenciais administrativas. O módulo está estruturado em três arquivos principais: 
+
+- `database.py`: responsável por gerenciar o ciclo de vida das conexões com o PostgreSQL, além de inicializar o esquema relacional das tabelas indicadores e administradores;
+- `admin_repository.py`: que define a classe AdminRepository, encarregada de consultar e persistir os usuários administradores e suas senhas protegidas por hash;
+- `indicador_repository.py`: que define a classe IndicadorRepository, responsável por executar consultas filtradas e operações em lote de inserção e atualização dos indicadores tratados. 
+
+Isolar o acesso aos dados nesse pacote impede que as demais camadas dependam diretamente do Sistema Gerenciador de Banco de Dados ou de instruções SQL, permitindo que uma eventual substituição da tecnologia de persistência ocorra sem impactar as regras de negócio ou a camada de apresentação.
+
 
 ### 2.5.2.2 Comunicação entre os módulos
 
@@ -113,7 +118,7 @@ A **Tabela 5** detalha as formas de comunicação e as interfaces utilizadas ent
 |---|---|---|
 | `frontend → api` | Requisições HTTP feitas por `api_client/`, com dados estruturados em JSON | Rotas REST de consulta de indicadores e login |
 | `frontend → api` (upload) | Envio de arquivo CSV codificado em `multipart/form-data` | Rota REST de upload em `routes/admin.py` |
-| `api → services` | Chamadas diretas de funções e métodos Python | Módulos `indicators.py` e `updates.py` |
+| `api → services` | Chamadas diretas de funções e métodos Python | Módulo `indicator_service.py`|
 | `api → auth` | Chamadas diretas de funções e métodos Python | Funções de validação de token e credenciais |
 | `services → data` | Chamadas diretas de funções e métodos Python | Módulos de ingestão, validação e higienização |
 | `auth → database` | Chamadas de funções do repositório de administradores | Módulo `admin_repository.py` |

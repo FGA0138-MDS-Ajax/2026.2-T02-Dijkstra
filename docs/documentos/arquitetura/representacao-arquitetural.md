@@ -4,7 +4,7 @@
 
 O Brasil Hub adota o estilo arquitetural Cliente-Servidor em Camadas (*Three-Tier Architecture*), estruturado em três níveis lógicos fundamentais: apresentação, aplicação e persistência.
 
-A camada de apresentação corresponde ao Front-end executado no navegador do usuário; a camada de aplicação corresponde ao Back-end desenvolvido em Python utilizando a API RESTful implementada com o framework FastAPI; e a camada de persistência corresponde ao sistema gerenciador de banco de dados relacional.
+A camada de apresentação corresponde ao Front-end executado no navegador do usuário; a camada de aplicação corresponde ao Back-end desenvolvido em Python utilizando a API RESTful implementada com o framework FastAPI; e a camada de persistência corresponde ao banco de dados relacional PostgreSQL.
 
 A separação estrita entre essas camadas tem como objetivo principal reduzir o acoplamento entre a interface de usuário, as regras de negócio, a validação de dados e os mecanismos de armazenamento físico, promovendo modularidade, manutenibilidade e testabilidade independente dos componentes (BASS; CLEMENTS; KAZMAN, 2021; SOMMERVILLE, 2018).
 
@@ -14,14 +14,14 @@ Por definição arquitetural, a camada de apresentação não possui qualquer ca
 
 ## 2.2 Justificativa da escolha
 
-A seleção da arquitetura Cliente-Servidor em Camadas decorre diretamente dos requisitos e restrições estabelecidos no Documento de Visão e Projeto (GRUPO DIJKSTRA, 2026):
+A seleção da arquitetura Cliente-Servidor em Camadas decorre diretamente dos requisitos e restrições estabelecidos no Documento de Visão e do Projeto (GRUPO DIJKSTRA, 2026):
 
 1. **Atendimento ao Desempenho (Requisito B-05):** O requisito B-05 estipula que as respostas às consultas de indicadores socioeconômicos devem ocorrer em até 3 segundos. A dissociação entre cliente e servidor viabiliza o emprego de Python e Pandas na camada de aplicação para execução de operações vetorizadas em memória e agregação de dados tabulares com alta performance, enquanto o FastAPI gerencia requisições assíncronas concorrentes de baixa latência, retornando exclusivamente cargas úteis JSON otimizadas para o cliente.
 2. **Segurança e Validação no Servidor (Requisitos B-04 e B-09):** O requisito B-04 exige a ingestão de arquivos CSV governamentais com garantia estrita de integridade estrutural, e o requisito B-09 impõe que credenciais administrativas nunca circulem ou residam desprotegidas. Manter a lógica de validação, parsing com Pandas e hashing de senhas isoladas na camada de aplicação impede que código malicioso ou arquivos corrompidos afetem diretamente o armazenamento, assegurando que o Front-end permaneça como uma casca de visualização sem privilégios de persistência.
 3. **Compatibilidade Multiplataforma e Responsividade (Requisito B-08):** O requisito B-08 estabelece suporte pleno a dispositivos a partir de 360 pixels de largura e navegadores modernos (Chrome, Firefox, Edge). O desacoplamento permite que a interface cliente seja construída com tecnologias web puras (HTML5, CSS3, JavaScript e Leaflet), operando de maneira leve e nativa no motor de renderização do cliente sem a sobrecarga de renderização server-side, garantindo fluidez e rápida resposta visual em telas reduzidas.
 4. **Alinhamento com a Estrutura da Equipe:** A segregação em camadas viabiliza o desenvolvimento paralelo entre as duplas de trabalho da equipe Dijkstra (frente de interface e frente de dados/API), minimizando dependências de código e conflitos de integração durante as Sprints de desenvolvimento.
 
-A camada de persistência utiliza o SQLite, centralizando o armazenamento estruturado dos indicadores socioeconômicos e das credenciais administrativas. A escolha do SQLite fundamenta-se na sua simplicidade arquitetural, baixo consumo de recursos, portabilidade em arquivo único e perfeita integração com o ecossistema Python, permitindo desenvolvimento e testes ágeis sem a necessidade de gerenciamento de um serviço externo de banco de dados.
+A camada de persistência utiliza o PostgreSQL, centralizando o armazenamento relacional estruturado dos indicadores socioeconômicos e das credenciais administrativas. A escolha do PostgreSQL fundamenta-se na necessidade de persistência durável em rede, controle de concorrência e integridade transacional, garantindo que as atualizações efetuadas pelos administradores permaneçam salvas de forma consistente entre as execuções serverless da API na Vercel, além de possuir integração nativa e madura com o ecossistema Python.
 
 ## 2.3 Detalhamento
 
@@ -64,7 +64,7 @@ Os módulos e componentes que constituem a arquitetura do Brasil Hub, bem como s
 | Serviço de Atualização | Python / Pandas | Orquestração do fluxo de ingestão e atualização da base | Arquivo CSV do administrador | Relatório de validação e confirmação de persistência |
 | Módulo de Autenticação | Python / bcrypt | Verificação de credenciais e emissão de tokens de autorização | Usuário e senha em texto simples | Token de sessão ou recusa de acesso |
 | Processador de Dados | Pandas | Leitura, validação estrutural, limpeza e padronização | Arquivo CSV bruto / DataFrame | DataFrame sanitizado e validado |
-| Banco de Dados | SQLite | Persistência estruturada de indicadores e credenciais | Comandos e consultas SQL estruturadas | Conjuntos de registros persistidos |
+| Banco de Dados | PostgreSQL | Persistência estruturada de indicadores e credenciais | Comandos e consultas SQL estruturadas | Conjuntos de registros persistidos |
 
 *Fonte: Elaborado por Josef Wojtyla (2026).*
 
@@ -145,7 +145,7 @@ A API intercepta a requisição, valida o token de autorização, encaminha o ar
 
 ### 2.3.2 Modelo de persistência
 
-O modelo de persistência do Brasil Hub utiliza o banco de dados SQLite para armazenar de forma íntegra e estruturada os dados socioeconômicos tratados e as credenciais de autenticação administrativa.
+O modelo de persistência do Brasil Hub utiliza o banco de dados PostgreSQL para armazenar de forma íntegra e estruturada os dados socioeconômicos tratados e as credenciais de autenticação administrativa.
 
 O acesso ao banco de dados é estritamente encapsulado pelo módulo de repositório (`src/database`), isolando a camada de aplicação de especificidades dialetais de SQL e facilitando a realização de testes com bancos em memória ou simulações via mocks.
 
@@ -175,7 +175,7 @@ Em hipótese alguma a senha do administrador em texto simples é gravada em banc
 
 ## 2.4 Metas e restrições arquiteturais
 
-As metas e restrições técnicas do Brasil Hub derivam dos requisitos funcionais e não funcionais estabelecidos no Documento de Visão e Projeto (GRUPO DIJKSTRA, 2026), visando assegurar estabilidade, segurança e manutenibilidade:
+As metas e restrições técnicas do Brasil Hub derivam dos requisitos funcionais e não funcionais estabelecidos no Documento de Visão e do Projeto (GRUPO DIJKSTRA, 2026), visando assegurar desempenho, manutenibilidade, segurança, compatibilidade e consistência estrutural do sistema:
 
 1. **Comunicação estrita por API REST:** A troca de dados entre Front-end e Back-end ocorre exclusivamente via requisições HTTP/HTTPS padronizadas conforme o modelo REST (FIELDING, 2000). Operações de recuperação de indicadores usam o método `GET`, enquanto operações autenticadas de submissão e atualização usam o método `POST`.
 2. **Formato dos Dados:** As saídas estruturadas da API utilizam exclusivamente payloads em formato JSON, com codificação de caracteres em UTF-8. O tráfego de arquivos brutos de indicadores utiliza `multipart/form-data`.
