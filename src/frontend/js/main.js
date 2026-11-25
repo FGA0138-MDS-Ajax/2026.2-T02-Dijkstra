@@ -58,13 +58,14 @@ function sincronizarPeriodoVisualizacao(selectPeriodo, anoAlvo) {
     }
 }
 
-function aplicarPadraoEvolucao() {
+function aplicarPadraoEvolucao(forcar = false) {
     const selectEstado = document.getElementById("linha-tempo-estado");
     const selectDimensao = document.getElementById("linha-tempo-dimensao");
     const selectVisEstado = document.getElementById("visualizacao-estado");
     const selectPeriodo = document.getElementById("visualizacao-periodo");
     
     if (!selectEstado || !selectDimensao) return;
+    if (!forcar && selectEstado.value) return;
 
     const opcaoValida = [...selectEstado.options].find(o => o.value !== "");
     if (!opcaoValida) return;
@@ -212,7 +213,7 @@ function iniciar(){
     
     document.getElementById("linha-tempo-limpar")?.addEventListener("click", (e) => {
         e.preventDefault();
-        aplicarPadraoEvolucao();
+        aplicarPadraoEvolucao(true);
     });    
     
     setTimeout(() => {
